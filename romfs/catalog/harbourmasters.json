@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "source": "HarbourMasters",
+  "entries": [
+    {
+      "name": "Ship of Harkinian (Ocarina of Time)",
+      "project": "Shipwright",
+      "repository": "HarbourMasters/Shipwright",
+      "repositorySource": "github",
+      "folderName": "OcarinaOfTime-Shipwright",
+      "tags": ["port", "decomp", "n64", "zelda"],
+      "releaseAssetFilter": "SoH-*-Switch.zip",
+      "requirements": "ROM propia de Ocarina of Time (dump soportado, verificable en ship.equipment); generar oot.otr/oot-mq.otr ejecutando un release de PC; CFW Atmosphère; SD en /switch/soh/",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Shipwright/releases/download/8.0.6/SoH-MacReady-Golf-Switch.zip",
+        "https://api.github.com/repos/HarbourMasters/Shipwright/releases?per_page=30",
+        "https://github.com/HarbourMasters/Shipwright"
+      ],
+      "verified": true,
+      "notes": "El asset Switch 8.0.6 contiene soh.nro (21174023 B) + soh.otr + readme.txt (contenido del zip listado localmente). Los releases 9.0.0-9.3.0 ya NO publican asset Switch; el README mantiene un build Switch de CI: https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip",
+      "switch": {
+        "targetDir": "/switch/soh",
+        "nro": "soh.nro",
+        "nroPath": "soh.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/soh/oot.otr",
+            "description": "Assets OTR generados en PC a partir de tu propia ROM de Ocarina of Time; el readme.txt del zip Switch lo exige explicitamente"
+          },
+          {
+            "path": "sdmc:/switch/soh/oot-mq.otr",
+            "description": "Variante Master Quest, opcional, generada igual en PC"
+          }
+        ]
+      },
+      "harbourMasters": true
+    },
+    {
+      "name": "Ship of Harkinian Switch Rev1",
+      "project": "Shipwright-Switch",
+      "repository": "HarbourMasters/Shipwright-Switch",
+      "repositorySource": "github",
+      "folderName": "OcarinaOfTime-ShipwrightSwitch",
+      "tags": ["port", "decomp", "n64", "zelda", "switch-only"],
+      "releaseAssetFilter": "*-Switch-Rev1.zip",
+      "requirements": "ROM propia de OoT y oot.otr/oot-mq.otr generados en PC; CFW Atmosphère; SD en /switch/soh/",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Shipwright-Switch/releases/download/8.0.6-1/SoH-MacReady-Golf-Switch-Rev1.zip",
+        "https://github.com/HarbourMasters/Shipwright-Switch"
+      ],
+      "verified": true,
+      "notes": "Repo oficial solo-Switch. La release 8.0.6-1 (2025-11-29) contiene soh.nro (20825883 B) + soh.otr + readme.txt (listado local). El README de este repo es el que documenta el arbol SD switch/soh/ con soh.nro, soh.otr, oot.otr y oot-mq.otr",
+      "switch": {
+        "targetDir": "/switch/soh",
+        "nro": "soh.nro",
+        "nroPath": "soh.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/soh/oot.otr",
+            "description": "Assets OTR de tu propia ROM, generados en PC (documentado en el README de Shipwright-Switch)"
+          }
+        ]
+      },
+      "harbourMasters": true
+    },
+    {
+      "name": "Starship (Star Fox 64)",
+      "project": "Starship",
+      "repository": "HarbourMasters/Starship",
+      "repositorySource": "github",
+      "folderName": "StarFox64-Starship",
+      "tags": ["port", "decomp", "n64", "starfox"],
+      "releaseAssetFilter": "Starship-*-Switch.zip",
+      "requirements": "ROM propia de Star Fox 64 (US 1.0/1.1); generar sf64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Starship/releases/download/v2.0.0/Starship-Barnard-Alfa-Switch.zip",
+        "https://github.com/HarbourMasters/Starship"
+      ],
+      "verified": true,
+      "notes": "El asset Switch v2.0.0 contiene Starship.nro (14216176 B) + starship.o2r + assets/yaml (listado local). v1.0.0 no tenia Switch. El README solo dice 'Copy the files to your sd card' y el zip trae el .nro y el .o2r en la raiz: la carpeta /switch/Starship es una deduccion por convencion (SoH usa sdcard/switch/soh), no una ruta documentada por el autor",
+      "switch": {
+        "targetDir": "/switch/Starship",
+        "nro": "Starship.nro",
+        "nroPath": "Starship.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Starship/sf64.o2r",
+            "description": "Generado en PC desde tu ROM US 1.0/1.1 de Star Fox 64 (nombre de fichero documentado en el README); debe quedar junto al .nro"
+          }
+        ]
+      },
+      "harbourMasters": true
+    },
+    {
+      "name": "Ghostship (Super Mario 64)",
+      "project": "Ghostship",
+      "repository": "HarbourMasters/Ghostship",
+      "repositorySource": "github",
+      "folderName": "SuperMario64-Ghostship",
+      "tags": ["port", "decomp", "n64", "mario"],
+      "releaseAssetFilter": "*-Switch.zip",
+      "requirements": "ROM propia de Super Mario 64 (US o JP); generar sm64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Ghostship/releases/download/2.0.0/Mary-Celeste-Alfa-Switch.zip",
+        "https://github.com/HarbourMasters/Ghostship"
+      ],
+      "verified": true,
+      "notes": "El asset Switch 2.0.0 contiene Ghostship.nro + ghostship.o2r + config.yml + assets/ymls (846 entradas, listado local). El release 3.0.0 (2026-09) ya NO incluye asset Switch aunque el README sigue listando un nightly Switch. Carpeta /switch/Ghostship deducida por convencion (no documentada literalmente)",
+      "switch": {
+        "targetDir": "/switch/Ghostship",
+        "nro": "Ghostship.nro",
+        "nroPath": "Ghostship.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Ghostship/sm64.o2r",
+            "description": "Generado en PC desde tu ROM de Super Mario 64 (documentado en el README); debe quedar junto al .nro"
+          }
+        ]
+      },
+      "harbourMasters": true
+    },
+    {
+      "name": "SpaghettiKart (Mario Kart 64)",
+      "project": "SpaghettiKart",
+      "repository": "HarbourMasters/SpaghettiKart",
+      "repositorySource": "github",
+      "folderName": "MarioKart64-SpaghettiKart",
+      "tags": ["port", "decomp", "n64", "mariokart"],
+      "releaseAssetFilter": "*Switch.zip",
+      "requirements": "ROM propia de Mario Kart 64 (US); generar mk64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/SpaghettiKart/releases/download/0.9.9.1/Spaghettify-Alfredo-Alfa-1-Switch.zip",
+        "https://github.com/HarbourMasters/SpaghettiKart"
+      ],
+      "verified": true,
+      "notes": "Solo el prerelease 0.9.9.1 trae Switch: el zip tiene una unica carpeta raiz Spaghettify-Switch/ con Spaghettify.nro + spaghetti.o2r (listado local), de ahi stripRoot true. El estable 1.0.0 no publica Switch; el README mantiene nightly Spaghettify-switch.zip. Carpeta /switch/Spaghettify deducida (nombre del ejecutable y del artefacto CI), no documentada",
+      "switch": {
+        "targetDir": "/switch/Spaghettify",
+        "nro": "Spaghettify.nro",
+        "nroPath": "Spaghettify-Switch/Spaghettify.nro",
+        "stripRoot": true,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Spaghettify/mk64.o2r",
+            "description": "Generado en PC desde tu ROM US de Mario Kart 64 (nombre de fichero documentado en el README)"
+          }
+        ]
+      },
+      "harbourMasters": true
+    }
+  ],
+  "unavailable": [
+    {
+      "name": "2ship2harkinian (Majora's Mask)",
+      "repository": "HarbourMasters/2ship2harkinian",
+      "reason": "Escaneados los 16 tags de release (5.0.1, 5.0.0, 4.0.2, 4.0.1, 4.0.0, 3.0.2, 3.0.1, 3.0.0 y anteriores): ningun asset Switch, solo Linux/Mac/Win64. El README no menciona Switch en absoluto.",
+      "lastChecked": "2026-10-11",
+      "workaround": null
+    },
+    {
+      "name": "Lighthouse (Banjo-Kazooie)",
+      "repository": "HarbourMasters/Lighthouse",
+      "reason": "Los 5 tags (1.1.0, 1.0.3, 1.0.2, 1.0.1, 1.0.0) publican unicamente Linux/Mac/Win64. El README no menciona Switch.",
+      "lastChecked": "2026-10-11",
+      "workaround": null
+    },
+    {
+      "name": "PaperBoat (Paper Mario 64)",
+      "repository": "HarbourMasters/PaperBoat",
+      "reason": "Los 4 tags (1.0.3, 1.0.2, 1.0.1, 1.0.0) publican unicamente Linux/Mac/Win64. El README no menciona Switch.",
+      "lastChecked": "2026-10-11",
+      "workaround": null
+    }
+  ]
+}

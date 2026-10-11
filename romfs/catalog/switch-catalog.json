@@ -1,0 +1,1209 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-11",
+  "source": "Delanx research; ver docs/catalog-verification.md",
+  "entries": [
+    {
+      "name": "Ship of Harkinian (Ocarina of Time)",
+      "project": "Shipwright",
+      "repository": "HarbourMasters/Shipwright",
+      "repositorySource": "github",
+      "folderName": "OcarinaOfTime-Shipwright",
+      "tags": ["port", "decomp", "n64", "zelda"],
+      "releaseAssetFilter": "SoH-*-Switch.zip",
+      "requirements": "ROM propia de Ocarina of Time (dump soportado, verificable en ship.equipment); generar oot.otr/oot-mq.otr ejecutando un release de PC; CFW Atmosphère; SD en /switch/soh/",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Shipwright/releases/download/8.0.6/SoH-MacReady-Golf-Switch.zip",
+        "https://api.github.com/repos/HarbourMasters/Shipwright/releases?per_page=30",
+        "https://github.com/HarbourMasters/Shipwright"
+      ],
+      "verified": true,
+      "notes": "El asset Switch 8.0.6 contiene soh.nro (21174023 B) + soh.otr + readme.txt (contenido del zip listado localmente). Los releases 9.0.0-9.3.0 ya NO publican asset Switch; el README mantiene un build Switch de CI: https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip",
+      "switch": {
+        "targetDir": "/switch/soh",
+        "nro": "soh.nro",
+        "nroPath": "soh.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/soh/oot.otr",
+            "description": "Assets OTR generados en PC a partir de tu propia ROM de Ocarina of Time; el readme.txt del zip Switch lo exige explicitamente"
+          },
+          {
+            "path": "sdmc:/switch/soh/oot-mq.otr",
+            "description": "Variante Master Quest, opcional, generada igual en PC"
+          }
+        ]
+      },
+      "harbourMasters": true,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Ocarina%20of%20Time%20%28USA%29.png"
+    },
+    {
+      "name": "Ship of Harkinian Switch Rev1",
+      "project": "Shipwright-Switch",
+      "repository": "HarbourMasters/Shipwright-Switch",
+      "repositorySource": "github",
+      "folderName": "OcarinaOfTime-ShipwrightSwitch",
+      "tags": ["port", "decomp", "n64", "zelda", "switch-only"],
+      "releaseAssetFilter": "*-Switch-Rev1.zip",
+      "requirements": "ROM propia de OoT y oot.otr/oot-mq.otr generados en PC; CFW Atmosphère; SD en /switch/soh/",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Shipwright-Switch/releases/download/8.0.6-1/SoH-MacReady-Golf-Switch-Rev1.zip",
+        "https://github.com/HarbourMasters/Shipwright-Switch"
+      ],
+      "verified": true,
+      "notes": "Repo oficial solo-Switch. La release 8.0.6-1 (2025-11-29) contiene soh.nro (20825883 B) + soh.otr + readme.txt (listado local). El README de este repo es el que documenta el arbol SD switch/soh/ con soh.nro, soh.otr, oot.otr y oot-mq.otr",
+      "switch": {
+        "targetDir": "/switch/soh",
+        "nro": "soh.nro",
+        "nroPath": "soh.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/soh/oot.otr",
+            "description": "Assets OTR de tu propia ROM, generados en PC (documentado en el README de Shipwright-Switch)"
+          }
+        ]
+      },
+      "harbourMasters": true,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Ocarina%20of%20Time%20%28USA%29.png"
+    },
+    {
+      "name": "Starship (Star Fox 64)",
+      "project": "Starship",
+      "repository": "HarbourMasters/Starship",
+      "repositorySource": "github",
+      "folderName": "StarFox64-Starship",
+      "tags": ["port", "decomp", "n64", "starfox"],
+      "releaseAssetFilter": "Starship-*-Switch.zip",
+      "requirements": "ROM propia de Star Fox 64 (US 1.0/1.1); generar sf64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Starship/releases/download/v2.0.0/Starship-Barnard-Alfa-Switch.zip",
+        "https://github.com/HarbourMasters/Starship"
+      ],
+      "verified": true,
+      "notes": "El asset Switch v2.0.0 contiene Starship.nro (14216176 B) + starship.o2r + assets/yaml (listado local). v1.0.0 no tenia Switch. El README solo dice 'Copy the files to your sd card' y el zip trae el .nro y el .o2r en la raiz: la carpeta /switch/Starship es una deduccion por convencion (SoH usa sdcard/switch/soh), no una ruta documentada por el autor",
+      "switch": {
+        "targetDir": "/switch/Starship",
+        "nro": "Starship.nro",
+        "nroPath": "Starship.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Starship/sf64.o2r",
+            "description": "Generado en PC desde tu ROM US 1.0/1.1 de Star Fox 64 (nombre de fichero documentado en el README); debe quedar junto al .nro"
+          }
+        ]
+      },
+      "harbourMasters": true,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Star%20Fox%2064%20%28USA%29.png"
+    },
+    {
+      "name": "Ghostship (Super Mario 64)",
+      "project": "Ghostship",
+      "repository": "HarbourMasters/Ghostship",
+      "repositorySource": "github",
+      "folderName": "SuperMario64-Ghostship",
+      "tags": ["port", "decomp", "n64", "mario"],
+      "releaseAssetFilter": "*-Switch.zip",
+      "requirements": "ROM propia de Super Mario 64 (US o JP); generar sm64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Ghostship/releases/download/2.0.0/Mary-Celeste-Alfa-Switch.zip",
+        "https://github.com/HarbourMasters/Ghostship"
+      ],
+      "verified": true,
+      "notes": "El asset Switch 2.0.0 contiene Ghostship.nro + ghostship.o2r + config.yml + assets/ymls (846 entradas, listado local). El release 3.0.0 (2026-09) ya NO incluye asset Switch aunque el README sigue listando un nightly Switch. Carpeta /switch/Ghostship deducida por convencion (no documentada literalmente)",
+      "switch": {
+        "targetDir": "/switch/Ghostship",
+        "nro": "Ghostship.nro",
+        "nroPath": "Ghostship.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Ghostship/sm64.o2r",
+            "description": "Generado en PC desde tu ROM de Super Mario 64 (documentado en el README); debe quedar junto al .nro"
+          }
+        ]
+      },
+      "harbourMasters": true,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Super%20Mario%2064%20%28USA%29.png"
+    },
+    {
+      "name": "SpaghettiKart (Mario Kart 64)",
+      "project": "SpaghettiKart",
+      "repository": "HarbourMasters/SpaghettiKart",
+      "repositorySource": "github",
+      "folderName": "MarioKart64-SpaghettiKart",
+      "tags": ["port", "decomp", "n64", "mariokart"],
+      "releaseAssetFilter": "*Switch.zip",
+      "requirements": "ROM propia de Mario Kart 64 (US); generar mk64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/SpaghettiKart/releases/download/0.9.9.1/Spaghettify-Alfredo-Alfa-1-Switch.zip",
+        "https://github.com/HarbourMasters/SpaghettiKart"
+      ],
+      "verified": true,
+      "notes": "Solo el prerelease 0.9.9.1 trae Switch: el zip tiene una unica carpeta raiz Spaghettify-Switch/ con Spaghettify.nro + spaghetti.o2r (listado local), de ahi stripRoot true. El estable 1.0.0 no publica Switch; el README mantiene nightly Spaghettify-switch.zip. Carpeta /switch/Spaghettify deducida (nombre del ejecutable y del artefacto CI), no documentada",
+      "switch": {
+        "targetDir": "/switch/Spaghettify",
+        "nro": "Spaghettify.nro",
+        "nroPath": "Spaghettify-Switch/Spaghettify.nro",
+        "stripRoot": true,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Spaghettify/mk64.o2r",
+            "description": "Generado en PC desde tu ROM US de Mario Kart 64 (nombre de fichero documentado en el README)"
+          }
+        ]
+      },
+      "harbourMasters": true,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Mario%20Kart%2064%20%28USA%29.png"
+    },
+    {
+      "name": "Sphaira",
+      "project": "sphaira",
+      "repository": "NaGaa95/sphaira",
+      "repositorySource": "github",
+      "folderName": "Sphaira",
+      "tags": ["tool", "launcher", "homebrew-menu"],
+      "releaseAssetFilter": "sphaira.zip",
+      "requirements": "CFW Atmosphère + Homebrew Menu; SD",
+      "switchProof": [
+        "https://github.com/NaGaa95/sphaira/releases/download/1.0.8/sphaira.zip",
+        "https://github.com/NaGaa95/sphaira"
+      ],
+      "verified": true,
+      "notes": "El zip contiene una sola entrada: switch/sphaira/sphaira.nro (5400237 B), verificado listando el zip. Instalacion literal extraida en la raiz de la SD",
+      "switch": {
+        "targetDir": "/",
+        "nro": "sphaira.nro",
+        "nroPath": "switch/sphaira/sphaira.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "nx-hbmenu",
+      "project": "nx-hbmenu",
+      "repository": "switchbrew/nx-hbmenu",
+      "repositorySource": "github",
+      "folderName": "nx-hbmenu",
+      "tags": ["tool", "homebrew-menu"],
+      "releaseAssetFilter": "nx-hbmenu_v*.zip",
+      "requirements": "CFW (Atmosphère); hbmenu.nro en la raiz de la SD",
+      "switchProof": [
+        "https://github.com/switchbrew/nx-hbmenu/releases/download/v3.6.1/nx-hbmenu_v3.6.1.zip",
+        "https://github.com/switchbrew/nx-hbmenu"
+      ],
+      "verified": true,
+      "notes": "El zip contiene hbmenu.nro (2455539 B) en la raiz, verificado listando el zip; por eso targetDir es la raiz de la SD, no /switch",
+      "switch": {
+        "targetDir": "/",
+        "nro": "hbmenu.nro",
+        "nroPath": "hbmenu.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Homebrew App Store",
+      "project": "hb-appstore",
+      "repository": "fortheusers/hb-appstore",
+      "repositorySource": "github",
+      "folderName": "hb-appstore",
+      "tags": ["tool", "store"],
+      "releaseAssetFilter": "appstore.nro",
+      "requirements": "CFW; conexion de red para el catalogo",
+      "switchProof": [
+        "https://github.com/fortheusers/hb-appstore/releases/download/v2.3.2/appstore.nro",
+        "https://github.com/fortheusers/hb-appstore"
+      ],
+      "verified": true,
+      "notes": "El asset appstore.nro es un .nro directo. El companion switch-extracttosd.zip tambien se listo y coloca switch/appstore/appstore.nro, de ahi la carpeta destino",
+      "switch": {
+        "targetDir": "/switch/appstore",
+        "nro": "appstore.nro",
+        "nroPath": "appstore.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Goldleaf",
+      "project": "Goldleaf",
+      "repository": "XorTroll/Goldleaf",
+      "repositorySource": "github",
+      "folderName": "Goldleaf",
+      "tags": ["tool", "installer", "nsp"],
+      "releaseAssetFilter": "Goldleaf.nro",
+      "requirements": "CFW; para instalar NSP tambien Quark (PC) o conexion USB",
+      "switchProof": [
+        "https://github.com/XorTroll/Goldleaf/releases/download/1.2.1/Goldleaf.nro",
+        "https://github.com/XorTroll/Goldleaf"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (1.2.1). El README documenta sd:/switch/Goldleaf/ para settings.json y logs, de ahi la carpeta destino",
+      "switch": {
+        "targetDir": "/switch/Goldleaf",
+        "nro": "Goldleaf.nro",
+        "nroPath": "Goldleaf.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "NX-Shell",
+      "project": "NX-Shell",
+      "repository": "joel16/NX-Shell",
+      "repositorySource": "github",
+      "folderName": "NX-Shell",
+      "tags": ["tool", "file-manager"],
+      "releaseAssetFilter": "NX-Shell.nro",
+      "requirements": "CFW",
+      "switchProof": [
+        "https://github.com/joel16/NX-Shell/releases/download/4.01/NX-Shell.nro",
+        "https://github.com/joel16/NX-Shell"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (4.01). El README no documenta subcarpeta; /switch es la ubicacion estandar de homebrew .nro",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "NX-Shell.nro",
+        "nroPath": "NX-Shell.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "JKSV",
+      "project": "JKSV",
+      "repository": "J-D-K/JKSV",
+      "repositorySource": "github",
+      "folderName": "JKSV",
+      "tags": ["tool", "save-manager"],
+      "releaseAssetFilter": "JKSV.nro",
+      "requirements": "CFW",
+      "switchProof": [
+        "https://github.com/J-D-K/JKSV/releases/download/12%2F02%2F2025/JKSV.nro",
+        "https://github.com/J-D-K/JKSV"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo. Los tags son fechas con barra, por lo que la URL del asset va URL-encoded (p.ej. tag 12%2F02%2F2025); un instalador debe encodear el tag o usar la API",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "JKSV.nro",
+        "nroPath": "JKSV.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Awoo Installer (NSAInstaller)",
+      "project": "Awoo-Installer",
+      "repository": "Team-Neptune/Awoo-Installer",
+      "repositorySource": "github",
+      "folderName": "AwooInstaller",
+      "tags": ["tool", "installer", "nsp"],
+      "releaseAssetFilter": "NSAInstaller.zip",
+      "requirements": "CFW; red o USB para instalar NSP/XCI",
+      "switchProof": [
+        "https://github.com/Team-Neptune/Awoo-Installer/releases/download/v1.0.1/NSAInstaller.zip",
+        "https://github.com/Team-Neptune/Awoo-Installer"
+      ],
+      "verified": true,
+      "notes": "El zip v1.0.1 contiene switch/NSAInstaller/NSAInstaller.nro (11070399 B), verificado. Solo hay 2 releases: v1.0.1 (NSAInstaller.zip) y v1.0.0 (NSXInstaller.zip); los tags antiguos 4.x ya no existen",
+      "switch": {
+        "targetDir": "/",
+        "nro": "NSAInstaller.nro",
+        "nroPath": "switch/NSAInstaller/NSAInstaller.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "nxdumptool",
+      "project": "nxdumptool",
+      "repository": "DarkMatterCore/nxdumptool",
+      "repositorySource": "github",
+      "folderName": "nxdumptool",
+      "tags": ["tool", "dumper"],
+      "releaseAssetFilter": "nxdumptool.nro",
+      "requirements": "CFW; para volcar cartuchos y keys",
+      "switchProof": [
+        "https://github.com/DarkMatterCore/nxdumptool/releases/download/v1.1.15/nxdumptool.nro",
+        "https://github.com/DarkMatterCore/nxdumptool"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v1.1.15). El tag rewrite-prerelease publica nxdt_rw_poc.nro + herramientas de PC",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "nxdumptool.nro",
+        "nroPath": "nxdumptool.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Checkpoint",
+      "project": "Checkpoint",
+      "repository": "FlagBrew/Checkpoint",
+      "repositorySource": "github",
+      "folderName": "Checkpoint",
+      "tags": ["tool", "save-manager"],
+      "releaseAssetFilter": "Checkpoint.nro",
+      "requirements": "CFW",
+      "switchProof": [
+        "https://github.com/FlagBrew/Checkpoint/releases/download/v5.2.0/Checkpoint.nro",
+        "https://github.com/FlagBrew/Checkpoint"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v5.2.0). El README documenta rutas sdmc:/3ds/Checkpoint (version 3DS), no una subcarpeta Switch",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "Checkpoint.nro",
+        "nroPath": "Checkpoint.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "EdiZon",
+      "project": "EdiZon",
+      "repository": "WerWolv/EdiZon",
+      "repositorySource": "github",
+      "folderName": "EdiZon",
+      "tags": ["tool", "cheats", "save-editor"],
+      "releaseAssetFilter": "EdiZon.nro",
+      "requirements": "CFW Atmosphère; opcionalmente el overlay ovlEdiZon.ovl y Tesla-Menu",
+      "switchProof": [
+        "https://github.com/WerWolv/EdiZon/releases/download/v3.1.0/EdiZon.nro",
+        "https://github.com/WerWolv/EdiZon"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v3.1.0) mas ovlEdiZon.ovl. Proyecto sin mantenimiento; el README no documenta subcarpeta",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "EdiZon.nro",
+        "nroPath": "EdiZon.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "NXThemes Installer",
+      "project": "SwitchThemeInjector",
+      "repository": "exelix11/SwitchThemeInjector",
+      "repositorySource": "github",
+      "folderName": "NXThemesInstaller",
+      "tags": ["tool", "themes"],
+      "releaseAssetFilter": "NXThemesInstaller.nro",
+      "requirements": "CFW; los .nxtheme se generan con NxThemeTool (incluido en el release)",
+      "switchProof": [
+        "https://github.com/exelix11/SwitchThemeInjector/releases/download/nxt-3.0.2/NXThemesInstaller.nro",
+        "https://github.com/exelix11/SwitchThemeInjector"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (tag nxt-3.0.2). El release tambien publica NxThemeTool.zip y nxtheme-editor-web-selfhost.zip",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "NXThemesInstaller.nro",
+        "nroPath": "NXThemesInstaller.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "ftpd",
+      "project": "ftpd",
+      "repository": "mtheall/ftpd",
+      "repositorySource": "github",
+      "folderName": "ftpd",
+      "tags": ["tool", "ftp", "server"],
+      "releaseAssetFilter": "ftpd.nro",
+      "requirements": "CFW; misma red WiFi que el cliente",
+      "switchProof": [
+        "https://github.com/mtheall/ftpd/releases/download/v3.2.1/ftpd.nro",
+        "https://github.com/mtheall/ftpd"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v3.2.1) ademas de ftpd-classic.nro y builds de 3DS/NDS. El README no documenta subcarpeta Switch",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "ftpd.nro",
+        "nroPath": "ftpd.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "sys-clk",
+      "project": "sys-clk",
+      "repository": "retronx-team/sys-clk",
+      "repositorySource": "github",
+      "folderName": "sys-clk",
+      "tags": ["tool", "overclock", "sysmodule"],
+      "releaseAssetFilter": "sys-clk-*.zip",
+      "requirements": "CFW (sysmodule con boot2.flag); Tesla-Menu para el overlay",
+      "switchProof": [
+        "https://github.com/retronx-team/sys-clk/releases/download/2.0.1/sys-clk-2.0.1-21fix.zip",
+        "https://github.com/retronx-team/sys-clk"
+      ],
+      "verified": true,
+      "notes": "El zip 2.0.1 contiene switch/sys-clk-manager.nro (7581337 B) + switch/.overlays/sys-clk-overlay.ovl + atmosphere/contents/00FF0000636C6BFF/exefs.nsp (listado local). Ojo: el tag 2.0.0 no tiene ningun asset",
+      "switch": {
+        "targetDir": "/",
+        "nro": "sys-clk-manager.nro",
+        "nroPath": "switch/sys-clk-manager.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "SysDVR",
+      "project": "SysDVR",
+      "repository": "exelix11/SysDVR",
+      "repositorySource": "github",
+      "folderName": "SysDVR",
+      "tags": ["tool", "streaming", "sysmodule"],
+      "releaseAssetFilter": "SysDVR.zip",
+      "requirements": "CFW; cliente SysDVR-Client en PC/Android",
+      "switchProof": [
+        "https://github.com/exelix11/SysDVR/releases/download/v6.3/SysDVR.zip",
+        "https://github.com/exelix11/SysDVR"
+      ],
+      "verified": true,
+      "notes": "El zip v6.3 contiene switch/SysDVR-conf.nro (7725760 B) + atmosphere/contents/00FF0000A53BB665/exefs.nsp + config/sysdvr (listado local). Existe tambien SysDVR-USB-Only.zip",
+      "switch": {
+        "targetDir": "/",
+        "nro": "SysDVR-conf.nro",
+        "nroPath": "switch/SysDVR-conf.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Moonlight-Switch",
+      "project": "Moonlight-Switch",
+      "repository": "XITRIX/Moonlight-Switch",
+      "repositorySource": "github",
+      "folderName": "Moonlight-Switch",
+      "tags": ["tool", "game-streaming"],
+      "releaseAssetFilter": "Moonlight-Switch.nro",
+      "requirements": "CFW; PC con Sunshine o GeForce Experience en la misma red",
+      "switchProof": [
+        "https://github.com/XITRIX/Moonlight-Switch/releases/download/v1.5.0/Moonlight-Switch.nro",
+        "https://github.com/XITRIX/Moonlight-Switch"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v1.5.0 y v1.4.0). El README documenta sdcard:/switch/Moonlight-Switch. Los tags *-ios no publican assets",
+      "switch": {
+        "targetDir": "/switch/Moonlight-Switch",
+        "nro": "Moonlight-Switch.nro",
+        "nroPath": "Moonlight-Switch.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "SwitchWave",
+      "project": "SwitchWave",
+      "repository": "averne/SwitchWave",
+      "repositorySource": "github",
+      "folderName": "SwitchWave",
+      "tags": ["tool", "media-player"],
+      "releaseAssetFilter": "SwitchWave-*.zip",
+      "requirements": "CFW; ficheros de video/audio en la SD",
+      "switchProof": [
+        "https://github.com/averne/SwitchWave/releases/download/v1.1.2/SwitchWave-1.1.2-e9a7737.zip",
+        "https://github.com/averne/SwitchWave"
+      ],
+      "verified": true,
+      "notes": "El zip contiene switch/SwitchWave/SwitchWave.nro (27699699 B) + mpv.conf, listado local. El README indica extraer en la raiz de la SD. El repo antiguo proconsule/SwitchWave devuelve 404",
+      "switch": {
+        "targetDir": "/",
+        "nro": "SwitchWave.nro",
+        "nroPath": "switch/SwitchWave/SwitchWave.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "nxmp",
+      "project": "nxmp",
+      "repository": "proconsule/nxmp",
+      "repositorySource": "github",
+      "folderName": "nxmp",
+      "tags": ["tool", "media-player"],
+      "releaseAssetFilter": "nxmp-*.zip",
+      "requirements": "CFW; ficheros multimedia en la SD",
+      "switchProof": [
+        "https://github.com/proconsule/nxmp/releases/download/v0.9.3/nxmp-0.9.3.zip",
+        "https://github.com/proconsule/nxmp"
+      ],
+      "verified": true,
+      "notes": "El zip contiene la carpeta raiz nxmp/ con nxmp.nro + config.ini + langs/ + mpv/, listado local. El README indica copiar la carpeta nxmp a /switch/nxmp, lo que coincide exactamente",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "nxmp.nro",
+        "nroPath": "nxmp/nxmp.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Chiaki (PS Remote Play)",
+      "project": "chiaki-switch",
+      "repository": "hikigayairoha/chiaki-switch",
+      "repositorySource": "github",
+      "folderName": "ChiakiSwitch",
+      "tags": ["tool", "remote-play"],
+      "releaseAssetFilter": "chiaki.nro",
+      "requirements": "CFW; PS4/PS5 en la misma red y account ID de PSN",
+      "switchProof": [
+        "https://github.com/hikigayairoha/chiaki-switch/releases/download/v2.2.0-chiaki-switch/chiaki.nro",
+        "https://github.com/hikigayairoha/chiaki-switch"
+      ],
+      "verified": true,
+      "notes": "Port comunitario no oficial de Chiaki, un unico release con chiaki.nro. El README indica la carpeta SD Card/switch/",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "chiaki.nro",
+        "nroPath": "chiaki.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "pNES (NES)",
+      "project": "pemu",
+      "repository": "Cpasjuste/pemu",
+      "repositorySource": "github",
+      "folderName": "NES-pNES",
+      "tags": ["emulator", "nes"],
+      "releaseAssetFilter": "pnes.nro",
+      "requirements": "CFW; ROMs .nes propias",
+      "switchProof": [
+        "https://github.com/Cpasjuste/pemu/releases/download/v7.2/pnes.nro",
+        "https://github.com/Cpasjuste/pemu"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v7.2). El README no documenta subcarpeta; /switch es la ubicacion estandar",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "pnes.nro",
+        "nroPath": "pnes.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "pSNES (SNES)",
+      "project": "pemu",
+      "repository": "Cpasjuste/pemu",
+      "repositorySource": "github",
+      "folderName": "SNES-pSNES",
+      "tags": ["emulator", "snes"],
+      "releaseAssetFilter": "psnes.nro",
+      "requirements": "CFW; ROMs .sfc/.smc propias",
+      "switchProof": [
+        "https://github.com/Cpasjuste/pemu/releases/download/v7.2/psnes.nro",
+        "https://github.com/Cpasjuste/pemu"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v7.2)",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "psnes.nro",
+        "nroPath": "psnes.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "pGBA (Game Boy Advance)",
+      "project": "pemu",
+      "repository": "Cpasjuste/pemu",
+      "repositorySource": "github",
+      "folderName": "GBA-pGBA",
+      "tags": ["emulator", "gba"],
+      "releaseAssetFilter": "pgba.nro",
+      "requirements": "CFW; ROMs .gba propias",
+      "switchProof": [
+        "https://github.com/Cpasjuste/pemu/releases/download/v7.2/pgba.nro",
+        "https://github.com/Cpasjuste/pemu"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v7.2)",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "pgba.nro",
+        "nroPath": "pgba.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "pGEN (Mega Drive)",
+      "project": "pemu",
+      "repository": "Cpasjuste/pemu",
+      "repositorySource": "github",
+      "folderName": "Genesis-pGEN",
+      "tags": ["emulator", "megadrive"],
+      "releaseAssetFilter": "pgen.nro",
+      "requirements": "CFW; ROMs .md/.bin propias",
+      "switchProof": [
+        "https://github.com/Cpasjuste/pemu/releases/download/v7.2/pgen.nro",
+        "https://github.com/Cpasjuste/pemu"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v7.2)",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "pgen.nro",
+        "nroPath": "pgen.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "pFBNeo (Arcade)",
+      "project": "pemu",
+      "repository": "Cpasjuste/pemu",
+      "repositorySource": "github",
+      "folderName": "Arcade-pFBNeo",
+      "tags": ["emulator", "arcade"],
+      "releaseAssetFilter": "pfbneo.nro",
+      "requirements": "CFW; ROMsets de FinalBurn Neo",
+      "switchProof": [
+        "https://github.com/Cpasjuste/pemu/releases/download/v7.2/pfbneo.nro",
+        "https://github.com/Cpasjuste/pemu"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v7.2)",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "pfbneo.nro",
+        "nroPath": "pfbneo.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "PPSSPP Switch Community Build",
+      "project": "ppsspp-switch-community-build",
+      "repository": "SirSamael/ppsspp-switch-community-build",
+      "repositorySource": "github",
+      "folderName": "PSP-PPSSPP",
+      "tags": ["emulator", "psp"],
+      "releaseAssetFilter": "PPSSPP-Switch*.zip",
+      "requirements": "CFW; ISOs .iso/.cso propias de PSP; la variante v0.7.0 Vulkan exige full-memory title takeover",
+      "switchProof": [
+        "https://github.com/SirSamael/ppsspp-switch-community-build/releases/download/v0.6.5/PPSSPP-Switch-0.6.5.zip",
+        "https://github.com/SirSamael/ppsspp-switch-community-build"
+      ],
+      "verified": true,
+      "notes": "El zip v0.6.5 (40.6 MB) contiene switch/ppsspp/PPSSPP.nro (25997096 B) + switch/ppsspp/assets/, verificado. Port comunitario no oficial; el oficial m4xw/ppsspp no publica assets. La carpeta de ISOs la define la config del propio emulador, no se pudo verificar",
+      "switch": {
+        "targetDir": "/",
+        "nro": "PPSSPP.nro",
+        "nroPath": "switch/ppsspp/PPSSPP.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "mGBA (Game Boy Advance)",
+      "project": "mgba",
+      "repository": "mgba-emu/mgba",
+      "repositorySource": "github",
+      "folderName": "GBA-mGBA",
+      "tags": ["emulator", "gba"],
+      "releaseAssetFilter": "mGBA-*-switch.7z",
+      "requirements": "CFW; ROMs .gba propias",
+      "switchProof": [
+        "https://github.com/mgba-emu/mgba/releases/download/0.10.5/mGBA-0.10.5-switch.7z",
+        "https://github.com/mgba-emu/mgba"
+      ],
+      "verified": true,
+      "notes": "VERIFICADO: el asset es un .7z (2.211.306 B, sha256 ef7a7f5cea6d6639c8a12ebb282d915e444bf844b658ff5a4dd72886c8cfa016) extraido con libarchive. Contiene una unica carpeta raiz mGBA-0.10.5-switch/ con mgba.nro (7.268.339 B), CHANGES, LICENSE, licenses/ y README*; con stripRoot=true esa carpeta se elimina y el .nro queda en sdcard:/switch/mgba/mgba.nro: ruta interna comprobada instalando el asset real en las pruebas del PC (tests/host/test_installer.cpp, seccion 10)",
+      "switch": {
+        "targetDir": "/switch/mgba",
+        "nro": "mgba.nro",
+        "nroPath": "switch/mgba/mgba.nro",
+        "stripRoot": true,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "OpenBOR",
+      "project": "openbor",
+      "repository": "Cpasjuste/openbor",
+      "repositorySource": "github",
+      "folderName": "OpenBOR",
+      "tags": ["engine", "beat-em-up"],
+      "releaseAssetFilter": "OpenBOR-*_switch.zip",
+      "requirements": "CFW; PAKs de juegos OpenBOR",
+      "switchProof": [
+        "https://github.com/Cpasjuste/openbor/releases/download/v3.0.7087-2/OpenBOR-3.0.7087-2_switch.zip",
+        "https://github.com/Cpasjuste/openbor"
+      ],
+      "verified": true,
+      "notes": "El zip contiene la carpeta raiz OpenBOR/ con OpenBOR.nro (9458561 B), listado local; extrayendo en /switch queda /switch/OpenBOR/OpenBOR.nro",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "OpenBOR.nro",
+        "nroPath": "OpenBOR/OpenBOR.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "NXEngine-Evo (Cave Story)",
+      "project": "nxengine-evo",
+      "repository": "nxengine/nxengine-evo",
+      "repositorySource": "github",
+      "folderName": "CaveStory-NXEngineEvo",
+      "tags": ["engine", "port", "cave-story"],
+      "releaseAssetFilter": "NXEngine-Evo-*-Switch.nro",
+      "requirements": "CFW; ficheros de datos de Cave Story (freeware/Doukutsu) junto al .nro",
+      "switchProof": [
+        "https://github.com/nxengine/nxengine-evo/releases/download/v2.6.5/NXEngine-Evo-v2.6.5-Switch.nro",
+        "https://github.com/nxengine/nxengine-evo"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (v2.6.5). El tag v2.6.5-1 ya NO publica Switch. El README solo menciona 'Vita/Switch versions' sin arbol SD, asi que la carpeta destino exacta de los datos de Cave Story no esta documentada (se usa /switch por convencion)",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "NXEngine-Evo-v2.6.5-Switch.nro",
+        "nroPath": "NXEngine-Evo-v2.6.5-Switch.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "DevilutionX (Diablo)",
+      "project": "devilutionX",
+      "repository": "diasurgical/devilutionX",
+      "repositorySource": "github",
+      "folderName": "Diablo-DevilutionX",
+      "tags": ["port", "decomp", "diablo"],
+      "releaseAssetFilter": "devilutionx-switch.nro",
+      "requirements": "CFW; DIABDAT.MPQ de tu copia de Diablo (o spawn.mpq shareware) en /switch/devilutionx",
+      "switchProof": [
+        "https://github.com/diasurgical/devilutionX/releases/download/1.5.5/devilutionx-switch.nro",
+        "https://github.com/diasurgical/devilutionX/blob/master/docs/installing.md"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo en 1.5.5 y 1.5.4; en 1.5.3 era devilutionx-switch.zip. docs/installing.md documenta literalmente: copiar devilutionx.nro a /switch/devilutionx y los MPQ a /switch/devilutionx. El asset se llama devilutionx-switch.nro, pero Delanx lo guarda con el nombre que exige la app (devilutionx.nro).",
+      "switch": {
+        "targetDir": "/switch/devilutionx",
+        "nro": "devilutionx.nro",
+        "nroPath": "devilutionx.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/devilutionx/DIABDAT.MPQ",
+            "description": "Datos del juego Diablo obtenidos de tu copia legal (o spawn.mpq shareware); la doc oficial los situa junto al .nro en /switch/devilutionx"
+          }
+        ]
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "GZDoom",
+      "project": "gzdoom",
+      "repository": "fgsfdsfgs/gzdoom",
+      "repositorySource": "github",
+      "folderName": "Doom-GZDoom",
+      "tags": ["port", "engine", "doom"],
+      "releaseAssetFilter": "gzdoom_nx_*.zip",
+      "requirements": "CFW; WADs propios (doom.wad/doom2.wad o el shareware) en la carpeta iwads/",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/gzdoom/releases/download/nx4.11pre-2/gzdoom_nx_10_4.10.zip",
+        "https://github.com/fgsfdsfgs/gzdoom"
+      ],
+      "verified": true,
+      "notes": "El zip nx4.11pre-2 (22.56 MB) contiene la carpeta raiz gzdoom/ con gzdoom.nro (19431859 B) + pk3s + iwads/, listado local. Al extraer en /switch queda /switch/gzdoom/gzdoom.nro",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "gzdoom.nro",
+        "nroPath": "gzdoom/gzdoom.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/gzdoom/iwads/doom.wad",
+            "description": "Tu WAD de Doom (o el shareware); el zip ya incluye la carpeta iwads/ vacia"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Doom%2064%20%28USA%29.png"
+    },
+    {
+      "name": "NXQuake (Quake)",
+      "project": "nxquake",
+      "repository": "fgsfdsfgs/nxquake",
+      "repositorySource": "github",
+      "folderName": "Quake-NXQuake",
+      "tags": ["port", "quake"],
+      "releaseAssetFilter": "nxquake_*.zip",
+      "requirements": "CFW; pak0.pak/pak1.pak de Quake en /switch/nxquake/id1/",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/nxquake/releases/download/v0.2.0/nxquake_020.zip",
+        "https://github.com/fgsfdsfgs/nxquake"
+      ],
+      "verified": true,
+      "notes": "El zip v0.2.0 contiene switch/nxquake/nxquake.nro (9471235 B) + nxquake.nacp + id1/config.cfg, listado local; la carpeta id1/ ya viene creada para tus paks",
+      "switch": {
+        "targetDir": "/",
+        "nro": "nxquake.nro",
+        "nroPath": "switch/nxquake/nxquake.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/nxquake/id1/pak0.pak",
+            "description": "Datos de Quake (shareware o retail); la ruta id1/ esta documentada por la estructura del propio zip"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Quake%2064%20%28USA%29.png"
+    },
+    {
+      "name": "QuakeSpasmNX (Quake)",
+      "project": "QuakespasmNX",
+      "repository": "fgsfdsfgs/QuakespasmNX",
+      "repositorySource": "github",
+      "folderName": "Quake-QuakeSpasmNX",
+      "tags": ["port", "quake"],
+      "releaseAssetFilter": "quakespasmnx_v*.zip",
+      "requirements": "CFW; pak0.pak/pak1.pak de Quake en /switch/quakespasm/id1/",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/QuakespasmNX/releases/download/0.92.3-nx-0.4.0/quakespasmnx_v040.zip",
+        "https://github.com/fgsfdsfgs/QuakespasmNX"
+      ],
+      "verified": true,
+      "notes": "El zip v040 contiene switch/quakespasm/quakespasmnx.nro (8207887 B) + quakespasm.pak + id1/config.cfg, listado local",
+      "switch": {
+        "targetDir": "/",
+        "nro": "quakespasmnx.nro",
+        "nroPath": "switch/quakespasm/quakespasmnx.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/quakespasm/id1/pak0.pak",
+            "description": "Datos de Quake; la carpeta id1/ viene creada por el propio zip"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Quake%2064%20%28USA%29.png"
+    },
+    {
+      "name": "nxquake2 (Quake II)",
+      "project": "nxquake2",
+      "repository": "fgsfdsfgs/nxquake2",
+      "repositorySource": "github",
+      "folderName": "Quake2-nxquake2",
+      "tags": ["port", "quake2"],
+      "releaseAssetFilter": "nxquake2_*.zip",
+      "requirements": "CFW; pak0.pak de Quake II en /switch/nxquake2/baseq2/",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/nxquake2/releases/download/NXQUAKE2_060/nxquake2_r6.zip",
+        "https://github.com/fgsfdsfgs/nxquake2"
+      ],
+      "verified": true,
+      "notes": "El zip r6 contiene switch/nxquake2/nxquake2.nro (8833366 B) + game.so, ref_gl3.so, ref_soft.so + baseq2/config.cfg + carpetas rogue/ y xatrix/ (misiones), listado local",
+      "switch": {
+        "targetDir": "/",
+        "nro": "nxquake2.nro",
+        "nroPath": "switch/nxquake2/nxquake2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/nxquake2/baseq2/pak0.pak",
+            "description": "Datos de Quake II (demo o retail); la carpeta baseq2/ viene creada por el zip"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Quake%20II%20%28USA%29.png"
+    },
+    {
+      "name": "ioquake3nx (Quake III Arena)",
+      "project": "ioq3",
+      "repository": "fgsfdsfgs/ioq3",
+      "repositorySource": "github",
+      "folderName": "Quake3-ioquake3nx",
+      "tags": ["port", "quake3"],
+      "releaseAssetFilter": "ioquake3nx_v*.zip",
+      "requirements": "CFW; pak0.pk3..pak8.pk3 de Quake III en /switch/ioquake3/baseq3/",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/ioq3/releases/download/v0.3.0-nx/ioquake3nx_v030.zip",
+        "https://github.com/fgsfdsfgs/ioq3"
+      ],
+      "verified": true,
+      "notes": "El zip v030 contiene switch/ioquake3/ioquake3nx.nro (10395517 B) + baseq3/q3config.cfg + baseq3/vm/*.qvm, listado local",
+      "switch": {
+        "targetDir": "/",
+        "nro": "ioquake3nx.nro",
+        "nroPath": "switch/ioquake3/ioquake3nx.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/ioquake3/baseq3/pak0.pk3",
+            "description": "Datos de Quake III Arena; la carpeta baseq3/ viene creada por el zip"
+          }
+        ]
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Xash3D-FWGS (Half-Life)",
+      "project": "xash3d-fwgs",
+      "repository": "fgsfdsfgs/xash3d-fwgs",
+      "repositorySource": "github",
+      "folderName": "HalfLife-Xash3D",
+      "tags": ["port", "engine", "halflife"],
+      "releaseAssetFilter": "xash3d-nswitch-*.zip",
+      "requirements": "CFW; carpeta valve/ con los datos de tu copia de Half-Life",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/xash3d-fwgs/releases/download/v0.20-nx2/xash3d-nswitch-r2.zip",
+        "https://github.com/fgsfdsfgs/xash3d-fwgs"
+      ],
+      "verified": true,
+      "notes": "El zip v0.20-nx2 (31.67 MB) contiene 37 entradas con xash3d/xash3d.nro (9128587 B) + valve/, bshift/, cstrike/, gearbox/ y sus .so, listado local. El tag continuous-switch_newer solo publica xash3d-fwgs-nswitch.7z (contenido no listable aqui)",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "xash3d.nro",
+        "nroPath": "xash3d/xash3d.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/xash3d/valve/pak0.pak",
+            "description": "Datos de Half-Life; la carpeta valve/ (con liblist.gam y config.cfg) ya viene en el zip"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Half-Life%20%28USA%29.png"
+    },
+    {
+      "name": "Perfect Dark (Switch)",
+      "project": "perfect_dark",
+      "repository": "fgsfdsfgs/perfect_dark",
+      "repositorySource": "github",
+      "folderName": "PerfectDark-perfect_dark",
+      "tags": ["port", "decomp", "n64", "fps"],
+      "releaseAssetFilter": "pd-arm64-nswitch.zip",
+      "requirements": "CFW; ROM propia de Perfect Dark (US, PAL o JPN) en la carpeta data/ de la variante elegida",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/perfect_dark/releases/download/ci-dev-build/pd-arm64-nswitch.zip",
+        "https://github.com/fgsfdsfgs/perfect_dark"
+      ],
+      "verified": true,
+      "notes": "El zip contiene 13 entradas: pd-arm64-nswitch/perfectdark/pd.arm64.nro, .../perfectdark_pal/pd.pal.arm64.nro y .../perfectdark_jpn/pd.jpn.arm64.nro, cada una con data/put_your_rom_here.txt, listado local. Build de CI (tag ci-dev-build), sin release estable",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "pd.arm64.nro",
+        "nroPath": "pd-arm64-nswitch/perfectdark/pd.arm64.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/pd-arm64-nswitch/perfectdark/data/",
+            "description": "ROM propia de Perfect Dark (region US); el zip incluye data/put_your_rom_here.txt marcando donde debe ir. Las variantes pal/jpn tienen sus propias carpetas y .nro"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Perfect%20Dark%20%28USA%29.png"
+    },
+    {
+      "name": "Arx Libertatis (Arx Fatalis)",
+      "project": "ArxLibertatis",
+      "repository": "fgsfdsfgs/ArxLibertatis",
+      "repositorySource": "github",
+      "folderName": "ArxFatalis-ArxLibertatis",
+      "tags": ["port", "rpg"],
+      "releaseAssetFilter": "arx_v1.2-nx*.zip",
+      "requirements": "CFW; datos del juego Arx Fatalis (carpeta data/) de tu copia del juego",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/ArxLibertatis/releases/download/1.2-nx1/arx_v1.2-nx1.zip",
+        "https://github.com/fgsfdsfgs/ArxLibertatis"
+      ],
+      "verified": true,
+      "notes": "El zip nx1 contiene arx.nro (12072479 B) en la raiz + data/localisation/ (23 entradas), listado local; conviene extraerlo en una carpeta propia porque la raiz trae arx.nro y data/ sueltos",
+      "switch": {
+        "targetDir": "/switch/arx",
+        "nro": "arx.nro",
+        "nroPath": "arx.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/arx/data/",
+            "description": "Datos del juego Arx Fatalis; el zip ya aporta la estructura data/ con las traducciones"
+          }
+        ]
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "OpenMW (Morrowind)",
+      "project": "openmw",
+      "repository": "fgsfdsfgs/openmw",
+      "repositorySource": "github",
+      "folderName": "Morrowind-OpenMW",
+      "tags": ["port", "engine", "rpg"],
+      "releaseAssetFilter": "openmw_nx_v*.zip",
+      "requirements": "CFW; datos de The Elder Scrolls III: Morrowind (ficheros .esm/.bsa) en la SD",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/openmw/releases/download/0.46.0-nx4/openmw_nx_v4.zip",
+        "https://github.com/fgsfdsfgs/openmw"
+      ],
+      "verified": true,
+      "notes": "El zip nx4 (15.06 MB, 120 entradas) contiene openmw.nro (35763617 B) en la raiz + resources/, config/, default/openmw.cfg, listado local. La ruta exacta que espera para los datos de Morrowind no se pudo verificar (esta en openmw.cfg); requiredUserFiles queda vacio a proposito",
+      "switch": {
+        "targetDir": "/switch/openmw",
+        "nro": "openmw.nro",
+        "nroPath": "openmw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Unreal (Unreal Engine 1)",
+      "project": "unreal_nx",
+      "repository": "fgsfdsfgs/unreal_nx",
+      "repositorySource": "github",
+      "folderName": "Unreal-unreal_nx",
+      "tags": ["port", "engine", "fps"],
+      "releaseAssetFilter": "unreal_nx_r*.zip",
+      "requirements": "CFW; datos de Unreal (mapas, texturas, sonidos) de tu copia del juego",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/unreal_nx/releases/download/r2/unreal_nx_r2.zip",
+        "https://github.com/fgsfdsfgs/unreal_nx"
+      ],
+      "verified": true,
+      "notes": "El zip r2 contiene unreal.nro (14238819 B) en la raiz + SystemARM/ con los .ini (DefaultLinux.ini, UnrealLinux.ini, User.ini), listado local. Los .ini indican las rutas de datos que debe aportar el usuario",
+      "switch": {
+        "targetDir": "/switch/unreal",
+        "nro": "unreal.nro",
+        "nroPath": "unreal.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/unreal/SystemARM/",
+            "description": "El zip ya trae SystemARM/ con los .ini; el usuario debe aportar los datos del juego original referenciados en ellos"
+          }
+        ]
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Serious Sam: The First Encounter",
+      "project": "Serious-Engine",
+      "repository": "fgsfdsfgs/Serious-Engine",
+      "repositorySource": "github",
+      "folderName": "SeriousSamTFE-SeriousEngine",
+      "tags": ["port", "fps"],
+      "releaseAssetFilter": "ssam_tfe_nx1.zip",
+      "requirements": "CFW; el zip incluye SE1_minimum.gro, el contenido completo requiere tus datos de Serious Sam TFE",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/Serious-Engine/releases/download/nx1/ssam_tfe_nx1.zip",
+        "https://github.com/fgsfdsfgs/Serious-Engine"
+      ],
+      "verified": true,
+      "notes": "El zip nx1 contiene la carpeta raiz ssam_tfe/ con ssam_tfe.nro (11709544 B) + SE1_minimum.gro + Controls/ y Scripts/, listado local. Los tags psvita1/psvita2 son de PSVita, no de Switch",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "ssam_tfe.nro",
+        "nroPath": "ssam_tfe/ssam_tfe.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Serious Sam: The Second Encounter",
+      "project": "Serious-Engine",
+      "repository": "fgsfdsfgs/Serious-Engine",
+      "repositorySource": "github",
+      "folderName": "SeriousSamTSE-SeriousEngine",
+      "tags": ["port", "fps"],
+      "releaseAssetFilter": "ssam_tse_nx1.zip",
+      "requirements": "CFW; datos de Serious Sam TSE de tu copia del juego",
+      "switchProof": [
+        "https://github.com/fgsfdsfgs/Serious-Engine/releases/download/nx1/ssam_tse_nx1.zip",
+        "https://github.com/fgsfdsfgs/Serious-Engine"
+      ],
+      "verified": true,
+      "notes": "El zip nx1 contiene la carpeta raiz ssam_tse/ con ssam_tse.nro (12320711 B) + Controls/ y Scripts/, listado local",
+      "switch": {
+        "targetDir": "/switch",
+        "nro": "ssam_tse.nro",
+        "nroPath": "ssam_tse/ssam_tse.nro",
+        "stripRoot": false,
+        "requiredUserFiles": []
+      },
+      "harbourMasters": false
+    },
+    {
+      "name": "Golden Balloon NX (Diddy Kong Racing)",
+      "project": "goldenballoon_nx",
+      "repository": "boraeskicioglu/goldenballoon_nx",
+      "repositorySource": "github",
+      "folderName": "DiddyKongRacing-GoldenBalloonNX",
+      "tags": ["port", "decomp", "n64", "racing"],
+      "releaseAssetFilter": "goldenballoon.nro",
+      "requirements": "CFW; ROM propia de Diddy Kong Racing US 1.1 renombrada baserom.us.v80.z64 en sdmc:/switch/goldenballoon/",
+      "switchProof": [
+        "https://github.com/boraeskicioglu/goldenballoon_nx/releases/download/1.2.1-nx/goldenballoon.nro",
+        "https://github.com/boraeskicioglu/goldenballoon_nx",
+        "https://www.gamebrew.org/wiki/Golden_Balloon_NX_Switch"
+      ],
+      "verified": true,
+      "notes": "Asset .nro directo (1.2.1-nx). El layout SD (switch/goldenballoon/ con goldenballoon.nro + baserom.us.v80.z64 + mdkr64.ini + save/ + mods/) esta documentado por el autor en la ficha de GameBrew. Basado en la decompilacion de DKR y en el port Golden Balloon; usa Mesa/OpenGL",
+      "switch": {
+        "targetDir": "/switch/goldenballoon",
+        "nro": "goldenballoon.nro",
+        "nroPath": "goldenballoon.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/goldenballoon/baserom.us.v80.z64",
+            "description": "ROM propia de Diddy Kong Racing US 1.1 con ese nombre exacto, exigida por el autor en la instalacion"
+          }
+        ]
+      },
+      "harbourMasters": false,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Diddy%20Kong%20Racing%20%28USA%29%20%28En%2CFr%29.png"
+    }
+  ]
+}

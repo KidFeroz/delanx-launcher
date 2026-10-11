@@ -1,0 +1,3604 @@
+{
+  "schemaVersion": 1,
+  "source": "Catálogo maestro del usuario (switch_ports_catalog.md, 110 títulos) importado por tools/import_ports_md.py. TODAS las entradas tienen verified=false: falta comprobar que cada proyecto publique un asset .nro para Switch. Delanx solo aporta las entradas que aún no están verificadas en romfs/catalog/switch-catalog.json.",
+  "entries": [
+    {
+      "name": "The Legend of Zelda: Majora's Mask (2Ship2Harkinian)",
+      "project": "HarbourMasters",
+      "repository": "HarbourMasters/2ship2harkinian",
+      "repositorySource": "github",
+      "folderName": "2ship2harkinian",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Zelda Majora's Mask (USA) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": true,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id mm_2ship2harkinian). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: archive_extract_o2r. Datos del usuario: Zelda Majora's Mask (USA) .z64. Descompilación completa por HarbourMasters (soporte Switch en desarrollo; build oficial verificado actualmente para PC). Icono de reserva propuesto en el maestro: romfs:/icons/mm_2ship2harkinian.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Majora%27s%20Mask%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/2ship2harkinian",
+        "targetDir": "/switch/2ship2harkinian",
+        "nro": "2ship2harkinian.nro",
+        "nroPath": "2ship2harkinian.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/2ship2harkinian/mm.o2r",
+            "description": "Zelda Majora's Mask (USA) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Paper Mario 64 (PaperBoat)",
+      "project": "HarbourMasters",
+      "repository": "HarbourMasters/PaperBoat",
+      "repositorySource": "github",
+      "folderName": "PaperBoat",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "rpg"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Paper Mario (USA) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": true,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id paper_mario_paperboat). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: archive_extract_o2r. Datos del usuario: Paper Mario (USA) .z64. Descompilación completa por HarbourMasters (PaperBoat; build oficial verificado actualmente para PC). Icono de reserva propuesto en el maestro: romfs:/icons/paper_mario_paperboat.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Paper%20Mario%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/PaperBoat",
+        "targetDir": "/switch/PaperBoat",
+        "nro": "PaperBoat.nro",
+        "nroPath": "PaperBoat.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/PaperBoat/pm64.o2r",
+            "description": "Paper Mario (USA) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Banjo-Kazooie (Lighthouse / BanjoRecomp)",
+      "project": "HarbourMasters / Wiseguy",
+      "repository": "HarbourMasters/Lighthouse",
+      "repositorySource": "github",
+      "folderName": "Lighthouse",
+      "tags": [
+        "decomp_recomp",
+        "nintendo 64",
+        "plataformas 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Banjo-Kazooie (USA v1.0) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": true,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id banjo_kazooie_lighthouse). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_extract. Datos del usuario: Banjo-Kazooie (USA v1.0) .z64. Recompilación estática por HarbourMasters (Lighthouse / BanjoRecomp; build oficial verificado actualmente para PC). Icono de reserva propuesto en el maestro: romfs:/icons/banjo_kazooie_lighthouse.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Banjo-Kazooie%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/Lighthouse",
+        "targetDir": "/switch/Lighthouse",
+        "nro": "Lighthouse.nro",
+        "nroPath": "Lighthouse.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Lighthouse/banjo.otr",
+            "description": "Banjo-Kazooie (USA v1.0) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "F-Zero X (NX-Diffuser / G-Diffuser)",
+      "project": "PalindromicBreadLoaf / inspectredc",
+      "repository": "PalindromicBreadLoaf/NX-Diffuser",
+      "repositorySource": "github",
+      "folderName": "nx-diffuser",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "carreras"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "F-Zero X (USA Rev 1.0) + BIOS 64DD + Expansion Kit",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id fzero_x_nx_diffuser). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_bundle. Datos del usuario: F-Zero X (USA Rev 1.0) + BIOS 64DD + Expansion Kit. Usa libultraship runtime. Soporta contenido de 64DD Expansion Kit nativo en Switch. Icono de reserva propuesto en el maestro: romfs:/icons/fzero_x_nx_diffuser.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/F-Zero%20X%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/nx-diffuser",
+        "targetDir": "/switch/nx-diffuser",
+        "nro": "nx-diffuser.nro",
+        "nroPath": "nx-diffuser.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/nx-diffuser/fzerox.z64",
+            "description": "F-Zero X (USA Rev 1.0) + BIOS 64DD + Expansion Kit"
+          },
+          {
+            "path": "sdmc:/switch/nx-diffuser/64dd_bios.bin",
+            "description": "F-Zero X (USA Rev 1.0) + BIOS 64DD + Expansion Kit"
+          },
+          {
+            "path": "sdmc:/switch/nx-diffuser/fzerox_ek.bin",
+            "description": "F-Zero X (USA Rev 1.0) + BIOS 64DD + Expansion Kit"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Perfect Dark",
+      "project": "Ryan Dwyer / fgsfds",
+      "repository": "perfect-dark-pc-port/perfect_dark",
+      "repositorySource": "github",
+      "folderName": "perfect_dark",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Perfect Dark (NTSC Final / PAL) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id perfect_dark_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: Perfect Dark (NTSC Final / PAL) .z64. Control de doble stick analógico moderno, 60 FPS, widescreen y giroscopio. Icono de reserva propuesto en el maestro: romfs:/icons/perfect_dark_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Perfect%20Dark%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/perfect_dark",
+        "targetDir": "/switch/perfect_dark",
+        "nro": "pd.arm64.nro",
+        "nroPath": "pd.arm64.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/perfect_dark/pd.ntsc-final.z64",
+            "description": "Perfect Dark (NTSC Final / PAL) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Doom 64 (Doom64EX-NX)",
+      "project": "Kaiser / fgsfds",
+      "repository": "fgsfdsfgs/doom64ex",
+      "repositorySource": "github",
+      "folderName": "doom64ex",
+      "tags": [
+        "recreation",
+        "nintendo 64",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Doom 64 N64 ROM o WADs extraídos con Wadgen",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id doom_64_ex_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_or_wad. Datos del usuario: Doom 64 N64 ROM o WADs extraídos con Wadgen. Reconstrucción exacta del motor con iluminación cromática y soporte táctil. Icono de reserva propuesto en el maestro: romfs:/icons/doom_64_ex_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Doom%2064%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/doom64ex",
+        "targetDir": "/switch/doom64ex",
+        "nro": "doom64ex.nro",
+        "nroPath": "doom64ex.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/doom64ex/DOOM64.WAD",
+            "description": "Doom 64 N64 ROM o WADs extraídos con Wadgen"
+          },
+          {
+            "path": "sdmc:/switch/doom64ex/DOORS.WAD",
+            "description": "Doom 64 N64 ROM o WADs extraídos con Wadgen"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Smash Bros. 64 (Smash 64 Recomp)",
+      "project": "N64 Recomp Community",
+      "repository": "zestydevy/smash64r",
+      "repositorySource": "github",
+      "folderName": "smash64recomp",
+      "tags": [
+        "recomp",
+        "nintendo 64",
+        "lucha"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Super Smash Bros. (USA) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id smash_64_recomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: Super Smash Bros. (USA) .z64. Recompilación estática de SSB64 (proyecto zestydevy/smash64r para PC; pendiente publicación de release NRO para Switch). Icono de reserva propuesto en el maestro: romfs:/icons/smash_64_recomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Super%20Smash%20Bros.%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/smash64recomp",
+        "targetDir": "/switch/smash64recomp",
+        "nro": "smash64recomp.nro",
+        "nroPath": "smash64recomp.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/smash64recomp/smash64.z64",
+            "description": "Super Smash Bros. (USA) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pokemon Stadium (SS Anne)",
+      "project": "HarbourMasters",
+      "repository": "HarbourMasters/SSAnne",
+      "repositorySource": "github",
+      "folderName": "ssanne",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "combate / estrategia"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Pokemon Stadium (USA v1.0) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": true,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id pokemon_stadium_ss_anne). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: archive_extract_o2r. Datos del usuario: Pokemon Stadium (USA v1.0) .z64. Proyecto SS Anne de HarbourMasters; en desarrollo, pendiente de release oficial para Switch. Icono de reserva propuesto en el maestro: romfs:/icons/pokemon_stadium_ss_anne.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Pokemon%20Stadium%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/ssanne",
+        "targetDir": "/switch/ssanne",
+        "nro": "ssanne.nro",
+        "nroPath": "ssanne.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/ssanne/stadium.o2r",
+            "description": "Pokemon Stadium (USA v1.0) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Bomberman 64 (Bomberman 64: Recompiled)",
+      "project": "Wiseguy / Recomp Community",
+      "repository": "N64Recomp/Bomberman64Recomp",
+      "repositorySource": "github",
+      "folderName": "bomberman64",
+      "tags": [
+        "recomp",
+        "nintendo 64",
+        "acción / plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Bomberman 64 (USA) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id bomberman_64_recomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: Bomberman 64 (USA) .z64. Recompilación estática comunitaria en progreso; pendiente release de binario .nro empaquetado para Switch. Icono de reserva propuesto en el maestro: romfs:/icons/bomberman_64_recomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Bomberman%2064%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/bomberman64",
+        "targetDir": "/switch/bomberman64",
+        "nro": "bomberman64.nro",
+        "nroPath": "bomberman64.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/bomberman64/bomberman64.z64",
+            "description": "Bomberman 64 (USA) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Castlevania: Legacy of Darkness",
+      "project": "fliperama86",
+      "repository": "fliperama86/CastlevaniaLegacyOfDarkness",
+      "repositorySource": "github",
+      "folderName": "castlevania_lod",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Castlevania: Legacy of Darkness (USA) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id castlevania_lod_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: Castlevania: Legacy of Darkness (USA) .z64. Proyecto de ingeniería inversa en desarrollo; pendiente de release empaquetado para Switch. Icono de reserva propuesto en el maestro: romfs:/icons/castlevania_lod_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Castlevania%20-%20Legacy%20of%20Darkness%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/castlevania_lod",
+        "targetDir": "/switch/castlevania_lod",
+        "nro": "castlevania_lod.nro",
+        "nroPath": "castlevania_lod.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/castlevania_lod/castlevania_lod.z64",
+            "description": "Castlevania: Legacy of Darkness (USA) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Quest 64 (Quest 64 Recomp)",
+      "project": "ShadowOne333 / Recomp Team",
+      "repository": "N64Recomp/Quest64Recomp",
+      "repositorySource": "github",
+      "folderName": "quest64",
+      "tags": [
+        "recomp",
+        "nintendo 64",
+        "rpg"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Quest 64 (USA) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id quest_64_recomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: Quest 64 (USA) .z64. Recompilación estática en progreso basada en N64Recomp; pendiente release de binario .nro para Switch. Icono de reserva propuesto en el maestro: romfs:/icons/quest_64_recomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Quest%2064%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/quest64",
+        "targetDir": "/switch/quest64",
+        "nro": "quest64.nro",
+        "nroPath": "quest64.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/quest64/quest64.z64",
+            "description": "Quest 64 (USA) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GoldenEye 007 (ge007-nx)",
+      "project": "ge007 team / Ryan Dwyer",
+      "repository": "n64decomp/ge007",
+      "repositorySource": "github",
+      "folderName": "ge007",
+      "tags": [
+        "decomp",
+        "nintendo 64",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "GoldenEye 007 (NTSC Final) .z64",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id goldeneye_007_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: GoldenEye 007 (NTSC Final) .z64. Descompilación al 100% con controles modernos de doble stick y 60 FPS estables. Icono de reserva propuesto en el maestro: romfs:/icons/goldeneye_007_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/GoldenEye%20007%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/ge007",
+        "targetDir": "/switch/ge007",
+        "nro": "ge007.nro",
+        "nroPath": "ge007.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/ge007/ge007.z64",
+            "description": "GoldenEye 007 (NTSC Final) .z64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Jak and Daxter: The Precursor Legacy (OpenGOAL)",
+      "project": "OpenGOAL / fildicio",
+      "repository": "fildicio/jak-project-switch",
+      "repositorySource": "github",
+      "folderName": "jak1",
+      "tags": [
+        "recomp_native",
+        "playstation 2",
+        "plataformas 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Jak and Daxter PS2 ISO original",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id jak_and_daxter_opengoal). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Jak and Daxter PS2 ISO original. Recompilación nativa de Jak and Daxter mediante OpenGOAL (binario gk.nro instalado como jak1.nro en /switch/jak1/). Icono de reserva propuesto en el maestro: romfs:/icons/jak_and_daxter_opengoal.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation_2/master/Named_Boxarts/Jak%20and%20Daxter%20-%20The%20Precursor%20Legacy%20%28USA%29%20%28En%2CFr%2CDe%2CEs%2CIt%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/jak1",
+        "targetDir": "/switch/jak1",
+        "nro": "jak1.nro",
+        "nroPath": "jak1.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/jak1/data/iso_data/",
+            "description": "Jak and Daxter PS2 ISO original"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Simpsons: Hit & Run (simpsons-nx)",
+      "project": "q4a / ZenoArrows",
+      "repository": "q4a/simpsons",
+      "repositorySource": "github",
+      "folderName": "simpsons",
+      "tags": [
+        "source_port",
+        "pc / ps2 / gamecube",
+        "acción / sandbox"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos del CD o instalación de PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id simpsons_hit_and_run). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Archivos del CD o instalación de PC. 100% jugable, multijugador local en minijuegos, resolución completa y tiempos de carga instantáneos. Icono de reserva propuesto en el maestro: romfs:/icons/simpsons_hit_and_run.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Simpsons%3A%20Hit%20%26%20Run) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Simpsons%3A%20Hit%20%26%20Run",
+      "switch": {
+        "homeDir": "/switch/simpsons",
+        "targetDir": "/switch/simpsons",
+        "nro": "simpsons.nro",
+        "nroPath": "simpsons.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/simpsons/art/",
+            "description": "Archivos del CD o instalación de PC"
+          },
+          {
+            "path": "sdmc:/switch/simpsons/dialogue/",
+            "description": "Archivos del CD o instalación de PC"
+          },
+          {
+            "path": "sdmc:/switch/simpsons/scripts/",
+            "description": "Archivos del CD o instalación de PC"
+          },
+          {
+            "path": "sdmc:/switch/simpsons/sound/",
+            "description": "Archivos del CD o instalación de PC"
+          },
+          {
+            "path": "sdmc:/switch/simpsons/*.rcf",
+            "description": "Archivos del CD o instalación de PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Legend of Zelda: The Wind Waker (SwitchWaker)",
+      "project": "centollOS",
+      "repository": "centollOS/SwitchWaker",
+      "repositorySource": "github",
+      "folderName": "SwitchWaker",
+      "tags": [
+        "decomp",
+        "gamecube",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Zelda Wind Waker GameCube ISO",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id zelda_wind_waker_switchwaker). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Zelda Wind Waker GameCube ISO. Descompilación nativa de The Legend of Zelda: The Wind Waker para Nintendo Switch (ejecutable switchwaker.nro). Icono de reserva propuesto en el maestro: romfs:/icons/zelda_wind_waker_switchwaker.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20The%20Wind%20Waker%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/SwitchWaker",
+        "targetDir": "/switch/SwitchWaker",
+        "nro": "switchwaker.nro",
+        "nroPath": "switchwaker.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/SwitchWaker/game.iso",
+            "description": "Zelda Wind Waker GameCube ISO"
+          },
+          {
+            "path": "sdmc:/switch/SwitchWaker/assets/",
+            "description": "Zelda Wind Waker GameCube ISO"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Legend of Zelda: Twilight Princess (Dusklight-NX)",
+      "project": "HayatoG / souldbminerr",
+      "repository": "souldbminerr/dusklight-nx",
+      "repositorySource": "github",
+      "folderName": "dusklight",
+      "tags": [
+        "decomp",
+        "gamecube",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Twilight Princess GameCube ISO",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id zelda_twilight_princess_dusklight). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Twilight Princess GameCube ISO. Optimizado para 720p 30 FPS en frecuencias stock de Switch. Icono de reserva propuesto en el maestro: romfs:/icons/zelda_twilight_princess_dusklight.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Twilight%20Princess%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/dusklight",
+        "targetDir": "/switch/dusklight",
+        "nro": "dusklight.nro",
+        "nroPath": "dusklight.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/dusklight/dusklight_assets/",
+            "description": "Twilight Princess GameCube ISO"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Smash Bros. Melee (Melee-NX)",
+      "project": "KawaiiBunga",
+      "repository": "KawaiiBunga/Melee-NX",
+      "repositorySource": "github",
+      "folderName": "Melee-NX",
+      "tags": [
+        "decomp",
+        "gamecube",
+        "lucha"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Super Smash Bros. Melee (USA v1.02) ISO",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id smash_melee_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Super Smash Bros. Melee (USA v1.02) ISO. Descompilación nativa de Super Smash Bros. Melee corriendo a 60 FPS fijos sin emulación (binario melee.nro / melee-nx.nro). Icono de reserva propuesto en el maestro: romfs:/icons/smash_melee_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Super%20Smash%20Bros.%20Melee%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/Melee-NX",
+        "targetDir": "/switch/Melee-NX",
+        "nro": "melee-nx.nro",
+        "nroPath": "melee-nx.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Melee-NX/root/",
+            "description": "Super Smash Bros. Melee (USA v1.02) ISO"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Mario Strikers (strikers-nx)",
+      "project": "new-coke",
+      "repository": "new-coke/strikers",
+      "repositorySource": "github",
+      "folderName": "strikers",
+      "tags": [
+        "decomp",
+        "gamecube",
+        "deportes"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Super Mario Strikers GameCube ISO",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id super_mario_strikers_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Super Mario Strikers GameCube ISO. Soporte de paquetes de texturas personalizados y resolución HD. Icono de reserva propuesto en el maestro: romfs:/icons/super_mario_strikers_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Super%20Mario%20Strikers%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/strikers",
+        "targetDir": "/switch/strikers",
+        "nro": "strikers.nro",
+        "nroPath": "strikers.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/strikers/strikers_data/",
+            "description": "Super Mario Strikers GameCube ISO"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Mario Galaxy (AstroCore)",
+      "project": "SMGCommunity / Petari",
+      "repository": "SMGCommunity/AstroCore",
+      "repositorySource": "github",
+      "folderName": "AstroCore",
+      "tags": [
+        "decomp",
+        "nintendo wii",
+        "plataformas 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Super Mario Galaxy Wii ISO / WBFS",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id super_mario_galaxy_astrocore). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Super Mario Galaxy Wii ISO / WBFS. Descompilación AstroCore de SMG; proyecto en desarrollo para PC, pendiente release oficial de puerto Switch. Icono de reserva propuesto en el maestro: romfs:/icons/super_mario_galaxy_astrocore.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Wii/master/Named_Boxarts/Super%20Mario%20Galaxy%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/AstroCore",
+        "targetDir": "/switch/AstroCore",
+        "nro": "AstroCore.nro",
+        "nroPath": "AstroCore.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/AstroCore/data/",
+            "description": "Super Mario Galaxy Wii ISO / WBFS"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Animal Crossing GameCube (ACGC-NX)",
+      "project": "ac-decomp team / zwaetschge",
+      "repository": "zwaetschge/ACGC-NX",
+      "repositorySource": "github",
+      "folderName": "acgc",
+      "tags": [
+        "decomp",
+        "gamecube",
+        "simulación"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Animal Crossing GameCube ISO",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id animal_crossing_acgc_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Animal Crossing GameCube ISO. Reloj de tiempo real integrado directamente con el reloj del sistema de Switch. Icono de reserva propuesto en el maestro: romfs:/icons/animal_crossing_acgc_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Animal%20Crossing%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/acgc",
+        "targetDir": "/switch/acgc",
+        "nro": "acgc.nro",
+        "nroPath": "acgc.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/acgc/acgc_assets/",
+            "description": "Animal Crossing GameCube ISO"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Need For Speed: Most Wanted 2005",
+      "project": "StevensND",
+      "repository": "StevensND/nfsmw-nx",
+      "repositorySource": "github",
+      "folderName": "nfsmw",
+      "tags": [
+        "source_port",
+        "pc / ps2",
+        "carreras"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Need For Speed: Most Wanted (2005)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id nfs_most_wanted_2005). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de Need For Speed: Most Wanted (2005). Port nativo con assets regionales (nfsmw-nx-usa.nro / nfsmw-nx-pal-en.nro); requiere datos de la versión de PC/PS2. Icono de reserva propuesto en el maestro: romfs:/icons/nfs_most_wanted_2005.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Need%20For%20Speed%3A%20Most%20Wanted%202005) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Need%20For%20Speed%3A%20Most%20Wanted%202005",
+      "switch": {
+        "homeDir": "/switch/nfsmw",
+        "targetDir": "/switch/nfsmw",
+        "nro": "nfsmw-nx-usa.nro",
+        "nroPath": "nfsmw-nx-usa.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/nfsmw/CARS/",
+            "description": "Instalación de PC de Need For Speed: Most Wanted (2005)"
+          },
+          {
+            "path": "sdmc:/switch/nfsmw/GLOBAL/",
+            "description": "Instalación de PC de Need For Speed: Most Wanted (2005)"
+          },
+          {
+            "path": "sdmc:/switch/nfsmw/TRACKS/",
+            "description": "Instalación de PC de Need For Speed: Most Wanted (2005)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Driver 2 (REDRIVER2)",
+      "project": "OpenDriver2 team",
+      "repository": "OpenDriver2/REDRIVER2",
+      "repositorySource": "github",
+      "folderName": "redriver2",
+      "tags": [
+        "decomp",
+        "playstation",
+        "acción / conducción"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Imágenes de disco CD1 y CD2 (.bin/.cue) de PS1",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id driver_2_redriver2). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_rip. Datos del usuario: Imágenes de disco CD1 y CD2 (.bin/.cue) de PS1. Corre a 60 FPS, widescreen 16:9 real y distancia de dibujado multiplicada. Icono de reserva propuesto en el maestro: romfs:/icons/driver_2_redriver2.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Driver%202%20%28USA%29%20%28Disc%201%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/redriver2",
+        "targetDir": "/switch/redriver2",
+        "nro": "redriver2.nro",
+        "nroPath": "redriver2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/redriver2/DRIVER2/",
+            "description": "Imágenes de disco CD1 y CD2 (.bin/.cue) de PS1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WipEout (wipeout-rewrite)",
+      "project": "phoboslab",
+      "repository": "phoboslab/wipeout-rewrite",
+      "repositorySource": "github",
+      "folderName": "wipeout",
+      "tags": [
+        "decomp",
+        "playstation",
+        "carreras futuristas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos del CD original de PlayStation o PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id wipeout_rewrite). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_extract. Datos del usuario: Archivos del CD original de PlayStation o PC. Resolución 1080p nativa a 60 FPS con banda sonora completa en OGG/FLAC. Icono de reserva propuesto en el maestro: romfs:/icons/wipeout_rewrite.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Wipeout%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/wipeout",
+        "targetDir": "/switch/wipeout",
+        "nro": "wipeout.nro",
+        "nroPath": "wipeout.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/wipeout/wipeout/data/",
+            "description": "Archivos del CD original de PlayStation o PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Silent Hill 1 (silent-hill-decomp-nx)",
+      "project": "DerilDX / ChaykaDed",
+      "repository": "ChaykaDed/silent-hill-decomp-nx",
+      "repositorySource": "github",
+      "folderName": "silenthill",
+      "tags": [
+        "decomp",
+        "playstation",
+        "survival horror"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Silent Hill (USA) PSX .bin/.cue",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id silent_hill_1_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_rip. Datos del usuario: Silent Hill (USA) PSX .bin/.cue. Port nativo C++ de Silent Hill 1 con corrección de perspectiva geométrica y widescreen (ejecutable SilentHillPC.nro). Icono de reserva propuesto en el maestro: romfs:/icons/silent_hill_1_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Silent%20Hill%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/silenthill",
+        "targetDir": "/switch/silenthill",
+        "nro": "SilentHillPC.nro",
+        "nroPath": "SilentHillPC.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/silenthill/SLUS_007.07",
+            "description": "Silent Hill (USA) PSX .bin/.cue"
+          },
+          {
+            "path": "sdmc:/switch/silenthill/assets.bin",
+            "description": "Silent Hill (USA) PSX .bin/.cue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Jackie Chan Stuntmaster (ReChan-Switch)",
+      "project": "CostelaCNX",
+      "repository": "CostelaCNX/ReChan-Switch",
+      "repositorySource": "github",
+      "folderName": "rechan",
+      "tags": [
+        "decomp",
+        "playstation",
+        "beat 'em up"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Jackie Chan Stuntmaster PS1 .bin/.cue",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id jackie_chan_rechan). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: disc_rip. Datos del usuario: Jackie Chan Stuntmaster PS1 .bin/.cue. Puerto nativo con framerate fluido y pantalla completa. Icono de reserva propuesto en el maestro: romfs:/icons/jackie_chan_rechan.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Jackie%20Chan%20Stuntmaster%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/rechan",
+        "targetDir": "/switch/rechan",
+        "nro": "rechan.nro",
+        "nroPath": "rechan.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/rechan/rechan_data/",
+            "description": "Jackie Chan Stuntmaster PS1 .bin/.cue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tomb Raider I & II (OpenLara)",
+      "project": "XProger",
+      "repository": "XProger/OpenLara",
+      "repositorySource": "github",
+      "folderName": "openlara",
+      "tags": [
+        "recreation",
+        "playstation / pc",
+        "acción / plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos de datos de Tomb Raider 1 o 2 (PC / PS1)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id tomb_raider_openlara). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Archivos de datos de Tomb Raider 1 o 2 (PC / PS1). Iluminación dinámica en tiempo real, efectos de agua, 60 FPS y opción en primera persona. Icono de reserva propuesto en el maestro: romfs:/icons/tomb_raider_openlara.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Tomb%20Raider%20I%20%26%20II) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Tomb%20Raider%20I%20%26%20II",
+      "switch": {
+        "homeDir": "/switch/openlara",
+        "targetDir": "/switch/openlara",
+        "nro": "openlara.nro",
+        "nroPath": "openlara.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openlara/data/",
+            "description": "Archivos de datos de Tomb Raider 1 o 2 (PC / PS1)"
+          },
+          {
+            "path": "sdmc:/switch/openlara/audio/",
+            "description": "Archivos de datos de Tomb Raider 1 o 2 (PC / PS1)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pokemon Rojo / Azul / Amarillo (gen1recomp)",
+      "project": "bryanthaboi",
+      "repository": "bryanthaboi/gen1recomp",
+      "repositorySource": "github",
+      "folderName": "gen1recomp",
+      "tags": [
+        "recomp",
+        "game boy",
+        "rpg"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROM Game Boy (Red/Blue/Yellow) .gb",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id pokemon_gen1_recomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: ROM Game Boy (Red/Blue/Yellow) .gb. Renderizado panorámico, interfaz táctil y paletas de color configurables. Icono de reserva propuesto en el maestro: romfs:/icons/pokemon_gen1_recomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy/master/Named_Boxarts/Pokemon%20-%20Red%20Version%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/gen1recomp",
+        "targetDir": "/switch/gen1recomp",
+        "nro": "gen1recomp.nro",
+        "nroPath": "gen1recomp.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/gen1recomp/pokemon_red.gb",
+            "description": "ROM Game Boy (Red/Blue/Yellow) .gb"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pokemon Oro / Plata / Cristal (Gen2Recomped)",
+      "project": "UNDERdecoded",
+      "repository": "UNDERdecoded/Gen2Recomped",
+      "repositorySource": "github",
+      "folderName": "gen2recomp",
+      "tags": [
+        "recomp",
+        "game boy color",
+        "rpg"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROM Game Boy Color (Crystal/Gold/Silver) .gbc",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id pokemon_gen2_recomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: ROM Game Boy Color (Crystal/Gold/Silver) .gbc. Sincronización con reloj real y soporte panorámico nativo. Icono de reserva propuesto en el maestro: romfs:/icons/pokemon_gen2_recomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Color/master/Named_Boxarts/Pokemon%20-%20Crystal%20Version%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/gen2recomp",
+        "targetDir": "/switch/gen2recomp",
+        "nro": "gen2recomp.nro",
+        "nroPath": "gen2recomp.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/gen2recomp/pokemon_crystal.gbc",
+            "description": "ROM Game Boy Color (Crystal/Gold/Silver) .gbc"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Legend of Zelda: Link's Awakening DX HD",
+      "project": "delsonazevedo / Alexgg1014",
+      "repository": "delsonazevedo/Zelda-LA-DX-HD-Updated",
+      "repositorySource": "github",
+      "folderName": "zeldaladx",
+      "tags": [
+        "recreation",
+        "game boy color",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Link's Awakening DX .gbc",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id zelda_links_awakening_dx_hd). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: standalone_or_rom. Datos del usuario: Link's Awakening DX .gbc. Gráficos HD redraw, cámara libre continua y música orquestada. Icono de reserva propuesto en el maestro: romfs:/icons/zelda_links_awakening_dx_hd.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Color/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Link%27s%20Awakening%20DX%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29%20%28GB%20Compatible%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/zeldaladx",
+        "targetDir": "/switch/zeldaladx",
+        "nro": "zeldaladx.nro",
+        "nroPath": "zeldaladx.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/zeldaladx/assets/",
+            "description": "Link's Awakening DX .gbc"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Legend of Zelda: Oracle of Seasons & Ages (oracles-nx)",
+      "project": "toniisound",
+      "repository": "toniisound/oracles-nx",
+      "repositorySource": "github",
+      "folderName": "oracles",
+      "tags": [
+        "decomp",
+        "game boy color",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROMs originales de Game Boy Color",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id zelda_oracles_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: ROMs originales de Game Boy Color. Unifica ambos títulos en un único menú con soporte de vinculación de contraseñas. Icono de reserva propuesto en el maestro: romfs:/icons/zelda_oracles_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Color/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Oracle%20of%20Seasons%20%28USA%2C%20Australia%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/oracles",
+        "targetDir": "/switch/oracles",
+        "nro": "oracles.nro",
+        "nroPath": "oracles.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/oracles/seasons.gbc",
+            "description": "ROMs originales de Game Boy Color"
+          },
+          {
+            "path": "sdmc:/switch/oracles/ages.gbc",
+            "description": "ROMs originales de Game Boy Color"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Legend of Zelda: The Minish Cap (tmc-nx)",
+      "project": "HayatoG / Alexgg1014",
+      "repository": "HayatoG/tmc",
+      "repositorySource": "github",
+      "folderName": "minishcap",
+      "tags": [
+        "decomp",
+        "game boy advance",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Zelda Minish Cap (USA/EUR) .gba",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id zelda_minish_cap_tmc). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_extract. Datos del usuario: Zelda Minish Cap (USA/EUR) .gba. Port nativo de The Minish Cap con soporte panorámico 16:9 y filtros de escalado (ejecutables tmc_switch.nro / TMC-Switch-USA). Icono de reserva propuesto en el maestro: romfs:/icons/zelda_minish_cap_tmc.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20The%20Minish%20Cap%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/minishcap",
+        "targetDir": "/switch/minishcap",
+        "nro": "tmc_switch.nro",
+        "nroPath": "tmc_switch.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/minishcap/tmc.gba",
+            "description": "Zelda Minish Cap (USA/EUR) .gba"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic Advance 2",
+      "project": "boraeskicioglu",
+      "repository": "boraeskicioglu/sonic_advance2_nx",
+      "repositorySource": "github",
+      "folderName": "sonicadvance2",
+      "tags": [
+        "decomp",
+        "game boy advance",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Sonic Advance 2 (USA) .gba",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_advance_2_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_direct. Datos del usuario: Sonic Advance 2 (USA) .gba. Ejecución nativa con tasa de cuadros desbloqueada a 60 FPS. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_advance_2_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Sonic%20Advance%202%20%28USA%29%20%28En%2CJa%2CFr%2CDe%2CEs%2CIt%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/sonicadvance2",
+        "targetDir": "/switch/sonicadvance2",
+        "nro": "sonicadvance2.nro",
+        "nroPath": "sonicadvance2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/sonicadvance2/sonicadvance2.gba",
+            "description": "Sonic Advance 2 (USA) .gba"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Legend of Zelda: A Link to the Past (zelda3)",
+      "project": "snesrev",
+      "repository": "snesrev/zelda3",
+      "repositorySource": "github",
+      "folderName": "zelda3",
+      "tags": [
+        "decomp",
+        "super nintendo",
+        "acción / aventura"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Zelda A Link to the Past (USA/JP) .sfc",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id zelda_alttp_zelda3). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_extract. Datos del usuario: Zelda A Link to the Past (USA/JP) .sfc. Soporte panorámico 16:9 que renderiza áreas ocultas sin scroll pop-in, audio MSU-1 y atajos de objetos. Icono de reserva propuesto en el maestro: romfs:/icons/zelda_alttp_zelda3.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20A%20Link%20to%20the%20Past%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/zelda3",
+        "targetDir": "/switch/zelda3",
+        "nro": "zelda3.nro",
+        "nroPath": "zelda3.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/zelda3/zelda3.sfc",
+            "description": "Zelda A Link to the Past (USA/JP) .sfc"
+          },
+          {
+            "path": "sdmc:/switch/zelda3/zelda3.ini",
+            "description": "Zelda A Link to the Past (USA/JP) .sfc"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Metroid (sm-decomp)",
+      "project": "snesrev",
+      "repository": "snesrev/sm",
+      "repositorySource": "github",
+      "folderName": "supermetroid",
+      "tags": [
+        "decomp",
+        "super nintendo",
+        "metroidvania"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Super Metroid (JU) .sfc",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id super_metroid_sm_decomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_extract. Datos del usuario: Super Metroid (JU) .sfc. Widescreen real, audio sin compresión y mapeo moderno de apuntado para los Joy-Con. Icono de reserva propuesto en el maestro: romfs:/icons/super_metroid_sm_decomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Metroid%20%28Japan%2C%20USA%29%20%28En%2CJa%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/supermetroid",
+        "targetDir": "/switch/supermetroid",
+        "nro": "sm.nro",
+        "nroPath": "sm.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/supermetroid/sm.sfc",
+            "description": "Super Metroid (JU) .sfc"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Mario World (smw-decomp)",
+      "project": "snesrev / delsonazevedo",
+      "repository": "snesrev/smw",
+      "repositorySource": "github",
+      "folderName": "smw",
+      "tags": [
+        "decomp",
+        "super nintendo",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Super Mario World (USA) .sfc",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id super_mario_world_smw_decomp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_extract. Datos del usuario: Super Mario World (USA) .sfc. Reescritura en C con soporte para pantallas panorámicas y física idéntica al original. Icono de reserva propuesto en el maestro: romfs:/icons/super_mario_world_smw_decomp.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20World%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/smw",
+        "targetDir": "/switch/smw",
+        "nro": "smw.nro",
+        "nroPath": "smw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/smw/smw.sfc",
+            "description": "Super Mario World (USA) .sfc"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Daytona USA (Daytona-NX-Modern)",
+      "project": "Thorhax",
+      "repository": "Thorhax/Daytona-NX-Modern",
+      "repositorySource": "github",
+      "folderName": "daytona",
+      "tags": [
+        "recomp",
+        "arcade (sega model 2)",
+        "carreras arcade"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROMset de Daytona USA Arcade",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id daytona_usa_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: arcade_roms. Datos del usuario: ROMset de Daytona USA Arcade. Recompilación nativa del hardware Model 2 a 60 FPS estables con audio estéreo mejorado. Icono de reserva propuesto en el maestro: romfs:/icons/daytona_usa_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Saturn/master/Named_Boxarts/Daytona%20USA%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/daytona",
+        "targetDir": "/switch/daytona",
+        "nro": "daytona.nro",
+        "nroPath": "daytona.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/daytona/roms/daytona/",
+            "description": "ROMset de Daytona USA Arcade"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Virtua Fighter 2 (VF2-NX-Modern)",
+      "project": "Thorhax",
+      "repository": "Thorhax/VF2-NX-Modern",
+      "repositorySource": "github",
+      "folderName": "vf2",
+      "tags": [
+        "recomp",
+        "arcade (sega model 2)",
+        "lucha 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROMset de Virtua Fighter 2 Arcade",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id virtua_fighter_2_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: arcade_roms. Datos del usuario: ROMset de Virtua Fighter 2 Arcade. Gráficos poligonales nítidos a 60 FPS sin los artefactos de emuladores pesados. Icono de reserva propuesto en el maestro: romfs:/icons/virtua_fighter_2_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Saturn/master/Named_Boxarts/Virtua%20Fighter%202%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/vf2",
+        "targetDir": "/switch/vf2",
+        "nro": "vf2.nro",
+        "nroPath": "vf2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/vf2/roms/vf2/",
+            "description": "ROMset de Virtua Fighter 2 Arcade"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Cyber Troopers Virtual-On (Virtual-On-NX)",
+      "project": "Thorhax",
+      "repository": "Thorhax/Virtual-On-NX",
+      "repositorySource": "github",
+      "folderName": "virtualon",
+      "tags": [
+        "recomp",
+        "arcade (sega model 2)",
+        "acción mecha"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROMset de Virtual-On Arcade",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id virtual_on_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: arcade_roms. Datos del usuario: ROMset de Virtual-On Arcade. Mapeo optimizado para controles Dual-Stick emulando las palancas gemelas arcade. Icono de reserva propuesto en el maestro: romfs:/icons/virtual_on_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/FBNeo_-_Arcade_Games/master/Named_Titles/von.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/virtualon",
+        "targetDir": "/switch/virtualon",
+        "nro": "virtualon.nro",
+        "nroPath": "virtualon.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/virtualon/roms/von/",
+            "description": "ROMset de Virtual-On Arcade"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Killer Instinct 1 & 2 (Killer-Instinct-NX-Modern)",
+      "project": "Thorhax",
+      "repository": "Thorhax/Killer-Instinct-NX-Modern",
+      "repositorySource": "github",
+      "folderName": "killerinstinct",
+      "tags": [
+        "recomp",
+        "arcade (midway)",
+        "lucha"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROM + CHD original de Killer Instinct 1 & 2",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id killer_instinct_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: arcade_chd_rom. Datos del usuario: ROM + CHD original de Killer Instinct 1 & 2. Renderizado sin pérdidas, audio original y combos a 60 FPS nativos. Icono de reserva propuesto en el maestro: romfs:/icons/killer_instinct_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Killer%20Instinct%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/killerinstinct",
+        "targetDir": "/switch/killerinstinct",
+        "nro": "ki.nro",
+        "nroPath": "ki.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/killerinstinct/roms/kinst/",
+            "description": "ROM + CHD original de Killer Instinct 1 & 2"
+          },
+          {
+            "path": "sdmc:/switch/killerinstinct/kinst.chd",
+            "description": "ROM + CHD original de Killer Instinct 1 & 2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sega Rally Championship (port0r)",
+      "project": "jacquesdupontd",
+      "repository": "jacquesdupontd/port0r",
+      "repositorySource": "github",
+      "folderName": "segarally",
+      "tags": [
+        "source_port",
+        "arcade / saturn",
+        "carreras arcade"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Assets de Sega Rally PC / Arcade",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sega_rally_port0r). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Assets de Sega Rally PC / Arcade. Control de derrape preciso con sticks analógicos y 60 FPS. Icono de reserva propuesto en el maestro: romfs:/icons/sega_rally_port0r.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Saturn/master/Named_Boxarts/Sega%20Rally%20Championship%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/segarally",
+        "targetDir": "/switch/segarally",
+        "nro": "segarally.nro",
+        "nroPath": "segarally.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/segarally/data/",
+            "description": "Assets de Sega Rally PC / Arcade"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic the Fighters",
+      "project": "boraeskicioglu",
+      "repository": "boraeskicioglu/sonic_the_fighters_nx",
+      "repositorySource": "github",
+      "folderName": "sonicthefighters",
+      "tags": [
+        "recomp",
+        "arcade (sega model 2)",
+        "lucha 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROMset arcade de Sonic the Fighters",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_the_fighters_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: arcade_roms. Datos del usuario: ROMset arcade de Sonic the Fighters. Puerto nativo de la entrega de lucha poligonal de Sonic Team. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_the_fighters_nx.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/FBNeo_-_Arcade_Games/master/Named_Titles/sfight.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/sonicthefighters",
+        "targetDir": "/switch/sonicthefighters",
+        "nro": "sonicthefighters.nro",
+        "nroPath": "sonicthefighters.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/sonicthefighters/roms/sfight/",
+            "description": "ROMset arcade de Sonic the Fighters"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Doom 3 & RoE (dhewm3-nx)",
+      "project": "dhewm team / fgsfds",
+      "repository": "dhewm/dhewm3",
+      "repositorySource": "github",
+      "folderName": "dhewm3",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps / terror"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Doom 3 (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id doom_3_dhewm3). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de Doom 3 (Steam / GOG). Motor id Tech 4 nativo a 60 FPS con apuntado por giroscopio y soporte para linterna en arma. Icono de reserva propuesto en el maestro: romfs:/icons/doom_3_dhewm3.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Doom%203%20%26%20RoE) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Doom%203%20%26%20RoE",
+      "switch": {
+        "homeDir": "/switch/dhewm3",
+        "targetDir": "/switch/dhewm3",
+        "nro": "dhewm3.nro",
+        "nroPath": "dhewm3.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/dhewm3/base/pak000.pk4",
+            "description": "Instalación de PC de Doom 3 (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/dhewm3/base/pak001.pk4",
+            "description": "Instalación de PC de Doom 3 (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/dhewm3/base/pak002.pk4",
+            "description": "Instalación de PC de Doom 3 (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Quake III Arena (ioquake3-nx)",
+      "project": "ioquake3 team",
+      "repository": "fgsfdsfgs/ioquake3",
+      "repositorySource": "github",
+      "folderName": "ioquake3",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps arena"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Quake III Arena",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id quake_3_arena_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de Quake III Arena. Multijugador local con bots o partidas online en servidores de la comunidad. Icono de reserva propuesto en el maestro: romfs:/icons/quake_3_arena_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Quake%20III%20Arena) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Quake%20III%20Arena",
+      "switch": {
+        "homeDir": "/switch/ioquake3",
+        "targetDir": "/switch/ioquake3",
+        "nro": "ioquake3.nro",
+        "nroPath": "ioquake3.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/ioquake3/baseq3/pak0.pk3",
+            "description": "Instalación de PC de Quake III Arena"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Duke Nukem 3D (EDuke32-NX)",
+      "project": "EDuke32 Team",
+      "repository": "fgsfdsfgs/eduke32",
+      "repositorySource": "github",
+      "folderName": "eduke32",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Atomic Edition / 20th Anniversary PC GRP",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id duke_nukem_3d_eduke32). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Atomic Edition / 20th Anniversary PC GRP. Soporta renderizado Polymer, paquetes de texturas en alta resolución y mods HRP. Icono de reserva propuesto en el maestro: romfs:/icons/duke_nukem_3d_eduke32.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Duke%20Nukem%203D) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Duke%20Nukem%203D",
+      "switch": {
+        "homeDir": "/switch/eduke32",
+        "targetDir": "/switch/eduke32",
+        "nro": "eduke32.nro",
+        "nroPath": "eduke32.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/eduke32/DUKE3D.GRP",
+            "description": "Atomic Edition / 20th Anniversary PC GRP"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Blood (NBlood-NX)",
+      "project": "Nuke.YKT",
+      "repository": "nukeykt/nblood",
+      "repositorySource": "github",
+      "folderName": "nblood",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Blood: One Unit Whole Blood (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id blood_nblood_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Blood: One Unit Whole Blood (GOG / Steam). Reconstrucción perfecta del código fuente original de Monolith a 60 FPS estables. Icono de reserva propuesto en el maestro: romfs:/icons/blood_nblood_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Blood) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Blood",
+      "switch": {
+        "homeDir": "/switch/nblood",
+        "targetDir": "/switch/nblood",
+        "nro": "nblood.nro",
+        "nroPath": "nblood.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/nblood/BLOOD.RFF",
+            "description": "Blood: One Unit Whole Blood (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/nblood/SOUNDS.RFF",
+            "description": "Blood: One Unit Whole Blood (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Shadow Warrior (VoidSW-NX)",
+      "project": "EDuke32 Team",
+      "repository": "fgsfdsfgs/voidsw",
+      "repositorySource": "github",
+      "folderName": "voidsw",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Shadow Warrior Classic (PC)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id shadow_warrior_voidsw). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Shadow Warrior Classic (PC). Motor Build nativo con controles modernos y giroscopio. Icono de reserva propuesto en el maestro: romfs:/icons/shadow_warrior_voidsw.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Shadow%20Warrior) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Shadow%20Warrior",
+      "switch": {
+        "homeDir": "/switch/voidsw",
+        "targetDir": "/switch/voidsw",
+        "nro": "voidsw.nro",
+        "nroPath": "voidsw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/voidsw/SW.GRP",
+            "description": "Shadow Warrior Classic (PC)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Powerslave / Exhumed (PCExhumed-NX)",
+      "project": "Nuke.YKT",
+      "repository": "nukeykt/pcexhumed",
+      "repositorySource": "github",
+      "folderName": "pcexhumed",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Powerslave versión DOS de PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id powerslave_pcexhumed). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Powerslave versión DOS de PC. Puerto exacto del motor Build con corrección de bugs y soporte analógico. Icono de reserva propuesto en el maestro: romfs:/icons/powerslave_pcexhumed.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Powerslave%20/%20Exhumed) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Powerslave%20/%20Exhumed",
+      "switch": {
+        "homeDir": "/switch/pcexhumed",
+        "targetDir": "/switch/pcexhumed",
+        "nro": "pcexhumed.nro",
+        "nroPath": "pcexhumed.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/pcexhumed/STUFF.DAT",
+            "description": "Powerslave versión DOS de PC"
+          },
+          {
+            "path": "sdmc:/switch/pcexhumed/BOOK.MOV",
+            "description": "Powerslave versión DOS de PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Redneck Rampage (Redneck-NX)",
+      "project": "Nuke.YKT",
+      "repository": "nukeykt/redneck",
+      "repositorySource": "github",
+      "folderName": "redneck",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Redneck Rampage (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id redneck_rampage_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Redneck Rampage (GOG / Steam). Soporta también las expansiones Suckin' Grits on Route 66. Icono de reserva propuesto en el maestro: romfs:/icons/redneck_rampage_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Redneck%20Rampage) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Redneck%20Rampage",
+      "switch": {
+        "homeDir": "/switch/redneck",
+        "targetDir": "/switch/redneck",
+        "nro": "redneck.nro",
+        "nroPath": "redneck.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/redneck/REDNECK.GRP",
+            "description": "Redneck Rampage (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Ion Fury (Fury-NX)",
+      "project": "Voidpoint / fgsfds",
+      "repository": "fgsfdsfgs/eduke32",
+      "repositorySource": "github",
+      "folderName": "fury",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Ion Fury (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id ion_fury_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Instalación de PC de Ion Fury (Steam / GOG). Rendimiento óptimo a 60 FPS sin los límites de memoria de la versión comercial. Icono de reserva propuesto en el maestro: romfs:/icons/ion_fury_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Ion%20Fury) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Ion%20Fury",
+      "switch": {
+        "homeDir": "/switch/fury",
+        "targetDir": "/switch/fury",
+        "nro": "fury.nro",
+        "nroPath": "fury.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/fury/fury.grp",
+            "description": "Instalación de PC de Ion Fury (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Wolfenstein 3D & Spear of Destiny (ECWolf-NX)",
+      "project": "Blzut3",
+      "repository": "fgsfdsfgs/ecwolf",
+      "repositorySource": "github",
+      "folderName": "ecwolf",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos originales de Wolfenstein 3D / Spear of Destiny",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id wolfenstein_3d_ecwolf). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Archivos originales de Wolfenstein 3D / Spear of Destiny. Soporte panorámico nativo, automapa en pantalla y ranuras de guardado ilimitadas. Icono de reserva propuesto en el maestro: romfs:/icons/wolfenstein_3d_ecwolf.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Wolfenstein%203D%20%26%20Spear%20of%20Destiny) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Wolfenstein%203D%20%26%20Spear%20of%20Destiny",
+      "switch": {
+        "homeDir": "/switch/ecwolf",
+        "targetDir": "/switch/ecwolf",
+        "nro": "ecwolf.nro",
+        "nroPath": "ecwolf.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/ecwolf/*.WL6",
+            "description": "Archivos originales de Wolfenstein 3D / Spear of Destiny"
+          },
+          {
+            "path": "sdmc:/switch/ecwolf/*.SOD",
+            "description": "Archivos originales de Wolfenstein 3D / Spear of Destiny"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Return to Castle Wolfenstein (iortcw-nx)",
+      "project": "iortcw team / fgsfds",
+      "repository": "fgsfdsfgs/iortcw",
+      "repositorySource": "github",
+      "folderName": "iortcw",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Return to Castle Wolfenstein (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id rtc_wolfenstein_iortcw). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Return to Castle Wolfenstein (Steam / GOG). Aceleración por hardware completa, 60 FPS estables y giroscopio. Icono de reserva propuesto en el maestro: romfs:/icons/rtc_wolfenstein_iortcw.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Return%20to%20Castle%20Wolfenstein) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Return%20to%20Castle%20Wolfenstein",
+      "switch": {
+        "homeDir": "/switch/iortcw",
+        "targetDir": "/switch/iortcw",
+        "nro": "iortcw.nro",
+        "nroPath": "iortcw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/iortcw/main/pak0.pk3",
+            "description": "Return to Castle Wolfenstein (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/iortcw/main/mp_pak0.pk3",
+            "description": "Return to Castle Wolfenstein (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Descent 1 & 2 (DXX-Rebirth-NX)",
+      "project": "dxx-rebirth team",
+      "repository": "fgsfdsfgs/dxx-rebirth",
+      "repositorySource": "github",
+      "folderName": "dxx-rebirth",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps 6dof"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Descent 1 / 2 versión PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id descent_dxx_rebirth). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Descent 1 / 2 versión PC. Mapeo completo de 6 grados de libertad en sticks analógicos y giroscopio. Icono de reserva propuesto en el maestro: romfs:/icons/descent_dxx_rebirth.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Descent%201%20%26%202) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Descent%201%20%26%202",
+      "switch": {
+        "homeDir": "/switch/dxx-rebirth",
+        "targetDir": "/switch/dxx-rebirth",
+        "nro": "d1x-rebirth.nro",
+        "nroPath": "d1x-rebirth.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/dxx-rebirth/descent.hog",
+            "description": "Descent 1 / 2 versión PC"
+          },
+          {
+            "path": "sdmc:/switch/dxx-rebirth/descent.pig",
+            "description": "Descent 1 / 2 versión PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rise of the Triad (rott-nx)",
+      "project": "fgsfds",
+      "repository": "fgsfdsfgs/rott",
+      "repositorySource": "github",
+      "folderName": "rott",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Rise of the Triad: Dark War (PC)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id rise_of_the_triad_rott). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Rise of the Triad: Dark War (PC). Soporta versión shareware y versión completa registrada con música MIDI emulada. Icono de reserva propuesto en el maestro: romfs:/icons/rise_of_the_triad_rott.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Rise%20of%20the%20Triad) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Rise%20of%20the%20Triad",
+      "switch": {
+        "homeDir": "/switch/rott",
+        "targetDir": "/switch/rott",
+        "nro": "rott.nro",
+        "nroPath": "rott.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/rott/DARKWAR.WAD",
+            "description": "Rise of the Triad: Dark War (PC)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Serious Sam: The First & Second Encounter",
+      "project": "Croteam / Serious-Engine Team",
+      "repository": "fgsfdsfgs/Serious-Engine",
+      "repositorySource": "github",
+      "folderName": "serioussam",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Serious Sam Classic: TFE / TSE (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id serious_sam_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Serious Sam Classic: TFE / TSE (Steam / GOG). Serious Engine port para Switch por fgsfdsfgs; incluye First y Second Encounter a 60 FPS nativos. Icono de reserva propuesto en el maestro: romfs:/icons/serious_sam_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Serious%20Sam%3A%20The%20First%20%26%20Second%20Encounter) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Serious%20Sam%3A%20The%20First%20%26%20Second%20Encounter",
+      "switch": {
+        "homeDir": "/switch/serioussam",
+        "targetDir": "/switch/serioussam",
+        "nro": "serioussam.nro",
+        "nroPath": "serioussam.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/serioussam/SE1_00.gro",
+            "description": "Serious Sam Classic: TFE / TSE (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/serioussam/Classes/",
+            "description": "Serious Sam Classic: TFE / TSE (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/serioussam/Levels/",
+            "description": "Serious Sam Classic: TFE / TSE (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Alien vs Predator Classic (AvP-NX)",
+      "project": "Rebellion / icculus",
+      "repository": "fgsfdsfgs/avp",
+      "repositorySource": "github",
+      "folderName": "avp",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps / terror"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Aliens versus Predator Classic 2000 (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id alien_vs_predator_avp). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Aliens versus Predator Classic 2000 (Steam / GOG). Campañas completas de Marine, Alien y Depredador a resolución nativa. Icono de reserva propuesto en el maestro: romfs:/icons/alien_vs_predator_avp.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Alien%20vs%20Predator%20Classic) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Alien%20vs%20Predator%20Classic",
+      "switch": {
+        "homeDir": "/switch/avp",
+        "targetDir": "/switch/avp",
+        "nro": "avp.nro",
+        "nroPath": "avp.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/avp/fastfile/",
+            "description": "Aliens versus Predator Classic 2000 (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/avp/sound/",
+            "description": "Aliens versus Predator Classic 2000 (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Postal 1 (Postal-NX)",
+      "project": "Running With Scissors / fgsfds",
+      "repository": "fgsfdsfgs/postal",
+      "repositorySource": "github",
+      "folderName": "postal",
+      "tags": [
+        "source_port",
+        "pc",
+        "shooter isométrico"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Postal 1 (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id postal_1_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Postal 1 (GOG / Steam). Controles tipo twin-stick shooter con los Joy-Con. Icono de reserva propuesto en el maestro: romfs:/icons/postal_1_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Postal%201) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Postal%201",
+      "switch": {
+        "homeDir": "/switch/postal",
+        "targetDir": "/switch/postal",
+        "nro": "postal.nro",
+        "nroPath": "postal.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/postal/res/",
+            "description": "Postal 1 (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Half-Life 1, Opposing Force, Blue Shift (Xash3D-FWGS)",
+      "project": "FWGS Team",
+      "repository": "FWGS/xash3d-fwgs",
+      "repositorySource": "github",
+      "folderName": "xash3d",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Half-Life 1 original de Steam / CD de PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id half_life_1_xash3d). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Half-Life 1 original de Steam / CD de PC. Motor GoldSrc independiente; soporta mods comunitarios como Counter-Strike 1.6. Icono de reserva propuesto en el maestro: romfs:/icons/half_life_1_xash3d.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Half-Life%201%2C%20Opposing%20Force%2C%20Blue%20Shift) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Half-Life%201%2C%20Opposing%20Force%2C%20Blue%20Shift",
+      "switch": {
+        "homeDir": "/switch/xash3d",
+        "targetDir": "/switch/xash3d",
+        "nro": "xash3d.nro",
+        "nroPath": "xash3d.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/xash3d/valve/pak0.pak",
+            "description": "Half-Life 1 original de Steam / CD de PC"
+          },
+          {
+            "path": "sdmc:/switch/xash3d/valve/halflife.wad",
+            "description": "Half-Life 1 original de Steam / CD de PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Half-Life 2 & Portal (hl2_nx)",
+      "project": "NaGaa95 / Source Engine NX Team",
+      "repository": "NaGaa95/hl2_nx",
+      "repositorySource": "github",
+      "folderName": "hl2",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps / puzzles"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos VPK y carpetas de Half-Life 2 / Portal de Steam",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id half_life_2_portal_hl2_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Archivos VPK y carpetas de Half-Life 2 / Portal de Steam. Motor Source con físicas Havok nativas aceleradas por GPU. Icono de reserva propuesto en el maestro: romfs:/icons/half_life_2_portal_hl2_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Half-Life%202%20%26%20Portal) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Half-Life%202%20%26%20Portal",
+      "switch": {
+        "homeDir": "/switch/hl2",
+        "targetDir": "/switch/hl2",
+        "nro": "hl2.nro",
+        "nroPath": "hl2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/hl2/hl2/",
+            "description": "Archivos VPK y carpetas de Half-Life 2 / Portal de Steam"
+          },
+          {
+            "path": "sdmc:/switch/hl2/portal/",
+            "description": "Archivos VPK y carpetas de Half-Life 2 / Portal de Steam"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Max Payne 1 (max_nx)",
+      "project": "NaGaa95",
+      "repository": "NaGaa95/max_nx_v2.1.131",
+      "repositorySource": "github",
+      "folderName": "maxpayne",
+      "tags": [
+        "source_port",
+        "pc",
+        "acción en 3ª persona"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Max Payne 1 (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id max_payne_1_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de Max Payne 1 (Steam / GOG). Bullet Time a 60 FPS estables con apuntado fino por giroscopio. Icono de reserva propuesto en el maestro: romfs:/icons/max_payne_1_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Max%20Payne%201) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Max%20Payne%201",
+      "switch": {
+        "homeDir": "/switch/maxpayne",
+        "targetDir": "/switch/maxpayne",
+        "nro": "maxpayne.nro",
+        "nroPath": "maxpayne.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/maxpayne/x_data.ras",
+            "description": "Instalación de PC de Max Payne 1 (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/maxpayne/x_music.ras",
+            "description": "Instalación de PC de Max Payne 1 (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/maxpayne/x_english.ras",
+            "description": "Instalación de PC de Max Payne 1 (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Star Wars: Dark Forces (The Force Engine - TFE)",
+      "project": "LuciusDXL / fgsfds",
+      "repository": "LuciusDXL/TheForceEngine",
+      "repositorySource": "github",
+      "folderName": "tfe",
+      "tags": [
+        "source_port",
+        "pc",
+        "fps"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos de Star Wars: Dark Forces (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id star_wars_dark_forces_tfe). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_file_copy. Datos del usuario: Archivos de Star Wars: Dark Forces (GOG / Steam). Reemplazo moderno del motor Jedi con renderizado 3D real y resolución panorámica. Icono de reserva propuesto en el maestro: romfs:/icons/star_wars_dark_forces_tfe.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Star%20Wars%3A%20Dark%20Forces) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Star%20Wars%3A%20Dark%20Forces",
+      "switch": {
+        "homeDir": "/switch/tfe",
+        "targetDir": "/switch/tfe",
+        "nro": "tfe.nro",
+        "nroPath": "tfe.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/tfe/DARK.GOB",
+            "description": "Archivos de Star Wars: Dark Forces (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/tfe/SOUNDS.GOB",
+            "description": "Archivos de Star Wars: Dark Forces (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Star Wars Jedi Knight: Jedi Outcast & Jedi Academy (OpenJK)",
+      "project": "JACoders / fgsfds",
+      "repository": "JACoders/OpenJK",
+      "repositorySource": "github",
+      "folderName": "openjk",
+      "tags": [
+        "source_port",
+        "pc",
+        "acción / sable de luz"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Jedi Outcast / Jedi Academy",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id star_wars_jedi_knight_openjk). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de Jedi Outcast / Jedi Academy. Combates con sable de luz a 60 FPS con soporte completo de mods de la comunidad. Icono de reserva propuesto en el maestro: romfs:/icons/star_wars_jedi_knight_openjk.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Star%20Wars%20Jedi%20Knight%3A%20Jedi%20Outcast%20%26%20Jedi%20Academy) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Star%20Wars%20Jedi%20Knight%3A%20Jedi%20Outcast%20%26%20Jedi%20Academy",
+      "switch": {
+        "homeDir": "/switch/openjk",
+        "targetDir": "/switch/openjk",
+        "nro": "openjk.nro",
+        "nroPath": "openjk.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openjk/base/assets0.pk3",
+            "description": "Instalación de PC de Jedi Outcast / Jedi Academy"
+          },
+          {
+            "path": "sdmc:/switch/openjk/base/assets1.pk3",
+            "description": "Instalación de PC de Jedi Outcast / Jedi Academy"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Fallout 1 (Fallout-CE Switch)",
+      "project": "alexbatalov / ryandeering",
+      "repository": "ryandeering/fallout-ce-switch",
+      "repositorySource": "github",
+      "folderName": "fallout1",
+      "tags": [
+        "source_port",
+        "pc",
+        "rpg isométrico"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Fallout 1 (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id fallout_1_ce). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Fallout 1 (GOG / Steam). Soporte táctil nativo completo y compatibilidad de partidas guardadas con PC. Icono de reserva propuesto en el maestro: romfs:/icons/fallout_1_ce.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Fallout%201) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Fallout%201",
+      "switch": {
+        "homeDir": "/switch/fallout1",
+        "targetDir": "/switch/fallout1",
+        "nro": "fallout-ce.nro",
+        "nroPath": "fallout-ce.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/fallout1/master.dat",
+            "description": "Fallout 1 (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/fallout1/critter.dat",
+            "description": "Fallout 1 (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/fallout1/data/",
+            "description": "Fallout 1 (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Fallout 2 (Fallout 2-CE Switch)",
+      "project": "alexbatalov / ryandeering",
+      "repository": "ryandeering/fallout2-ce-switch",
+      "repositorySource": "github",
+      "folderName": "fallout2",
+      "tags": [
+        "source_port",
+        "pc",
+        "rpg isométrico"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Fallout 2 (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id fallout_2_ce). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Fallout 2 (GOG / Steam). Misma arquitectura Community Edition que Fallout 1, optimizado para Joy-Con. Icono de reserva propuesto en el maestro: romfs:/icons/fallout_2_ce.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Fallout%202) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Fallout%202",
+      "switch": {
+        "homeDir": "/switch/fallout2",
+        "targetDir": "/switch/fallout2",
+        "nro": "fallout2-ce.nro",
+        "nroPath": "fallout2-ce.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/fallout2/master.dat",
+            "description": "Fallout 2 (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/fallout2/critter.dat",
+            "description": "Fallout 2 (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/fallout2/data/",
+            "description": "Fallout 2 (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Elder Scrolls II: Daggerfall (Daggerfall Unity)",
+      "project": "Interkarma / ChanseyIsTheBest",
+      "repository": "ChanseyIsTheBest/daggerfall_nx",
+      "repositorySource": "github",
+      "folderName": "daggerfall",
+      "tags": [
+        "source_port",
+        "pc",
+        "rpg en 1ª persona"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Daggerfall gratis de Bethesda o GOG",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id tes_daggerfall_unity). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Daggerfall gratis de Bethesda o GOG. Recreación del motor en Unity con controles analógicos modernos y distancia visual épica. Icono de reserva propuesto en el maestro: romfs:/icons/tes_daggerfall_unity.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Elder%20Scrolls%20II%3A%20Daggerfall) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Elder%20Scrolls%20II%3A%20Daggerfall",
+      "switch": {
+        "homeDir": "/switch/daggerfall",
+        "targetDir": "/switch/daggerfall",
+        "nro": "daggerfall.nro",
+        "nroPath": "daggerfall.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/daggerfall/arena2/",
+            "description": "Daggerfall gratis de Bethesda o GOG"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Elder Scrolls III: Morrowind (OpenMW-Switch)",
+      "project": "OpenMW Team",
+      "repository": "OpenMW/openmw",
+      "repositorySource": "github",
+      "folderName": "openmw",
+      "tags": [
+        "source_port",
+        "pc",
+        "rpg en 1ª persona"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Morrowind Game of the Year Edition (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id tes_morrowind_openmw). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Morrowind Game of the Year Edition (Steam / GOG). Motor C++ libre que reemplaza el motor de Bethesda. Soporta mods y expansiones Bloodmoon/Tribunal. Icono de reserva propuesto en el maestro: romfs:/icons/tes_morrowind_openmw.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Elder%20Scrolls%20III%3A%20Morrowind) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Elder%20Scrolls%20III%3A%20Morrowind",
+      "switch": {
+        "homeDir": "/switch/openmw",
+        "targetDir": "/switch/openmw",
+        "nro": "openmw.nro",
+        "nroPath": "openmw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openmw/Data Files/Morrowind.esm",
+            "description": "Morrowind Game of the Year Edition (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/openmw/Data Files/Morrowind.bsa",
+            "description": "Morrowind Game of the Year Edition (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RollerCoaster Tycoon 1 & 2 (OpenRCT2)",
+      "project": "OpenRCT2 Team",
+      "repository": "OpenRCT2/OpenRCT2",
+      "repositorySource": "github",
+      "folderName": "openrct2",
+      "tags": [
+        "source_port",
+        "pc",
+        "simulación / gestión"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "RollerCoaster Tycoon 2 Triple Thrill Pack (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id rct2_openrct2). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: RollerCoaster Tycoon 2 Triple Thrill Pack (GOG / Steam). Soporte táctil preciso y cursor analógico virtual; añade multijugador online. Icono de reserva propuesto en el maestro: romfs:/icons/rct2_openrct2.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/RollerCoaster%20Tycoon%201%20%26%202) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/RollerCoaster%20Tycoon%201%20%26%202",
+      "switch": {
+        "homeDir": "/switch/openrct2",
+        "targetDir": "/switch/openrct2",
+        "nro": "openrct2.nro",
+        "nroPath": "openrct2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openrct2/Data/",
+            "description": "RollerCoaster Tycoon 2 Triple Thrill Pack (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/openrct2/ObjData/",
+            "description": "RollerCoaster Tycoon 2 Triple Thrill Pack (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/openrct2/Scenarios/",
+            "description": "RollerCoaster Tycoon 2 Triple Thrill Pack (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Transport Tycoon Deluxe (OpenTTD)",
+      "project": "OpenTTD Team",
+      "repository": "OpenTTD/OpenTTD",
+      "repositorySource": "github",
+      "folderName": "openttd",
+      "tags": [
+        "source_port",
+        "pc",
+        "simulación / gestión"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Assets libres OpenGFX o archivos originales de TTD",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id transport_tycoon_openttd). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: standalone_or_assets. Datos del usuario: Assets libres OpenGFX o archivos originales de TTD. Funciona con assets abiertos incluidos o con los clásicos de DOS/Windows. Icono de reserva propuesto en el maestro: romfs:/icons/transport_tycoon_openttd.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Transport%20Tycoon%20Deluxe) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Transport%20Tycoon%20Deluxe",
+      "switch": {
+        "homeDir": "/switch/openttd",
+        "targetDir": "/switch/openttd",
+        "nro": "openttd.nro",
+        "nroPath": "openttd.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openttd/baseset/",
+            "description": "Assets libres OpenGFX o archivos originales de TTD"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Caesar III (Julius / Augustus)",
+      "project": "bvschaik",
+      "repository": "bvschaik/julius",
+      "repositorySource": "github",
+      "folderName": "julius",
+      "tags": [
+        "source_port",
+        "pc",
+        "estrategia / ciudad"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de Caesar III (GOG / Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id caesar_3_julius_augustus). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de Caesar III (GOG / Steam). Soporte panorámico para resoluciones de Switch, controles táctiles y atajos de construcción. Icono de reserva propuesto en el maestro: romfs:/icons/caesar_3_julius_augustus.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Caesar%20III) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Caesar%20III",
+      "switch": {
+        "homeDir": "/switch/julius",
+        "targetDir": "/switch/julius",
+        "nro": "julius.nro",
+        "nroPath": "julius.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/julius/c3.dat",
+            "description": "Instalación de Caesar III (GOG / Steam)"
+          },
+          {
+            "path": "sdmc:/switch/julius/c3.map",
+            "description": "Instalación de Caesar III (GOG / Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Theme Hospital (CorsixTH)",
+      "project": "CorsixTH Team",
+      "repository": "CorsixTH/CorsixTH",
+      "repositorySource": "github",
+      "folderName": "corsixth",
+      "tags": [
+        "source_port",
+        "pc",
+        "simulación / gestión"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Theme Hospital (GOG / Origin)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id theme_hospital_corsixth). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Theme Hospital (GOG / Origin). Reimplementación moderna en C++/Lua con pantalla en alta resolución y soporte de ratón/táctil. Icono de reserva propuesto en el maestro: romfs:/icons/theme_hospital_corsixth.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Theme%20Hospital) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Theme%20Hospital",
+      "switch": {
+        "homeDir": "/switch/corsixth",
+        "targetDir": "/switch/corsixth",
+        "nro": "corsixth.nro",
+        "nroPath": "corsixth.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/corsixth/HOSP/",
+            "description": "Theme Hospital (GOG / Origin)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Command & Conquer: Tiberian Dawn & Red Alert (Vanilla-Conquer)",
+      "project": "TheAssemblyProject / capsterx-switch",
+      "repository": "capsterx-switch/Vanilla-Conquer",
+      "repositorySource": "github",
+      "folderName": "vanillaconquer",
+      "tags": [
+        "source_port",
+        "pc",
+        "estrategia en tiempo real (rts)"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Discos originales o C&C Remastered Collection",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id command_and_conquer_vanilla). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Discos originales o C&C Remastered Collection. Motor multiplataforma limpio; soporte para pantalla táctil y ratón USB. Icono de reserva propuesto en el maestro: romfs:/icons/command_and_conquer_vanilla.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Command%20%26%20Conquer%3A%20Tiberian%20Dawn%20%26%20Red%20Alert) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Command%20%26%20Conquer%3A%20Tiberian%20Dawn%20%26%20Red%20Alert",
+      "switch": {
+        "homeDir": "/switch/vanillaconquer",
+        "targetDir": "/switch/vanillaconquer",
+        "nro": "vanillaconquer.nro",
+        "nroPath": "vanillaconquer.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/vanillaconquer/*.MIX",
+            "description": "Discos originales o C&C Remastered Collection"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Dune II: Battle for Arrakis (OpenDUNE)",
+      "project": "OpenDUNE Team",
+      "repository": "OpenDUNE/OpenDUNE",
+      "repositorySource": "github",
+      "folderName": "opendune",
+      "tags": [
+        "source_port",
+        "pc",
+        "estrategia en tiempo real (rts)"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos originales de Dune II de DOS",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id dune_2_opendune). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Archivos originales de Dune II de DOS. Recreación exacta del primer RTS moderno con interfaz adaptada. Icono de reserva propuesto en el maestro: romfs:/icons/dune_2_opendune.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Dune%20II%3A%20Battle%20for%20Arrakis) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Dune%20II%3A%20Battle%20for%20Arrakis",
+      "switch": {
+        "homeDir": "/switch/opendune",
+        "targetDir": "/switch/opendune",
+        "nro": "opendune.nro",
+        "nroPath": "opendune.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/opendune/DUNE.PAK",
+            "description": "Archivos originales de Dune II de DOS"
+          },
+          {
+            "path": "sdmc:/switch/opendune/SCENARIO.PAK",
+            "description": "Archivos originales de Dune II de DOS"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Heroes of Might and Magic II (fheroes2)",
+      "project": "ihhub",
+      "repository": "ihhub/fheroes2",
+      "repositorySource": "github",
+      "folderName": "fheroes2",
+      "tags": [
+        "source_port",
+        "pc",
+        "estrategia por turnos"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Heroes of Might and Magic II (GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id heroes_of_might_magic_2_fheroes2). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Heroes of Might and Magic II (GOG). Motor C++ reescrito con mejoras de calidad de vida épicas, resoluciones HD y controles Joy-Con. Icono de reserva propuesto en el maestro: romfs:/icons/heroes_of_might_magic_2_fheroes2.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Heroes%20of%20Might%20and%20Magic%20II) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Heroes%20of%20Might%20and%20Magic%20II",
+      "switch": {
+        "homeDir": "/switch/fheroes2",
+        "targetDir": "/switch/fheroes2",
+        "nro": "fheroes2.nro",
+        "nroPath": "fheroes2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/fheroes2/DATA/",
+            "description": "Heroes of Might and Magic II (GOG)"
+          },
+          {
+            "path": "sdmc:/switch/fheroes2/MAPS/",
+            "description": "Heroes of Might and Magic II (GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Heroes of Might and Magic III (VCMI)",
+      "project": "vcmi team",
+      "repository": "vcmi/vcmi",
+      "repositorySource": "github",
+      "folderName": "vcmi",
+      "tags": [
+        "source_port",
+        "pc",
+        "estrategia por turnos"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "HoMM 3 Complete (GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id heroes_of_might_magic_3_vcmi). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: HoMM 3 Complete (GOG). Soporta pantallas panorámicas, la expansión Horn of the Abyss y mods de comunidad. Icono de reserva propuesto en el maestro: romfs:/icons/heroes_of_might_magic_3_vcmi.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Heroes%20of%20Might%20and%20Magic%20III) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Heroes%20of%20Might%20and%20Magic%20III",
+      "switch": {
+        "homeDir": "/switch/vcmi",
+        "targetDir": "/switch/vcmi",
+        "nro": "vcmi.nro",
+        "nroPath": "vcmi.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/vcmi/Data/",
+            "description": "HoMM 3 Complete (GOG)"
+          },
+          {
+            "path": "sdmc:/switch/vcmi/Maps/",
+            "description": "HoMM 3 Complete (GOG)"
+          },
+          {
+            "path": "sdmc:/switch/vcmi/Mp3/",
+            "description": "HoMM 3 Complete (GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Chris Sawyer's Locomotion (OpenLoco)",
+      "project": "OpenLoco Team",
+      "repository": "OpenLoco/OpenLoco",
+      "repositorySource": "github",
+      "folderName": "openloco",
+      "tags": [
+        "source_port",
+        "pc",
+        "simulación / transporte"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Chris Sawyer's Locomotion (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id chris_sawyers_locomotion_openloco). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Chris Sawyer's Locomotion (Steam / GOG). Descompilación inversa del sucesor espiritual de Transport Tycoon. Icono de reserva propuesto en el maestro: romfs:/icons/chris_sawyers_locomotion_openloco.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Chris%20Sawyer%27s%20Locomotion) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Chris%20Sawyer%27s%20Locomotion",
+      "switch": {
+        "homeDir": "/switch/openloco",
+        "targetDir": "/switch/openloco",
+        "nro": "openloco.nro",
+        "nroPath": "openloco.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openloco/Data/",
+            "description": "Chris Sawyer's Locomotion (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/openloco/ObjData/",
+            "description": "Chris Sawyer's Locomotion (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Re-Volt (RVGL-NX)",
+      "project": "Huki / ChanseyIsTheBest",
+      "repository": "ChanseyIsTheBest/revolt_nx",
+      "repositorySource": "github",
+      "folderName": "rvgl",
+      "tags": [
+        "source_port",
+        "pc",
+        "carreras rc"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de Re-Volt",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id revolt_rvgl). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de Re-Volt. Motor moderno multiplataforma con físicas pulidas, 60 FPS y shaders modernos. Icono de reserva propuesto en el maestro: romfs:/icons/revolt_rvgl.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Re-Volt) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Re-Volt",
+      "switch": {
+        "homeDir": "/switch/rvgl",
+        "targetDir": "/switch/rvgl",
+        "nro": "rvgl.nro",
+        "nroPath": "rvgl.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/rvgl/cars/",
+            "description": "Instalación de PC de Re-Volt"
+          },
+          {
+            "path": "sdmc:/switch/rvgl/levels/",
+            "description": "Instalación de PC de Re-Volt"
+          },
+          {
+            "path": "sdmc:/switch/rvgl/sound/",
+            "description": "Instalación de PC de Re-Volt"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Oddworld: Abe's Oddysee & Exoddus (R.E.L.I.V.E.)",
+      "project": "AliveTeam",
+      "repository": "AliveTeam/alive_reversing",
+      "repositorySource": "github",
+      "folderName": "relive",
+      "tags": [
+        "decomp",
+        "pc / ps1",
+        "plataformas cinemático"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Oddworld: Abe's Oddysee / Exoddus (Steam / GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id oddworld_relive). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Oddworld: Abe's Oddysee / Exoddus (Steam / GOG). Motor C++ reescrito que elimina los bugs del ejecutable antiguo de Windows y escala perfecto a 720p/1080p. Icono de reserva propuesto en el maestro: romfs:/icons/oddworld_relive.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Oddworld%3A%20Abe%27s%20Oddysee%20%26%20Exoddus) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Oddworld%3A%20Abe%27s%20Oddysee%20%26%20Exoddus",
+      "switch": {
+        "homeDir": "/switch/relive",
+        "targetDir": "/switch/relive",
+        "nro": "relive.nro",
+        "nroPath": "relive.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/relive/*.lvl",
+            "description": "Oddworld: Abe's Oddysee / Exoddus (Steam / GOG)"
+          },
+          {
+            "path": "sdmc:/switch/relive/*.cam",
+            "description": "Oddworld: Abe's Oddysee / Exoddus (Steam / GOG)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Grand Theft Auto III (re3)",
+      "project": "GTAmodding / mariob0y",
+      "repository": "mariob0y/gta3-nx",
+      "repositorySource": "github",
+      "folderName": "re3",
+      "tags": [
+        "decomp",
+        "pc / ps2",
+        "acción / sandbox"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de GTA III",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id gta_3_re3). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de GTA III. Ingeniería inversa de RenderWare. 60 FPS, widescreen y tiempos de carga nulos. Icono de reserva propuesto en el maestro: romfs:/icons/gta_3_re3.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%20III) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%20III",
+      "switch": {
+        "homeDir": "/switch/re3",
+        "targetDir": "/switch/re3",
+        "nro": "re3.nro",
+        "nroPath": "re3.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/re3/audio/",
+            "description": "Instalación de PC de GTA III"
+          },
+          {
+            "path": "sdmc:/switch/re3/models/",
+            "description": "Instalación de PC de GTA III"
+          },
+          {
+            "path": "sdmc:/switch/re3/data/",
+            "description": "Instalación de PC de GTA III"
+          },
+          {
+            "path": "sdmc:/switch/re3/txd/",
+            "description": "Instalación de PC de GTA III"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Grand Theft Auto: Vice City (reVC)",
+      "project": "GTAmodding / mariob0y",
+      "repository": "mariob0y/reVC-nx",
+      "repositorySource": "github",
+      "folderName": "reVC",
+      "tags": [
+        "decomp",
+        "pc / ps2",
+        "acción / sandbox"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC de GTA Vice City",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id gta_vc_revc). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: pc_folder_copy. Datos del usuario: Instalación de PC de GTA Vice City. Misma tecnología re3, con soporte para todas las estaciones de radio y mapeo moderno. Icono de reserva propuesto en el maestro: romfs:/icons/gta_vc_revc.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%3A%20Vice%20City) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%3A%20Vice%20City",
+      "switch": {
+        "homeDir": "/switch/reVC",
+        "targetDir": "/switch/reVC",
+        "nro": "reVC.nro",
+        "nroPath": "reVC.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/reVC/audio/",
+            "description": "Instalación de PC de GTA Vice City"
+          },
+          {
+            "path": "sdmc:/switch/reVC/models/",
+            "description": "Instalación de PC de GTA Vice City"
+          },
+          {
+            "path": "sdmc:/switch/reVC/data/",
+            "description": "Instalación de PC de GTA Vice City"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Grand Theft Auto: San Andreas (gtasa_nx)",
+      "project": "NaGaa95 / Graber",
+      "repository": "NaGaa95/gtasa_nx",
+      "repositorySource": "github",
+      "folderName": "gtasa",
+      "tags": [
+        "native_wrapper",
+        "android / pc",
+        "acción / sandbox"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "APK y datos OBB oficiales de GTA San Andreas Android",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id gta_sa_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: apk_extract. Datos del usuario: APK y datos OBB oficiales de GTA San Andreas Android. Traducción ARM64 directa a Horizon OS con mejor rendimiento que la Trilogy oficial. Icono de reserva propuesto en el maestro: romfs:/icons/gta_sa_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%3A%20San%20Andreas) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%3A%20San%20Andreas",
+      "switch": {
+        "homeDir": "/switch/gtasa",
+        "targetDir": "/switch/gtasa",
+        "nro": "gtasa.nro",
+        "nroPath": "gtasa.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/gtasa/libGTASA.so",
+            "description": "APK y datos OBB oficiales de GTA San Andreas Android"
+          },
+          {
+            "path": "sdmc:/switch/gtasa/data/",
+            "description": "APK y datos OBB oficiales de GTA San Andreas Android"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic the Hedgehog 1 (Retro Engine)",
+      "project": "Rubberduckycooly",
+      "repository": "Rubberduckycooly/Sonic-1-2-2013-Decompilation",
+      "repositorySource": "github",
+      "folderName": "sonic1",
+      "tags": [
+        "decomp",
+        "sega mega drive / móvil",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivo Data.rsdk de la versión móvil o remake",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_1_rsdk). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: file_copy. Datos del usuario: Archivo Data.rsdk de la versión móvil o remake. 60 FPS a 16:9 con Spin Dash y Tails/Knuckles jugables. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_1_rsdk.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%20%28USA%2C%20Europe%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/sonic1",
+        "targetDir": "/switch/sonic1",
+        "nro": "sonic1.nro",
+        "nroPath": "sonic1.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/sonic1/Data.rsdk",
+            "description": "Archivo Data.rsdk de la versión móvil o remake"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic the Hedgehog 2 (Retro Engine)",
+      "project": "Rubberduckycooly",
+      "repository": "Rubberduckycooly/Sonic-1-2-2013-Decompilation",
+      "repositorySource": "github",
+      "folderName": "sonic2",
+      "tags": [
+        "decomp",
+        "sega mega drive / móvil",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivo Data.rsdk de Sonic 2 (2013)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_2_rsdk). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: file_copy. Datos del usuario: Archivo Data.rsdk de Sonic 2 (2013). Incluye la zona oculta Hidden Palace Zone restaurada. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_2_rsdk.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%202%20%28World%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/sonic2",
+        "targetDir": "/switch/sonic2",
+        "nro": "sonic2.nro",
+        "nroPath": "sonic2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/sonic2/Data.rsdk",
+            "description": "Archivo Data.rsdk de Sonic 2 (2013)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic CD (Retro Engine)",
+      "project": "Rubberduckycooly",
+      "repository": "Rubberduckycooly/Sonic-CD-11-Decompilation",
+      "repositorySource": "github",
+      "folderName": "soniccd",
+      "tags": [
+        "decomp",
+        "sega cd / pc",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivo Data.rsdk de Sonic CD en Steam",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_cd_rsdk). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: file_copy. Datos del usuario: Archivo Data.rsdk de Sonic CD en Steam. Elección entre bandas sonoras japonesa y americana, 60 FPS panorámico. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_cd_rsdk.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_CD/master/Named_Boxarts/Sonic%20CD%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/soniccd",
+        "targetDir": "/switch/soniccd",
+        "nro": "soniccd.nro",
+        "nroPath": "soniccd.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/soniccd/Data.rsdk",
+            "description": "Archivo Data.rsdk de Sonic CD en Steam"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic Mania (RSDKv5-Decompilation)",
+      "project": "Rubberduckycooly",
+      "repository": "Rubberduckycooly/Sonic-Mania-Decompilation",
+      "repositorySource": "github",
+      "folderName": "sonicmania",
+      "tags": [
+        "decomp",
+        "pc",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Data.rsdk de Sonic Mania en Steam / Epic",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_mania_rsdk). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: file_copy. Datos del usuario: Data.rsdk de Sonic Mania en Steam / Epic. Permite cargar mods de GameBanana directamente en Switch sin alterar el juego base. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_mania_rsdk.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Sonic%20Mania) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Sonic%20Mania",
+      "switch": {
+        "homeDir": "/switch/sonicmania",
+        "targetDir": "/switch/sonicmania",
+        "nro": "sonicmania.nro",
+        "nroPath": "sonicmania.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/sonicmania/Data.rsdk",
+            "description": "Data.rsdk de Sonic Mania en Steam / Epic"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic 3 & Knuckles (Sonic 3 A.I.R.)",
+      "project": "Eukaryot / ultra-azu",
+      "repository": "Eukaryot/sonic3air",
+      "repositorySource": "github",
+      "folderName": "sonic3air",
+      "tags": [
+        "remaster_native",
+        "sega mega drive",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "ROM pura de Sonic 3 & Knuckles de Mega Drive (Steam)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id sonic_3_air). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: rom_extract. Datos del usuario: ROM pura de Sonic 3 & Knuckles de Mega Drive (Steam). Panorámico, animaciones fluidas, menús modernos y soporte masivo de mods. Icono de reserva propuesto en el maestro: romfs:/icons/sonic_3_air.png (romfs de Delanx todavía no lo incluye).",
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%203%20%28USA%29.png",
+      "artSource": null,
+      "switch": {
+        "homeDir": "/switch/sonic3air",
+        "targetDir": "/switch/sonic3air",
+        "nro": "sonic3air.nro",
+        "nroPath": "sonic3air.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/sonic3air/Sonic_Knuckles_wSonic3.bin",
+            "description": "ROM pura de Sonic 3 & Knuckles de Mega Drive (Steam)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sonic Robo Blast 2 (SRB2-NX)",
+      "project": "Sonic Team Junior / switch port team",
+      "repository": "carstene1ns/switch-srb2",
+      "repositorySource": "github",
+      "folderName": "srb2",
+      "tags": [
+        "standalone_engine",
+        "pc (motor doom)",
+        "plataformas 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Descarga gratuita oficial de SRB2",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id srb2_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: included_freeware. Datos del usuario: Descarga gratuita oficial de SRB2. Sonic Robo Blast 2; motor Doom modificado. Pendiente release de paquete NRO actualizado compatible con firmware reciente. Icono de reserva propuesto en el maestro: romfs:/icons/srb2_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Sonic%20Robo%20Blast%202) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Sonic%20Robo%20Blast%202",
+      "switch": {
+        "homeDir": "/switch/srb2",
+        "targetDir": "/switch/srb2",
+        "nro": "srb2.nro",
+        "nroPath": "srb2.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/srb2/srb2.pk3",
+            "description": "Descarga gratuita oficial de SRB2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Dr. Robotnik's Ring Racers (RingRacers-NX)",
+      "project": "Kart Krew / switch porter",
+      "repository": "switch-ports/ringracers-nx",
+      "repositorySource": "github",
+      "folderName": "ringracers",
+      "tags": [
+        "standalone_engine",
+        "pc (motor doom)",
+        "carreras kart"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Descarga gratuita oficial de Ring Racers",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id dr_robotnik_ring_racers). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: included_freeware. Datos del usuario: Descarga gratuita oficial de Ring Racers. Secuela masiva de SRB2Kart con cientos de pistas y juego multijugador local. Icono de reserva propuesto en el maestro: romfs:/icons/dr_robotnik_ring_racers.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Dr.%20Robotnik%27s%20Ring%20Racers) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Dr.%20Robotnik%27s%20Ring%20Racers",
+      "switch": {
+        "homeDir": "/switch/ringracers",
+        "targetDir": "/switch/ringracers",
+        "nro": "ringracers.nro",
+        "nroPath": "ringracers.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/ringracers/ringracers.pk3",
+            "description": "Descarga gratuita oficial de Ring Racers"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Another World / Out of This World (Raw-NX)",
+      "project": "cyxx / fgsfds",
+      "repository": "fgsfdsfgs/raw",
+      "repositorySource": "github",
+      "folderName": "raw",
+      "tags": [
+        "recreation",
+        "amiga / dos",
+        "aventura cinemática"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Versión DOS del clásico de Éric Chahi de 1991",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id another_world_raw). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Versión DOS del clásico de Éric Chahi de 1991. Intérprete perfecto de los vectores poligonales en pantalla completa. Icono de reserva propuesto en el maestro: romfs:/icons/another_world_raw.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Another%20World%20/%20Out%20of%20This%20World) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Another%20World%20/%20Out%20of%20This%20World",
+      "switch": {
+        "homeDir": "/switch/raw",
+        "targetDir": "/switch/raw",
+        "nro": "raw.nro",
+        "nroPath": "raw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/raw/banks/",
+            "description": "Versión DOS del clásico de Éric Chahi de 1991"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Flashback: The Quest for Identity (REminiscence-NX)",
+      "project": "cyxx",
+      "repository": "cyxx/REminiscence",
+      "repositorySource": "github",
+      "folderName": "reminiscence",
+      "tags": [
+        "recreation",
+        "amiga / dos",
+        "aventura cinemática"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos originales de Flashback para DOS",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id flashback_reminiscence). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Archivos originales de Flashback para DOS. Soporta pistas de audio mejoradas y cinemáticas originales a pantalla completa. Icono de reserva propuesto en el maestro: romfs:/icons/flashback_reminiscence.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Flashback%3A%20The%20Quest%20for%20Identity) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Flashback%3A%20The%20Quest%20for%20Identity",
+      "switch": {
+        "homeDir": "/switch/reminiscence",
+        "targetDir": "/switch/reminiscence",
+        "nro": "reminiscence.nro",
+        "nroPath": "reminiscence.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/reminiscence/DATA/",
+            "description": "Archivos originales de Flashback para DOS"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Heart of Darkness (Hode-NX)",
+      "project": "cyxx",
+      "repository": "cyxx/hode",
+      "repositorySource": "github",
+      "folderName": "hode",
+      "tags": [
+        "recreation",
+        "playstation / pc",
+        "aventura cinemática"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos de datos de Heart of Darkness de PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id heart_of_darkness_hode). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Archivos de datos de Heart of Darkness de PC. Reproducción fluida de cinemáticas y guardado automático por puntos de control. Icono de reserva propuesto en el maestro: romfs:/icons/heart_of_darkness_hode.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Heart%20of%20Darkness) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Heart%20of%20Darkness",
+      "switch": {
+        "homeDir": "/switch/hode",
+        "targetDir": "/switch/hode",
+        "nro": "hode.nro",
+        "nroPath": "hode.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/hode/hod.pck",
+            "description": "Archivos de datos de Heart of Darkness de PC"
+          },
+          {
+            "path": "sdmc:/switch/hode/*.lvl",
+            "description": "Archivos de datos de Heart of Darkness de PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Bermuda Syndrome (Bermuda-NX)",
+      "project": "cyxx",
+      "repository": "cyxx/bstone",
+      "repositorySource": "github",
+      "folderName": "bermuda",
+      "tags": [
+        "recreation",
+        "pc",
+        "aventura cinemática"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Bermuda Syndrome de PC",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id bermuda_syndrome_bs). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Bermuda Syndrome de PC. Aventura clásica estilo Flashback ambientada en la era jurásica. Icono de reserva propuesto en el maestro: romfs:/icons/bermuda_syndrome_bs.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Bermuda%20Syndrome) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Bermuda%20Syndrome",
+      "switch": {
+        "homeDir": "/switch/bermuda",
+        "targetDir": "/switch/bermuda",
+        "nro": "bermuda.nro",
+        "nroPath": "bermuda.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/bermuda/BERMUDA/",
+            "description": "Bermuda Syndrome de PC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Fade to Black (f2b-nx)",
+      "project": "cyxx",
+      "repository": "cyxx/f2b",
+      "repositorySource": "github",
+      "folderName": "f2b",
+      "tags": [
+        "recreation",
+        "pc / ps1",
+        "acción 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Secuela 3D de Flashback para DOS",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id fade_to_black_f2b). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Secuela 3D de Flashback para DOS. Controles modernos con stick analógico para el movimiento en tercera persona. Icono de reserva propuesto en el maestro: romfs:/icons/fade_to_black_f2b.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Fade%20to%20Black) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Fade%20to%20Black",
+      "switch": {
+        "homeDir": "/switch/f2b",
+        "targetDir": "/switch/f2b",
+        "nro": "f2b.nro",
+        "nroPath": "f2b.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/f2b/DATA/",
+            "description": "Secuela 3D de Flashback para DOS"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Little Big Adventure 1 & 2 (Twin-E NX)",
+      "project": "Twin-E Team",
+      "repository": "Twin-E/Twin-E",
+      "repositorySource": "github",
+      "folderName": "twine",
+      "tags": [
+        "source_port",
+        "pc",
+        "aventura isométrica"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "LBA 1 / LBA 2 (Twinsen's Odyssey) de GOG/Steam",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id little_big_adventure_twine). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: LBA 1 / LBA 2 (Twinsen's Odyssey) de GOG/Steam. Motor C++ que unifica ambas aventuras de Twinsen con soporte para mandos modernos. Icono de reserva propuesto en el maestro: romfs:/icons/little_big_adventure_twine.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Little%20Big%20Adventure%201%20%26%202) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Little%20Big%20Adventure%201%20%26%202",
+      "switch": {
+        "homeDir": "/switch/twine",
+        "targetDir": "/switch/twine",
+        "nro": "twine.nro",
+        "nroPath": "twine.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/twine/LBA/",
+            "description": "LBA 1 / LBA 2 (Twinsen's Odyssey) de GOG/Steam"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Jazz Jackrabbit (OpenJazzNX)",
+      "project": "AlisterT / KranKRival",
+      "repository": "KranKRival/OpenJazzNX",
+      "repositorySource": "github",
+      "folderName": "openjazz",
+      "tags": [
+        "recreation",
+        "pc (dos)",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Jazz Jackrabbit 1 (Shareware / Completo)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id jazz_jackrabbit_openjazz). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Jazz Jackrabbit 1 (Shareware / Completo). Pantalla completa panorámica, 60 FPS estables y soporte para todos los episodios. Icono de reserva propuesto en el maestro: romfs:/icons/jazz_jackrabbit_openjazz.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Jazz%20Jackrabbit) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Jazz%20Jackrabbit",
+      "switch": {
+        "homeDir": "/switch/openjazz",
+        "targetDir": "/switch/openjazz",
+        "nro": "openjazz.nro",
+        "nroPath": "openjazz.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openjazz/*.000",
+            "description": "Jazz Jackrabbit 1 (Shareware / Completo)"
+          },
+          {
+            "path": "sdmc:/switch/openjazz/*.001",
+            "description": "Jazz Jackrabbit 1 (Shareware / Completo)"
+          },
+          {
+            "path": "sdmc:/switch/openjazz/*.002",
+            "description": "Jazz Jackrabbit 1 (Shareware / Completo)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Captain Claw (OpenClaw-NX)",
+      "project": "pjasicek / switch porter",
+      "repository": "pjasicek/OpenClaw",
+      "repositorySource": "github",
+      "folderName": "openclaw",
+      "tags": [
+        "recreation",
+        "pc",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Captain Claw de PC (1997)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id captain_claw_openclaw). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Captain Claw de PC (1997). Resolución nativa HD y atajos para las armas secundarias en botones L/R. Icono de reserva propuesto en el maestro: romfs:/icons/captain_claw_openclaw.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Captain%20Claw) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Captain%20Claw",
+      "switch": {
+        "homeDir": "/switch/openclaw",
+        "targetDir": "/switch/openclaw",
+        "nro": "openclaw.nro",
+        "nroPath": "openclaw.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/openclaw/CLAW.REZ",
+            "description": "Captain Claw de PC (1997)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Abuse (abuse-nx)",
+      "project": "fgsfds",
+      "repository": "fgsfdsfgs/abuse",
+      "repositorySource": "github",
+      "folderName": "abuse",
+      "tags": [
+        "source_port",
+        "pc",
+        "acción / run & gun"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Abuse de PC (Shareware o Registrado)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id abuse_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Abuse de PC (Shareware o Registrado). Apuntado de 360 grados asignado al stick analógico derecho o pantalla táctil. Icono de reserva propuesto en el maestro: romfs:/icons/abuse_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Abuse) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Abuse",
+      "switch": {
+        "homeDir": "/switch/abuse",
+        "targetDir": "/switch/abuse",
+        "nro": "abuse.nro",
+        "nroPath": "abuse.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/abuse/abuse.dat",
+            "description": "Abuse de PC (Shareware o Registrado)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Commander Keen Episodios 1-6 (Commander Genius)",
+      "project": "Gerstrong",
+      "repository": "gerstrong/cgenius",
+      "repositorySource": "github",
+      "folderName": "cgenius",
+      "tags": [
+        "recreation",
+        "pc (dos)",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Episodios 1 a 6 de Commander Keen (id Software)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id commander_keen_cgenius). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Episodios 1 a 6 de Commander Keen (id Software). Filtros gráficos, música HQ opcional y guardado rápido. Icono de reserva propuesto en el maestro: romfs:/icons/commander_keen_cgenius.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Commander%20Keen%20Episodios%201-6) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Commander%20Keen%20Episodios%201-6",
+      "switch": {
+        "homeDir": "/switch/cgenius",
+        "targetDir": "/switch/cgenius",
+        "nro": "cgenius.nro",
+        "nroPath": "cgenius.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/cgenius/games/keen/",
+            "description": "Episodios 1 a 6 de Commander Keen (id Software)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tyrian 2000 (OpenTyrian-NX)",
+      "project": "opentyrian team",
+      "repository": "opentyrian/opentyrian",
+      "repositorySource": "github",
+      "folderName": "opentyrian",
+      "tags": [
+        "source_port",
+        "pc (dos)",
+        "shoot 'em up"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Assets gratuitos de Tyrian 2000 (Freeware)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id tyrian_2000_opentyrian). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: included_freeware. Datos del usuario: Assets gratuitos de Tyrian 2000 (Freeware). Soporta modo vertical (TATE) girando la consola Nintendo Switch. Icono de reserva propuesto en el maestro: romfs:/icons/tyrian_2000_opentyrian.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Tyrian%202000) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Tyrian%202000",
+      "switch": {
+        "homeDir": "/switch/opentyrian",
+        "targetDir": "/switch/opentyrian",
+        "nro": "opentyrian.nro",
+        "nroPath": "opentyrian.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/opentyrian/tyrian21/",
+            "description": "Assets gratuitos de Tyrian 2000 (Freeware)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Aquaria (Aquaria-NX)",
+      "project": "Bit-Blot / switch porter",
+      "repository": "AquariaOS/Aquaria",
+      "repositorySource": "github",
+      "folderName": "aquaria",
+      "tags": [
+        "source_port",
+        "pc",
+        "metroidvania"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Aquaria (Steam / GOG / Humble)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id aquaria_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Aquaria (Steam / GOG / Humble). Controles de nado fluidos con stick analógico y 60 FPS estables. Icono de reserva propuesto en el maestro: romfs:/icons/aquaria_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Aquaria) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Aquaria",
+      "switch": {
+        "homeDir": "/switch/aquaria",
+        "targetDir": "/switch/aquaria",
+        "nro": "aquaria.nro",
+        "nroPath": "aquaria.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/aquaria/data/",
+            "description": "Aquaria (Steam / GOG / Humble)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Celeste 64: Fragments of the Mountain",
+      "project": "Extremely OK Games / switch-celeste64",
+      "repository": "Mupen64Plus/celeste64-switch",
+      "repositorySource": "github",
+      "folderName": "celeste64",
+      "tags": [
+        "source_port",
+        "pc",
+        "plataformas 3d"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Versión oficial gratuita de Celeste 64 (Itch.io)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id celeste_64_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: included_freeware. Datos del usuario: Versión oficial gratuita de Celeste 64 (Itch.io). Juego 3D completo desarrollado por el equipo original de Celeste, port nativo C# / C++. Icono de reserva propuesto en el maestro: romfs:/icons/celeste_64_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Celeste%2064%3A%20Fragments%20of%20the%20Mountain) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Celeste%2064%3A%20Fragments%20of%20the%20Mountain",
+      "switch": {
+        "homeDir": "/switch/celeste64",
+        "targetDir": "/switch/celeste64",
+        "nro": "celeste64.nro",
+        "nroPath": "celeste64.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/celeste64/Content/",
+            "description": "Versión oficial gratuita de Celeste 64 (Itch.io)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Another Metroid 2 Remake (AM2R)",
+      "project": "AM2R Community / switch porter",
+      "repository": "AM2R-Community-Developers/AM2R-Autopatcher",
+      "repositorySource": "github",
+      "folderName": "am2r",
+      "tags": [
+        "native_wrapper",
+        "pc",
+        "metroidvania"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Instalación de PC parcheada a la versión comunitaria 1.5.x",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id am2r_switch). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: game_data. Datos del usuario: Instalación de PC parcheada a la versión comunitaria 1.5.x. El mejor remake de Metroid II corriendo de forma nativa a 60 FPS. Icono de reserva propuesto en el maestro: romfs:/icons/am2r_switch.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/Another%20Metroid%202%20Remake) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/Another%20Metroid%202%20Remake",
+      "switch": {
+        "homeDir": "/switch/am2r",
+        "targetDir": "/switch/am2r",
+        "nro": "am2r.nro",
+        "nroPath": "am2r.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/am2r/game.droid",
+            "description": "Instalación de PC parcheada a la versión comunitaria 1.5.x"
+          },
+          {
+            "path": "sdmc:/switch/am2r/audiogroup1.dat",
+            "description": "Instalación de PC parcheada a la versión comunitaria 1.5.x"
+          }
+        ]
+      }
+    },
+    {
+      "name": "3D Pinball for Windows - Space Cadet",
+      "project": "k4zmu2a",
+      "repository": "k4zmu2a/SpaceCadetPinball",
+      "repositorySource": "github",
+      "folderName": "pinball",
+      "tags": [
+        "decomp",
+        "windows nt/95",
+        "pinball"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivos originales de Windows 95/98/ME/2000/XP",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id space_cadet_pinball_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: included_or_windows. Datos del usuario: Archivos originales de Windows 95/98/ME/2000/XP. Descompilación inversa C++ con vibración háptica HD Rumble en los flippers. Icono de reserva propuesto en el maestro: romfs:/icons/space_cadet_pinball_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/3D%20Pinball%20for%20Windows%20-%20Space%20Cadet) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/3D%20Pinball%20for%20Windows%20-%20Space%20Cadet",
+      "switch": {
+        "homeDir": "/switch/pinball",
+        "targetDir": "/switch/pinball",
+        "nro": "pinball.nro",
+        "nroPath": "pinball.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/pinball/PINBALL.DAT",
+            "description": "Archivos originales de Windows 95/98/ME/2000/XP"
+          },
+          {
+            "path": "sdmc:/switch/pinball/sound/",
+            "description": "Archivos originales de Windows 95/98/ME/2000/XP"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VVVVVV (Make and Play)",
+      "project": "Terry Cavanagh",
+      "repository": "TerryCavanagh/VVVVVV",
+      "repositorySource": "github",
+      "folderName": "vvvvvv",
+      "tags": [
+        "decomp_source",
+        "pc",
+        "plataformas"
+      ],
+      "releaseAssetFilter": null,
+      "requirements": "Archivo data.zip de la versión comercial de PC (Steam/GOG)",
+      "switchProof": [],
+      "verified": false,
+      "harbourMasters": false,
+      "notes": "Importado del catálogo maestro (switch_ports_catalog.md, id vvvvvv_nx). PENDIENTE DE VERIFICAR: comprobar que el proyecto publique un asset .nro para Switch. targetDir = carpeta final (switch.homeDir) porque no se ha verificado el contenido del asset: correcto si el zip no trae el prefijo switch/; si lo trae, hay que cambiarlo a /. Tipo de asset declarado: file_copy. Datos del usuario: Archivo data.zip de la versión comercial de PC (Steam/GOG). Código fuente oficial liberado en C++. Cero input lag y 60 FPS fijos. Icono de reserva propuesto en el maestro: romfs:/icons/vvvvvv_nx.png (romfs de Delanx todavía no lo incluye). Carátula pendiente: el maestro apunta a una API de arte (https://www.steamgriddb.com/api/v2/search/autocomplete/VVVVVV) que no devuelve la imagen directamente, así que no se usa como appIconUrl.",
+      "appIconUrl": null,
+      "artSource": "https://www.steamgriddb.com/api/v2/search/autocomplete/VVVVVV",
+      "switch": {
+        "homeDir": "/switch/vvvvvv",
+        "targetDir": "/switch/vvvvvv",
+        "nro": "vvvvvv.nro",
+        "nroPath": "vvvvvv.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/vvvvvv/data.zip",
+            "description": "Archivo data.zip de la versión comercial de PC (Steam/GOG)"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+CompileFlags:
+  Add:
+    - -std=c++20
+    - -Isource
+    - -D__SWITCH__
+    - -DDELANX_VERSION="0.1.0"
+    - -Wno-unknown-pragmas
+    - -Wno-unused-parameter
+
+Diagnostics:
+  Suppress:
+    - pp_file_not_found

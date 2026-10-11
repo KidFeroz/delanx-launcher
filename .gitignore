@@ -1,0 +1,34 @@
+# artefactos de compilacion
+build/
+dist/
+*.nro
+*.nacp
+*.elf
+*.nso
+*.pfs0
+*.npdm
+*.map
+
+# paquetes generados
+Delanx-*-sdcard.zip
+
+# pruebas de host
+delanx-host-tests/
+# assets de release reales para las pruebas del instalador (se bajan con
+# tests/host/fetch_fixtures.py; los .zip/.7z generados los crea make_test_archives.py)
+tests/fixtures/assets/*.zip
+tests/fixtures/assets/*.7z
+
+# editor / sistema
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+__pycache__/
+*.pyc
+
+# archivos temporales de analisis y verificacion
+_tmp_*
+_verify_*
+
