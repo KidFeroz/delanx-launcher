@@ -27,7 +27,7 @@ INCLUDES	:=	source
 ROMFS		:=	romfs
 
 APP_TITLE	:=	Delanx
-APP_AUTHOR	:=	Delanx
+APP_AUTHOR	:=	KidFeroz
 APP_VERSION	:=	0.1.0
 ICON		:=	icon.jpg
 

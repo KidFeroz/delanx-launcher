@@ -24,7 +24,7 @@ DATA		:=	data
 INCLUDES	:=	. ../../source
 
 APP_TITLE	:=	Delanx SelfTest
-APP_AUTHOR	:=	Delanx
+APP_AUTHOR	:=	KidFeroz
 APP_VERSION	:=	0.1.0
 ICON		:=	../../icon.jpg
 

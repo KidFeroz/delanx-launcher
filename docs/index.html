@@ -141,7 +141,7 @@
               </div>
 
               <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                Una reimplementación nativa inspirada en el estándar de <strong>Quiver Launcher</strong> diseñada específicamente para Horizon OS (Nintendo Switch). Te permite instalar, organizar, verificar y actualizar ports legendarios de N64, PS1, PC, Arcade y más, con carátulas automáticas y sin fricción.
+                Un gestor y launcher nativo desarrollado para Horizon OS (Nintendo Switch), inspirado conceptualmente en el orden y catalogación de Quiver Launcher. Te permite instalar, organizar, verificar y ejecutar ports de N64, PS1, PC y retro, con carátulas automáticas y sin fricción.
               </p>
 
               <!-- Tags / Tech Stack -->
@@ -149,7 +149,7 @@
                 <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">C++ (88%)</span>
                 <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">libnx + SDL2</span>
                 <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">Horizon OS</span>
-                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-800">Quiver Schema</span>
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-800">JSON Abierto</span>
                 <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-800">SHA-256 Check</span>
               </div>
 
@@ -173,7 +173,7 @@
                   <i data-lucide="library" class="w-5 h-5 text-indigo-400 shrink-0 mt-0.5"></i>
                   <div>
                     <h4 class="font-semibold text-white">Catálogo Maestro 45+</h4>
-                    <p class="text-xs text-slate-400 mt-1">Ship of Harkinian, 2Ship, Ghostship, Banjo, Jak & Daxter, etc.</p>
+                    <p class="text-xs text-slate-400 mt-1">Ports nativos, adaptaciones de código y clásicos de consolas y PC.</p>
                   </div>
                 </div>
                 <div class="flex items-start gap-3 p-3 rounded-xl bg-[#0d1117] border border-ghBorder">
@@ -210,22 +210,23 @@
               <pre class="overflow-x-auto text-slate-400 leading-relaxed">
 sdmc:/
 ├── roms/
-│   ├── n64/       <span class="text-slate-500"># OoT, MM, SM64, DKR</span>
-│   ├── ps1/       <span class="text-slate-500"># Driver 2, Silent Hill</span>
-│   └── arcade/    <span class="text-slate-500"># Daytona USA</span>
+│   ├── cart/      <span class="text-slate-500"># .z64, .sfc, .gba</span>
+│   ├── disc/      <span class="text-slate-500"># .bin, .cue, .iso</span>
+│   └── data/      <span class="text-slate-500"># .wad, .pk3, .grp, .rcf</span>
 └── switch/
     ├── Delanx/
     │   ├── Delanx.nro
-    │   └── cache/ <span class="text-slate-500"># Miniaturas $0</span>
-    ├── shipofharkinian/
-    └── 2ship2harkinian/
+    │   └── cache/ <span class="text-slate-500"># Miniaturas (.png)</span>
+    └── custom_port/
+        ├── custom_port.nro
+        └── assets.otr  <span class="text-slate-500"># .otr, .o2r, .pak</span>
               </pre>
             </div>
 
             <div class="mt-6 p-4 rounded-xl bg-ghCard border border-ghBorder">
-              <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Compatibilidad apps.json</div>
+              <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Esquema Abierto apps.json</div>
               <p class="text-slate-300 text-xs">
-                Compatible bidireccionalmente con el ecosistema de Quiver Launcher para compartir bibliotecas sin perder compatibilidad en PC.
+                Utiliza un formato JSON tolerante para mantener bibliotecas ordenadas e intercambiables sin complicaciones.
               </p>
             </div>
           </div>
@@ -259,7 +260,7 @@ sdmc:/
               </div>
               <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">Activo</span>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">Delanx (QuiverNX)</h3>
+            <h3 class="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">Delanx (Switch Port Manager)</h3>
             <p class="text-sm text-slate-400 mt-2 leading-relaxed">
               Gestor y launcher nativo en C++ para Nintendo Switch de puertos, decompilaciones y recomps con catálogo verificado de más de 45 juegos.
             </p>
@@ -305,7 +306,7 @@ sdmc:/
             </div>
             <h3 class="text-xl font-bold text-slate-200">Próximas Herramientas Vibecodeadas</h3>
             <p class="text-sm text-slate-400 mt-2 leading-relaxed">
-              Nuevos scripts, sincronizadores de partidas entre PC y consola (estilo Moonlight/Sunshine), y automatizaciones para gaming retro en camino.
+              Nuevos scripts, sincronizadores de partidas entre PC y consola, y utilidades para gaming retro en camino.
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-ghBorder flex items-center justify-between text-slate-500 text-xs">
@@ -353,7 +354,7 @@ sdmc:/
       <div class="flex items-center gap-4">
         <a href="https://github.com/KidFeroz" class="hover:text-slate-300 transition-colors">GitHub</a>
         <a href="https://github.com/KidFeroz/Delanx" class="hover:text-slate-300 transition-colors">Delanx Repo</a>
-        <a href="https://github.com/KidFeroz/Delanx/blob/main/LICENSE" class="hover:text-slate-300 transition-colors">Licencia MIT</a>
+        <a href="https://github.com/KidFeroz/Delanx/blob/main/LICENSE" class="hover:text-slate-300 transition-colors">Licencia GPLv3</a>
       </div>
     </div>
   </footer>

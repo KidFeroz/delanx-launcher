@@ -1,22 +1,23 @@
 # Delanx — Homebrew Port & Decompilation Manager para Nintendo Switch
 
 [![Release](https://img.shields.io/badge/release-v0.1.0--experimental-blue.svg)](https://github.com/KidFeroz/Delanx/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Language](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=c%2B%2B)](https://en.cppreference.com/w/cpp/20)
 [![Platform](https://img.shields.io/badge/Platform-Nintendo%20Switch%20(Horizon%20OS)-E60012?logo=nintendoswitch)](https://github.com/switchbrew/libnx)
 [![Toolchain](https://img.shields.io/badge/Toolchain-devkitA64%20%2F%20libnx-E65C00)](https://devkitpro.org)
+[![Author](https://img.shields.io/badge/Author-KidFeroz-informational.svg?logo=github)](https://github.com/KidFeroz)
 [![Vibecoded with AI](https://img.shields.io/badge/developed%20with-AI%20%2F%20Vibecoding-8A2BE2.svg)](#-declaración-de-desarrollo-asistido-por-ia-vibecoding)
 
 **Delanx** es un gestor y cargador (*launcher*) nativo de alto rendimiento implementado en **C++20** para Nintendo Switch (Horizon OS). Su propósito es centralizar la catalogación, instalación, verificación criptográfica y ejecución de adaptaciones de código (*source ports*), decompilaciones (*decomps*) y recompilaciones estáticas (*recomps*) dentro del ecosistema homebrew.
 
-El proyecto implementa interoperabilidad a nivel de datos con el ecosistema de **Quiver Launcher**, reimplementando la lógica cliente en binario nativo AArch64 ante la ausencia de un runtime .NET sobre Horizon OS.
+Inspirado conceptualmente en la organización de catálogos de **Quiver Launcher**, Delanx es un desarrollo independiente hecho en binario nativo AArch64 (C++20) específicamente adaptado a las características de Nintendo Switch.
 
 > [!NOTE]
 > **Hecho por un entusiasta en casa con asistencia de IA (*Vibecoding*)**  
-> Este proyecto no nace de un laboratorio ni de una gran empresa: soy un apasionado del homebrew desarrollando y probando directamente en mi Nintendo Switch en casa, usando Inteligencia Artificial como copiloto para acelerar la programación en C++.
+> Este proyecto no nace de una persona experta: soy un apasionado del homebrew desarrollando y probando directamente en mi Nintendo Switch en casa, lamentablemente me considero solo orquestador con inteligencia artitificial para la programación en C++.
 > 
-> * 🎮 **Probado en consola real:** El código se compila y se testea directamente en mi propia consola y tarjeta SD en el día a día.
-> * 🤝 **100% abierto a aportes humanos:** Si programas en C++, conoces `libnx`/`SDL2` o quieres ayudar a pulir la arquitectura, ¡eres más que bienvenido! Las Pull Requests y revisiones humanas son súper apreciadas.
+> * 🎮 **Probado en consola real:** El código se compila y se testea directamente en mi consola.
+> * 🤝 **100% abierto a aportes humanos:** Si programas en C++, conoces `libnx`/`SDL2` o quieres ayudar a pulir la arquitectura, ¡eres más que bienvenido! Las Pull Requests y revisiones humanas son apreciadas.
 > * ✌️ **Buena vibra y respeto:** Entiendo perfectamente que a muchas personas no les agrada el *vibecoding* con IA y respeto totalmente esa postura. Solo pido esa misma tolerancia y respeto en los Issues y debates: las críticas técnicas y constructivas son bienvenidas, aquí estamos para sumar a la comunidad homebrew y pasarla bien. 🕹️
 
 ---
@@ -24,36 +25,36 @@ El proyecto implementa interoperabilidad a nivel de datos con el ecosistema de *
 ## 📌 Tabla de Contenidos
 
 - [Aviso de Desarrollo con IA](#-aviso-de-desarrollo-asistido-por-ia-vibecoding-y-auditoría-comunitaria)
-- [Motivación Técnica y Compatibilidad](#-motivación-técnica-y-compatibilidad)
+- [Motivación Técnica e Inspiración](#-motivación-técnica-e-inspiración)
 - [Arquitectura del Sistema](#-arquitectura-del-sistema)
 - [Características Principales](#-características-principales)
 - [Estructura en Tarjeta MicroSD](#-estructura-en-tarjeta-microsd)
 - [Compilación y Toolchain](#-compilación-y-toolchain)
 - [Batería de Pruebas y Auditoría](#-batería-de-pruebas-y-auditoría)
-- [Transparencia y Filosofía Vibecoding](#-transparencia-y-filosofía-vibecoding)
+- [De Entusiasta a Entusiasta: Vibecoding y Comunidad](#-de-entusiasta-a-entusiasta-vibecoding-y-comunidad)
 - [Guía para Contribuidores](#-guía-para-contribuidores)
 - [Licencia y Reconocimientos](#-licencia-y-reconocimientos)
 
 ---
 
-## ⚙️ Motivación Técnica y Compatibilidad
+## ⚙️ Motivación Técnica e Inspiración
 
-El software de escritorio *Quiver Launcher* opera sobre .NET 10 y Avalonia UI, tecnologías carentes de entorno de ejecución en Horizon OS. Delanx resuelve esto mediante:
+Delanx toma como inspiración el orden y la filosofía de catalogación de librerías de escritorio y el tener un repositorio para la Nintendo Switch donde el usuario pueda encontrar decomps de forma sencilla, como Quiver Launcher, pero reimaginada desde cero para ser un entorno nativo, rápido y autónomo en Horizon OS:
 
-1. **Reimplementación Nativa:** Código C++20 compilado directamente contra `libnx`, `SDL2` y bibliotecas portadas por `devkitPro`.
-2. **Inversión de Filtros de Plataforma:** Mientras que el catálogo central de Quiver excluye binarios etiquetados como `switch` para entornos de escritorio, Delanx consume dichos metadatos como marcador positivo de compatibilidad.
-3. **Persistencia No Destructiva (`apps.json` / `settings.json`):** Delanx preserva los esquemas de metadatos de Quiver, serializando y deserializando claves PascalCase sin alterar configuraciones de usuario existentes y añadiendo metadatos específicos bajo el objeto `"switch"`.
+1. **Desarrollo 100% Nativo:** Código C++20 compilado directamente contra `libnx`, `SDL2` y portlibs de `devkitPro` para un arranque instantáneo y uso mínimo de RAM en consola.
+2. **Esquema de Datos Flexible (`apps.json`):** Adopta un formato JSON tolerante y extensible, permitiendo compatibilidad opcional con bibliotecas existentes mientras gestiona los parámetros propios de Switch bajo el objeto `"switch"`.
+3. **Gestión Directa de Ports:** Diseñado específicamente para detectar ejecutables `.nro`, validar archivos de datos complementarios aportados por el usuario y ejecutar títulos sin depender de capas intermedias.
 
 ```json
 {
-  "name": "Ship of Harkinian",
-  "folderName": "shipofharkinian",
-  "installPath": "/switch/shipofharkinian",
+  "name": "Custom Port Example",
+  "folderName": "custom_port",
+  "installPath": "/switch/custom_port",
   "switch": {
-    "targetDir": "/switch/shipofharkinian",
-    "nro": "shipofharkinian.nro",
+    "targetDir": "/switch/custom_port",
+    "nro": "custom_port.nro",
     "requiredUserFiles": [
-      { "path": "sdmc:/switch/shipofharkinian/oot.otr", "present": true }
+      { "path": "sdmc:/switch/custom_port/assets.otr", "present": true }
     ]
   }
 }
@@ -81,7 +82,7 @@ source/
 ### Flujo de Ejecución e Intercambio de Contexto
 Delanx implementa el protocolo de encadenamiento binario de `libnx` (`envSetNextLoad`):
 1. El usuario selecciona un título verificado en la interfaz.
-2. Delanx comprueba los activos requeridos por el juego (ROMs/OTR/assets de usuario).
+2. Delanx comprueba los activos o datos requeridos por el ejecutable.
 3. Se invoca `envSetNextLoad(target_nro_path, target_argv)`.
 4. Delanx libera sus recursos (contexto SDL2, descriptores de archivos, buffers de red) y finaliza con código de salida limpio.
 5. El cargador del entorno (`hbmenu`, `Sphaira` o forwarder NSP) ejecuta de forma atómica el NRO objetivo.
@@ -90,7 +91,12 @@ Delanx implementa el protocolo de encadenamiento binario de `libnx` (`envSetNext
 
 ## 🚀 Características Principales
 
-* **Catálogo Maestro de 45+ Proyectos:** Base de datos validada con ports de Nintendo 64 (*Ship of Harkinian, 2Ship, Ghostship, Banjo, Paper Mario*), PlayStation (*Driver 2*), PC (*Jak & Daxter OpenGOAL, The Simpsons: Hit & Run*) y Arcade.
+* **Catálogo Maestro de 45+ Proyectos:** Base de datos validada con ports, decomps y adaptaciones de la comunidad.
+* **Compatibilidad de Formatos y Extensiones:** Detección y verificación de integridad para los formatos más extendidos del homebrew:
+  - **Ejecutables nativos:** `.nro`
+  - **Paquetes de assets / recomps:** `.otr`, `.o2r`, `.rcf`, `.wad`, `.pk3`, `.grp`, `.dat`, `.pak`
+  - **Archivos de imagen y ROMs base:** `.z64`, `.sfc`, `.gba`, `.bin`, `.cue`, `.iso`
+  - **Metadatos y configuración:** `.json`, `.ini`, `.cfg`
 * **Integridad Criptográfica:** Validación obligatoria por hash **SHA-256** de paquetes descargados frente a manifiestos de catálogo (*verified / unverified / blocked*).
 * **Mitigación de Vulnerabilidades de Descompresión:** Extractor de archivos basado en `libarchive` con validación estricta contra ataques de desbordamiento de rutas (*path traversal / zip-slip*).
 * **Arte y Carátulas a Costo Cero ($0):** Arquitectura híbrida que consume CDNs públicos sin API Keys:
@@ -107,23 +113,23 @@ Delanx estandariza la jerarquía de almacenamiento respetando las convenciones c
 
 ```text
 sdmc:/
-├── roms/                               # Repositorio de assets originales del usuario
-│   ├── n64/                            # ROMs .z64 (OoT, MM, SM64, etc.)
-│   ├── ps1/                            # Imágenes de disco (.bin / .cue)
-│   └── arcade/                         # ROMsets de emulación
+├── roms/                               # Depósito central de assets y ROMs base
+│   ├── cart/                           # Formatos de cartucho (.z64, .sfc, .gba)
+│   ├── disc/                           # Imágenes de disco (.bin / .cue / .iso)
+│   └── data/                           # Paquetes de datos y recursos (.wad, .pk3, .grp, .rcf)
 │
 └── switch/                             # Directorio estándar de aplicaciones Homebrew
     ├── Delanx/
     │   ├── Delanx.nro                  # Ejecutable principal
     │   ├── apps.json                   # Base de datos local de títulos instalados
     │   ├── settings.json               # Configuración persistente del usuario
-    │   ├── Cache/                      # Miniaturas descargadas y metadatos cacheados
+    │   ├── Cache/                      # Miniaturas descargadas (.png)
     │   └── delanx.log                  # Registro de diagnóstico en ejecución
     │
-    ├── shipofharkinian/                # Ejemplo: Puerto individual aislado
-    │   ├── shipofharkinian.nro
-    │   └── oot.otr
-    └── [resto_de_ports]/
+    ├── custom_port/                    # Ejemplo: Carpeta aislada de una app
+    │   ├── custom_port.nro             # Ejecutable NRO
+    │   └── assets.otr                  # Archivo de recursos requerido (.otr, .o2r, .pak, etc.)
+    └── [resto_de_apps]/
 ```
 
 ---
@@ -189,7 +195,7 @@ Validación de hardware sobre Horizon OS:
 
 ## 🤖 De Entusiasta a Entusiasta: Vibecoding y Comunidad
 
-Este proyecto está hecho por pura pasión por el homebrew y la preservación de videojuegos. Para poder construir un launcher completo en C++ sin pasar meses picando código repetitivo desde cero, me apoyé en agentes de IA (**Vibecoding**) como copilotos de programación.
+Este proyecto está hecho por pura pasión por el homebrew y la preservación de videojuegos. Para poder construir un launcher completo en C++ sin pasar meses picando código repetitivo desde cero, me apoyé en un agente de IA (**Vibecoding**) como copiloto de programación.
 
 ### Cómo se construye y prueba Delanx:
 1. **Desarrollo Asistido:** La IA ayuda a escribir la estructura, parsear JSON, enlazar librerías (`libcurl`, `libarchive`) y generar casos de prueba.
@@ -218,8 +224,8 @@ Agradecemos las contribuciones de la comunidad. Para mantener la robustez y cali
 
 ## 📄 Licencia y Reconocimientos
 
-Este software se distribuye bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Desarrollado y mantenido por **[KidFeroz](https://github.com/KidFeroz)**. Este software es libre y se distribuye bajo los términos de la licencia **GNU General Public License v3.0 (GPLv3)**. Consulta el archivo [LICENSE](LICENSE) para más detalles. Esta licencia garantiza que Delanx y cualquier fork o trabajo derivado permanezcan siempre libres y abiertos para la comunidad.
 
 * **devkitPro & Switchbrew:** Por la toolchain y la biblioteca `libnx`.
-* **Comunidad Quiver:** Por el diseño conceptual del catálogo y la especificación de esquemas.
+* **Inspiración:** Al proyecto Quiver Launcher por la inspiración conceptual en la organización de catálogos.
 * **Proyectos Decomp & Porting:** A todos los equipos de ingeniería inversa que hacen posible la preservación del software histórico en plataformas modernas.
