@@ -67,8 +67,8 @@ void App::draw_downloads_screen() {
   const std::vector<ListItem> updates = build_update_items();
   const std::string headline =
       updates.empty()
-          ? std::string("No hay actualizaciones pendientes")
-          : str::format("%lu apps con actualizacion disponible",
+          ? std::string(i18n::t("info.no_updates_pending"))
+          : str::format(i18n::t("info.apps_with_update"),
                         static_cast<unsigned long>(updates.size()));
   renderer_.draw_text(headline, origin_x + theme_.content_padding, origin_y + theme_.px(8),
                       updates.empty() ? theme_.text_muted : theme_.warning, theme_.font_body, !updates.empty());
@@ -77,7 +77,7 @@ void App::draw_downloads_screen() {
   int y = origin_y + theme_.px(40);
 
   if (updates.empty()) {
-    renderer_.draw_text("Pulsa X para comprobar las releases de las apps de tu biblioteca.",
+    renderer_.draw_text(i18n::t("info.press_x_check"),
                         origin_x + theme_.content_padding, y, theme_.text_dim, theme_.font_small);
     y += theme_.px(34);
   } else {
@@ -110,18 +110,18 @@ void App::draw_downloads_screen() {
     }
     y += std::min(static_cast<int>(updates.size()), max_rows) * row_h + theme_.px(8);
     if (static_cast<int>(updates.size()) > 5) {
-      renderer_.draw_text(str::format("y %lu mas...",
+      renderer_.draw_text(str::format(i18n::t("info.more_apps"),
                                       static_cast<unsigned long>(updates.size() - 5)),
                           origin_x + theme_.content_padding, y, theme_.text_muted, theme_.font_small);
       y += theme_.px(24);
     }
   }
 
-  renderer_.draw_text("Historial de esta sesion", origin_x + theme_.content_padding, y, theme_.text_dim,
+  renderer_.draw_text(i18n::t("info.session_history"), origin_x + theme_.content_padding, y, theme_.text_dim,
                       theme_.font_small, true);
   y += theme_.px(26);
   if (downloads_.empty()) {
-    renderer_.draw_text("Todavia no has instalado ni actualizado nada.", origin_x + theme_.content_padding, y,
+    renderer_.draw_text(i18n::t("info.no_history"), origin_x + theme_.content_padding, y,
                         theme_.text_muted, theme_.font_small);
   } else {
     for (size_t index = 0; index < downloads_.size() && index < 6; ++index) {
@@ -224,19 +224,16 @@ void App::check_updates() {
   }
   save_library();
   if (rate_limited && settings_.GitHubApiToken.empty()) {
-    open_dialog("GitHub ha limitado las peticiones",
-                str::format("Se comprobaron %d apps antes de agotar el limite de GitHub (60 peticiones "
-                            "por hora sin token).\n\nPuedes crear un token personal (sin permisos "
-                            "especiales) y pegarlo en Ajustes para subir el limite.",
-                            checked),
-                {DialogOption{"Abrir ajustes", [this]() {
+    open_dialog(i18n::t("dialog.rate_limit_title"),
+                str::format(i18n::t("dialog.rate_limit_body"), checked),
+                {DialogOption{i18n::t("btn.open_settings"), [this]() {
                    tab_ = Tab::Settings;
-                   focus_ = 9;  // fila del token de GitHub
+                   focus_ = 10;  // fila del token de GitHub
                  }},
-                 DialogOption{"Cerrar", nullptr}});
+                 DialogOption{i18n::t("btn.close"), nullptr}});
     return;
   }
-  toast(str::format("Comprobadas %d apps: %d con actualizacion", checked, updates));
+  toast(str::format(i18n::t("info.checked_updates"), checked, updates));
 }
 
 // ------------------------------------------------------------------ ajustes
@@ -410,7 +407,7 @@ void App::activate_settings_item() {
       settings_.DelanxTheme = currently_dark ? "light" : "dark";
       theme_ = settings_.is_dark() ? Theme::delanx_dark() : Theme::delanx_light();
       theme_.apply_scale(static_cast<float>(renderer_.width()) / 1280.0f);
-      toast(settings_.is_dark() ? "Tema oscuro activado" : "Tema claro activado");
+      toast(settings_.is_dark() ? i18n::t("toast.dark_theme") : i18n::t("toast.light_theme"));
       break;
     }
     case 8: {
@@ -433,7 +430,7 @@ void App::activate_settings_item() {
       std::string token;
       if (platform::text_input("Token de GitHub (vacio para borrar)", settings_.GitHubApiToken, &token, 128, true)) {
         settings_.GitHubApiToken = str::trim(token);
-        toast(settings_.GitHubApiToken.empty() ? "Token de GitHub borrado" : "Token de GitHub guardado");
+        toast(settings_.GitHubApiToken.empty() ? i18n::t("toast.github_token_cleared") : i18n::t("toast.github_token_saved"));
       }
       break;
     }
@@ -441,7 +438,7 @@ void App::activate_settings_item() {
       std::string token;
       if (platform::text_input("Token de GitLab (vacio para borrar)", settings_.GitLabApiToken, &token, 128, true)) {
         settings_.GitLabApiToken = str::trim(token);
-        toast(settings_.GitLabApiToken.empty() ? "Token de GitLab borrado" : "Token de GitLab guardado");
+        toast(settings_.GitLabApiToken.empty() ? i18n::t("toast.gitlab_token_cleared") : i18n::t("toast.gitlab_token_saved"));
       }
       break;
     }
@@ -449,19 +446,18 @@ void App::activate_settings_item() {
       check_updates();
       return;
     case 13:
-      open_dialog("Informacion de la consola",
-                  str::format("Firmware: %s\nOrigen de arranque: %s\nModo applet: %s\nMemoria: %s\nDatos: %s\n"
-                              "Catalogo local: %lu entradas\nCatalogo maestro: %lu entradas (sin verificar)\n"
-                              "MrShip / Ports: %lu entradas\n\n"
-                              "Delanx %s — launcher homebrew para Switch. Lee y escribe apps.json en el mismo "
-                              "formato que Quiver Launcher.",
+      open_dialog(i18n::t("dialog.system_info_title"),
+                  str::format("Firmware: %s\nBoot origin: %s\nApplet mode: %s\nMemory: %s\nRoot: %s\n"
+                              "Local catalog: %lu\nMaster catalog: %lu\n"
+                              "MrShip: %lu\n\n"
+                              "Delanx %s — Nintendo Switch Decomp & Homebrew Launcher.",
                               platform::firmware_version().c_str(), platform::boot_origin().c_str(),
                               yes_no(applet_mode_).c_str(), platform::heap_usage_human().c_str(),
                               paths::root().c_str(),
                               static_cast<unsigned long>(local_catalog_.entries.size()),
                               static_cast<unsigned long>(master_catalog_.entries.size()),
                               static_cast<unsigned long>(mrship_catalog_.entries.size()), DELANX_VERSION),
-                  {DialogOption{"Cerrar", nullptr}});
+                  {DialogOption{i18n::t("btn.close"), nullptr}});
       return;
     case 14:
       controller_test_open_ = true;
@@ -789,13 +785,12 @@ void App::install_app(int library_index, bool force_unverified) {
   }
 
   if (release.check == Release::Check::Blocked && settings_.DelanxConfirmBlockedReleases) {
-    show_confirm("Release bloqueada por Quiver",
-                 "Quiver ha marcado esta release como bloqueada. La verificacion del fichero puede fallar o "
-                 "el contenido puede ser problemático.\n\n" + asset_info,
-                 "Instalar de todas formas", [this, library_index, release, asset, expected]() {
-                   show_confirm("Confirmacion doble",
-                                "De verdad quieres instalar una release bloqueada sin comprobacion fiable?",
-                                "Si, instalar", [this, library_index, release, asset, expected]() {
+    show_confirm(i18n::t("dialog.blocked_title"),
+                 str::format(i18n::t("dialog.blocked_body"), asset_info.c_str()),
+                 i18n::t("btn.install_anyway"), [this, library_index, release, asset, expected]() {
+                   show_confirm(i18n::t("dialog.double_confirm_title"),
+                                i18n::t("dialog.double_confirm_body"),
+                                i18n::t("btn.yes_install"), [this, library_index, release, asset, expected]() {
                                   run_install(library_.apps[static_cast<size_t>(library_index)], release, asset,
                                               expected);
                                 });
@@ -804,12 +799,11 @@ void App::install_app(int library_index, bool force_unverified) {
   }
 
   if (release.check != Release::Check::Verified && !force_unverified) {
-    std::string body = "Quiver no ha verificado esta release, asi que el fichero se instalara sin comprobar "
-                       "contra un checksum conocido.\n\n" + asset_info;
+    std::string body = str::format(i18n::t("dialog.unverified_body"), asset_info.c_str());
     if (!release.check_reasons.empty()) {
-      body += "\n\nMotivo: " + release.check_reasons.front();
+      body += "\n\n" + std::string(i18n::t("dialog.reason_prefix")) + release.check_reasons.front();
     }
-    show_confirm("Release sin verificar", body, "Instalar igualmente",
+    show_confirm(i18n::t("dialog.unverified_title"), body, i18n::t("btn.install_anyway"),
                  [this, library_index, release, asset, expected]() {
                    run_install(library_.apps[static_cast<size_t>(library_index)], release, asset, expected);
                  });
@@ -1097,8 +1091,8 @@ void App::check_homebrew_update(const HomebrewAppInfo& hb) {
   end_busy();
 
   if (!ok) {
-    open_dialog("Comprobación de actualización",
-                "No se pudo consultar el repositorio " + hb.github_repo + ": " + error,
+    open_dialog(i18n::t("dialog.check_updates_err_title"),
+                str::format(i18n::t("dialog.check_updates_err_body"), hb.github_repo.c_str(), error.c_str()),
                 {DialogOption{i18n::t("btn.understood"), nullptr}});
     return;
   }

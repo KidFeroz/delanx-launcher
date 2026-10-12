@@ -3,6 +3,7 @@
 
 #include <cctype>
 
+#include "core/i18n.hpp"
 #include "core/paths.hpp"
 #include "core/strings.hpp"
 
@@ -236,7 +237,7 @@ AppEntry CatalogEntry::to_app_entry() const {
 std::string CatalogEntry::badge() const {
   if (mrship) return "MrShip";
   if (verified) return "Switch";
-  return "Sin verificar";
+  return i18n::t("badge.unverified");
 }
 
 // ---------------------------------------------------------------------------

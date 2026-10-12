@@ -87,6 +87,14 @@ const FolderSignature kSignatures[] = {
         {nullptr},
         {nullptr},
     },
+    {
+        "jak",
+        "jak-project",
+        {"jak", "daxter", "opengoal", "jak1", "jak2", nullptr},
+        {"jak.nro", "opengoal.nro", "gk.nro", "jak1.nro", nullptr},
+        {"game.iso", nullptr},
+        {"fildicio", "opengoal", nullptr},
+    },
 };
 
 // Comprueba si un directorio coincide con alguna firma de decompilacion

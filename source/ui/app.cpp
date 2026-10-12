@@ -184,6 +184,28 @@ void App::handle_input() {
   }
   handle_global_buttons();
   if (dialog_.open) {
+    if (input_.pressed(Btn::Touch)) {
+      const int px = input_.pointer_x();
+      const int py = input_.pointer_y();
+      for (const auto& opt : hit_dialog_options_) {
+        const SDL_Rect& r = opt.second;
+        if (px >= r.x && px < r.x + r.w && py >= r.y && py < r.y + r.h) {
+          const int idx = opt.first;
+          if (idx >= 0 && idx < static_cast<int>(dialog_.options.size())) {
+            auto action = dialog_.options[static_cast<size_t>(idx)].action;
+            close_dialog();
+            if (action) action();
+          }
+          return;
+        }
+      }
+      if (dialog_card_rect_.w > 0 &&
+          (px < dialog_card_rect_.x || px >= dialog_card_rect_.x + dialog_card_rect_.w ||
+           py < dialog_card_rect_.y || py >= dialog_card_rect_.y + dialog_card_rect_.h)) {
+        close_dialog();
+        return;
+      }
+    }
     if (input_.pressed(Btn::Up) || input_.nav_y() < 0) {
       dialog_.focus =
           (dialog_.focus + static_cast<int>(dialog_.options.size()) - 1) %
@@ -206,6 +228,31 @@ void App::handle_input() {
   }
 
   if (details_open_) {
+    if (input_.pressed(Btn::Touch)) {
+      const int px = input_.pointer_x();
+      const int py = input_.pointer_y();
+      for (const auto& hint_hit : hit_footer_hints_) {
+        const SDL_Rect& r = hint_hit.second;
+        if (px >= r.x && px < r.x + r.w && py >= r.y && py < r.y + r.h) {
+          const Btn b = hint_hit.first;
+          if (b == Btn::A) on_accept();
+          else if (b == Btn::X) on_secondary();
+          else if (b == Btn::Y) on_tertiary();
+          else if (b == Btn::B) {
+            details_open_ = false;
+            details_is_homebrew_ = false;
+          }
+          return;
+        }
+      }
+      if (details_card_rect_.w > 0 &&
+          (px < details_card_rect_.x || px >= details_card_rect_.x + details_card_rect_.w ||
+           py < details_card_rect_.y || py >= details_card_rect_.y + details_card_rect_.h)) {
+        details_open_ = false;
+        details_is_homebrew_ = false;
+        return;
+      }
+    }
     if (input_.pressed(Btn::B)) {
       details_open_ = false;
       details_is_homebrew_ = false;
@@ -220,7 +267,7 @@ void App::handle_input() {
     return;
   }
 
-  // Comprobacion tactil prioritaria de pestanas superiores y botones inferiores
+  // Comprobacion tactil prioritaria de pestanas superiores, filtros y botones inferiores
   if (input_.pressed(Btn::Touch)) {
     const int px = input_.pointer_x();
     const int py = input_.pointer_y();
@@ -240,8 +287,24 @@ void App::handle_input() {
       }
     }
 
-    // 2. Toque en indicadores de botones del pie (ejecutan la accion directa al
-    // primer tap)
+    // 2. Toque en chips de filtro (Biblioteca y Catalogo)
+    for (const auto &chip_hit : hit_filter_chips_) {
+      const SDL_Rect &r = chip_hit.second;
+      if (px >= r.x && px < r.x + r.w && py >= r.y && py < r.y + r.h) {
+        if (tab_ == Tab::Library) {
+          library_filter_ = chip_hit.first;
+          focus_ = 0;
+          scroll_ = 0;
+        } else if (tab_ == Tab::Catalog) {
+          catalog_show_favorites_ = (chip_hit.first == 1);
+          focus_ = 0;
+          scroll_ = 0;
+        }
+        return;
+      }
+    }
+
+    // 3. Toque en indicadores de botones del pie
     for (const auto &hint_hit : hit_footer_hints_) {
       const SDL_Rect &r = hint_hit.second;
       if (px >= r.x && px < r.x + r.w && py >= r.y && py < r.y + r.h) {
@@ -257,7 +320,9 @@ void App::handle_input() {
           on_secondary();
         else if (b == Btn::Y)
           on_tertiary();
-        else if (b == Btn::L) {
+        else if (b == Btn::L || b == Btn::R) {
+          open_search();
+        } else if (b == Btn::ZL) {
           int index = static_cast<int>(tab_) - 1;
           if (index < 0)
             index = static_cast<int>(Tab::Count) - 1;
@@ -265,7 +330,7 @@ void App::handle_input() {
           focus_ = 0;
           scroll_ = 0;
           in_tab_bar_ = false;
-        } else if (b == Btn::R) {
+        } else if (b == Btn::ZR) {
           int index =
               (static_cast<int>(tab_) + 1) % static_cast<int>(Tab::Count);
           tab_ = static_cast<Tab>(index);
@@ -273,9 +338,9 @@ void App::handle_input() {
           scroll_ = 0;
           in_tab_bar_ = false;
         } else if (b == Btn::Minus) {
-          show_confirm("Salir de Delanx",
-                       "¿Deseas salir y regresar al menú principal (hbmenu)?",
-                       "Salir", [this]() { input_.request_quit(); });
+          show_confirm(i18n::t("quit.title"),
+                       i18n::t("quit.body"),
+                       i18n::t("btn.exit"), [this]() { input_.request_quit(); });
         }
         return;
       }
@@ -409,7 +474,7 @@ void App::handle_input() {
       return;
     }
     if (dy != 0)
-      focus_ = std::clamp(focus_ + dy, 0, 12);
+      focus_ = std::clamp(focus_ + dy, 0, 14);
     if (input_.pressed(Btn::Touch)) {
       int hit = -1;
       for (const auto &target : hit_targets_) {
@@ -440,8 +505,9 @@ void App::handle_input() {
 }
 
 void App::handle_global_buttons() {
-  // L + R pulsados a la vez abren la busqueda
-  if ((input_.held(Btn::L) && input_.pressed(Btn::R)) ||
+  // L o R (o ambos a la vez) abren el buscador
+  if (input_.pressed(Btn::L) || input_.pressed(Btn::R) ||
+      (input_.held(Btn::L) && input_.pressed(Btn::R)) ||
       (input_.held(Btn::R) && input_.pressed(Btn::L))) {
     open_search();
     return;
@@ -449,13 +515,14 @@ void App::handle_global_buttons() {
 
   // Boton Menos (-) muestra confirmacion para salir al menu principal
   if (input_.pressed(Btn::Minus)) {
-    show_confirm("Salir de Delanx",
-                 "¿Deseas salir y regresar al menú principal (hbmenu)?",
-                 "Salir", [this]() { input_.request_quit(); });
+    show_confirm(i18n::t("quit.title"),
+                 i18n::t("quit.body"),
+                 i18n::t("btn.exit"), [this]() { input_.request_quit(); });
     return;
   }
 
-  if (input_.pressed(Btn::L)) {
+  // ZL y ZR cambian de pestaña (anterior y siguiente)
+  if (input_.pressed(Btn::ZL)) {
     int index = static_cast<int>(tab_) - 1;
     if (index < 0)
       index = static_cast<int>(Tab::Count) - 1;
@@ -464,7 +531,7 @@ void App::handle_global_buttons() {
     scroll_ = 0;
     hit_targets_.clear();
   }
-  if (input_.pressed(Btn::R)) {
+  if (input_.pressed(Btn::ZR)) {
     int index = (static_cast<int>(tab_) + 1) % static_cast<int>(Tab::Count);
     tab_ = static_cast<Tab>(index);
     focus_ = 0;
@@ -738,46 +805,46 @@ void App::draw_footer() {
 
   switch (tab_) {
   case Tab::Library:
-    add_hint(Btn::A, "Detalles / Lanzar");
-    add_hint(Btn::X, "Instalar / Actualizar");
-    add_hint(Btn::Y, "Filtro");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("hint.details_launch"));
+    add_hint(Btn::X, i18n::t("hint.install_update"));
+    add_hint(Btn::Y, i18n::t("btn.filter"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   case Tab::Catalog:
-    add_hint(Btn::A, "Añadir / Ver");
-    add_hint(Btn::X, "Favorito ★");
-    add_hint(Btn::Y, "Filtrar");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("hint.add_view"));
+    add_hint(Btn::X, i18n::t("btn.favorite"));
+    add_hint(Btn::Y, i18n::t("btn.filter"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   case Tab::MrShip:
-    add_hint(Btn::A, "Ficha / Instalar");
-    add_hint(Btn::Y, "Ayuda ROMs");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("hint.info_install"));
+    add_hint(Btn::Y, i18n::t("hint.rom_help"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   case Tab::Homebrew:
-    add_hint(Btn::A, "Lanzar Homebrew");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("hint.launch_hb"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   case Tab::Downloads:
-    add_hint(Btn::A, "Actualizar seleccion");
-    add_hint(Btn::Y, "Actualizar todo");
-    add_hint(Btn::X, "Buscar updates");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("hint.update_sel"));
+    add_hint(Btn::Y, i18n::t("hint.update_all"));
+    add_hint(Btn::X, i18n::t("hint.check_updates"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   case Tab::Settings:
-    add_hint(Btn::A, "Modificar");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("hint.modify"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   default:
-    add_hint(Btn::A, "Aceptar");
-    add_hint(Btn::B, "Atrás");
-    add_hint(Btn::Minus, "Salir");
+    add_hint(Btn::A, i18n::t("btn.accept"));
+    add_hint(Btn::B, i18n::t("btn.back"));
+    add_hint(Btn::Minus, i18n::t("btn.exit"));
     break;
   }
 
   // Estado y espacio libre en SD solo si hay espacio disponible
   const std::string free_str =
-      str::human_size(static_cast<uint64_t>(free_space_bytes())) + " libres";
+      str::human_size(static_cast<uint64_t>(free_space_bytes())) + " " + i18n::t("info.free");
   const int free_w = renderer_.text_width(free_str, theme_.font_small, false,
                                           FontFace::Condensed);
   const int right_bound = renderer_.width() - theme_.content_padding;
@@ -829,38 +896,60 @@ void App::draw_dialog() {
   renderer_.fill_rect(0, 0, renderer_.width(), overlay_h, theme_.overlay);
 
   const int width =
-      std::min(theme_.px(760), renderer_.width() - theme_.px(120));
-  const int body_lines = static_cast<int>(
-      renderer_.wrap_text(dialog_.body, theme_.font_body, width - theme_.px(56))
-          .size());
-  const int height =
-      theme_.px(120) +
-      body_lines * (renderer_.font_height(theme_.font_body) + 2) +
-      static_cast<int>(dialog_.options.size()) * theme_.px(46);
+      std::min(theme_.px(820), renderer_.width() - theme_.px(100));
+  const int content_inner_w = width - theme_.px(56);
+
+  const auto title_lines =
+      renderer_.wrap_text(dialog_.title, theme_.font_title, content_inner_w, true, FontFace::Brand);
+  const int title_line_h = renderer_.font_height(theme_.font_title, true, FontFace::Brand) + theme_.px(4);
+  const int title_h = std::max(1, static_cast<int>(title_lines.size())) * title_line_h;
+
+  const auto body_lines =
+      renderer_.wrap_text(dialog_.body, theme_.font_body, content_inner_w);
+  const int body_line_h = renderer_.font_height(theme_.font_body) + theme_.px(4);
+  const int body_h = static_cast<int>(body_lines.size()) * body_line_h;
+
+  const int options_h = static_cast<int>(dialog_.options.size()) * theme_.px(46);
+  const int height = theme_.px(44) + title_h + theme_.px(16) + body_h + theme_.px(22) + options_h + theme_.px(16);
+
   const int x = (renderer_.width() - width) / 2;
-  const int y = (renderer_.height() - height) / 2;
+  const int y = std::max(theme_.px(16), (renderer_.height() - height) / 2);
+
+  dialog_card_rect_ = SDL_Rect{x, y, width, height};
 
   renderer_.fill_round_rect(x, y, width, height, theme_.px(16), theme_.panel);
-  renderer_.stroke_round_rect(x, y, width, height, theme_.px(16), theme_.border,
-                              1);
-  renderer_.draw_text(dialog_.title, x + theme_.px(28), y + theme_.px(22),
-                      theme_.text, theme_.font_title, true);
-  renderer_.draw_text_wrapped(dialog_.body, x + theme_.px(28),
-                              y + theme_.px(64), theme_.text_dim,
-                              theme_.font_body, width - theme_.px(56));
+  renderer_.stroke_round_rect(x, y, width, height, theme_.px(16), theme_.border, 1);
 
-  int option_y = y + height -
-                 static_cast<int>(dialog_.options.size()) * theme_.px(46) -
-                 theme_.px(16);
+  // Titulo envuelto en multiples lineas si es necesario (sin desborde)
+  int cur_y = y + theme_.px(22);
+  for (const auto& tline : title_lines) {
+    renderer_.draw_text(tline, x + theme_.px(28), cur_y,
+                        theme_.text, theme_.font_title, true, FontFace::Brand);
+    cur_y += title_line_h;
+  }
+
+  cur_y += theme_.px(14);
+  for (const auto& bline : body_lines) {
+    renderer_.draw_text(bline, x + theme_.px(28), cur_y,
+                        theme_.text_dim, theme_.font_body, false);
+    cur_y += body_line_h;
+  }
+
+  hit_dialog_options_.clear();
+  int option_y = y + height - options_h - theme_.px(16);
   for (size_t index = 0; index < dialog_.options.size(); ++index) {
     const bool focused = static_cast<int>(index) == dialog_.focus;
     const int option_x = x + theme_.px(20);
     const int option_w = width - theme_.px(40);
+    hit_dialog_options_.push_back({static_cast<int>(index), SDL_Rect{option_x, option_y, option_w, theme_.px(40)}});
+
     if (focused) {
       renderer_.fill_round_rect(option_x, option_y, option_w, theme_.px(40),
                                 theme_.px(10), theme_.card_focus);
       renderer_.fill_round_rect(option_x, option_y, theme_.px(4), theme_.px(40),
                                 theme_.px(2), theme_.accent);
+      renderer_.stroke_round_rect(option_x, option_y, option_w, theme_.px(40),
+                                  theme_.px(10), theme_.focus_ring, 2);
     }
     renderer_.draw_text(dialog_.options[index].label, option_x + theme_.px(20),
                         option_y + theme_.px(9),

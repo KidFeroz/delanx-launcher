@@ -425,12 +425,28 @@ std::vector<std::string> Renderer::wrap_text(const std::string& text, int size, 
     const std::string word = text.substr(index, end - index);
     const bool newline = (space != std::string::npos && text[space] == '\n');
     if (!word.empty()) {
-      const std::string candidate = current.empty() ? word : current + " " + word;
-      if (text_width(candidate, size, bold, face) > max_width && !current.empty()) {
-        lines.push_back(current);
-        current = word;
+      if (text_width(word, size, bold, face) > max_width) {
+        if (!current.empty()) {
+          lines.push_back(current);
+          current.clear();
+        }
+        std::string chunk;
+        for (char ch : word) {
+          if (text_width(chunk + ch, size, bold, face) > max_width && !chunk.empty()) {
+            lines.push_back(chunk);
+            chunk.clear();
+          }
+          chunk += ch;
+        }
+        current = chunk;
       } else {
-        current = candidate;
+        const std::string candidate = current.empty() ? word : current + " " + word;
+        if (text_width(candidate, size, bold, face) > max_width && !current.empty()) {
+          lines.push_back(current);
+          current = word;
+        } else {
+          current = candidate;
+        }
       }
     }
     if (newline && !current.empty()) {

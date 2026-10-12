@@ -59,6 +59,13 @@ void App::draw_tab_bar() {
   const int pill_y = y + theme_.px(6);
   const int pill_h = height - theme_.px(12);
 
+  // Botón indicador ZL a la izquierda
+  const int zl_w = theme_.px(28);
+  renderer_.fill_round_rect(cursor_x, pill_y + theme_.px(3), zl_w, pill_h - theme_.px(6), theme_.px(6), theme_.panel_alt);
+  renderer_.stroke_round_rect(cursor_x, pill_y + theme_.px(3), zl_w, pill_h - theme_.px(6), theme_.px(6), theme_.border, 1);
+  renderer_.draw_text_centered("ZL", cursor_x + zl_w / 2, pill_y + theme_.px(5), theme_.text_dim, theme_.font_small, true, FontFace::Brand);
+  cursor_x += zl_w + theme_.px(10);
+
   for (size_t i = 0; i < sizeof(tabs) / sizeof(tabs[0]); ++i) {
     const Tab t = tabs[i].tab;
     const bool active = (tab_ == t);
@@ -97,6 +104,17 @@ void App::draw_tab_bar() {
 
     cursor_x += pill_w + theme_.px(10);
   }
+
+  // Botón indicador ZR a la derecha
+  const int zr_w = theme_.px(28);
+  renderer_.fill_round_rect(cursor_x, pill_y + theme_.px(3), zr_w, pill_h - theme_.px(6), theme_.px(6), theme_.panel_alt);
+  renderer_.stroke_round_rect(cursor_x, pill_y + theme_.px(3), zr_w, pill_h - theme_.px(6), theme_.px(6), theme_.border, 1);
+  renderer_.draw_text_centered("ZR", cursor_x + zr_w / 2, pill_y + theme_.px(5), theme_.text_dim, theme_.font_small, true, FontFace::Brand);
+
+  // Recordatorio de buscador L / R
+  const std::string search_hint = std::string("L / R: ") + i18n::t("btn.search");
+  renderer_.draw_text_right(search_hint, renderer_.width() - theme_.content_padding, y + theme_.px(12),
+                            theme_.text_muted, theme_.font_small, false, FontFace::Brand);
 }
 
 // ------------------------------------------------------------------ favoritos
@@ -304,11 +322,11 @@ std::vector<ListItem> App::build_catalog_items() {
     item.unverified = !entry.verified;
     item.installed = is_installed;
     if (is_installed) {
-      item.badge = "Instalado";
+      item.badge = i18n::t("badge.installed");
     } else if (is_fav) {
-      item.badge = entry.verified ? "★ Verificado" : "★ Favorito";
+      item.badge = entry.verified ? i18n::t("badge.ver_star") : i18n::t("badge.fav_star");
     } else {
-      item.badge = entry.verified ? entry.badge() : "Sin verificar";
+      item.badge = entry.verified ? entry.badge() : i18n::t("badge.unverified");
     }
     item.meta = entry.sw.nro.empty() ? entry.requirements : entry.sw.nro;
     items.push_back(item);
@@ -336,7 +354,7 @@ std::vector<ListItem> App::build_mrship_items() {
       item.installed = true;
       item.library_index = static_cast<int>(existing - library_.apps.data());
     }
-    item.badge = item.installed ? "Instalado" : (entry.verified ? "Con build Switch" : "Sin verificar");
+    item.badge = item.installed ? i18n::t("badge.installed") : (entry.verified ? i18n::t("badge.with_build") : i18n::t("badge.unverified"));
     item.meta = entry.sw.nro.empty() ? entry.requirements : entry.sw.nro;
     items.push_back(item);
   }
@@ -348,7 +366,7 @@ std::vector<ListItem> App::build_mrship_items() {
       item.subtitle = entry.repository;
       item.mrship_index = static_cast<int>(index);
       item.unavailable = true;
-      item.badge = "Sin build Switch";
+      item.badge = i18n::t("badge.no_build");
       item.unavailable_reason = entry.reason;
       item.meta = entry.workaround.empty() ? "no disponible" : "nightly disponible";
       items.push_back(item);
@@ -368,6 +386,36 @@ std::vector<ListItem> App::build_homebrew_items() {
   std::vector<ListItem> items;
   for (size_t index = 0; index < homebrew_cache_.size(); ++index) {
     const auto& hb = homebrew_cache_[index];
+    if (hb.is_decomp) continue;
+    if (is_decomp_app(hb.name, hb.nro_path)) continue;
+
+    // Filtro estricto: si el ejecutable o carpeta coincide con cualquier decomp en biblioteca o catalogo, no es homebrew
+    bool in_decomps = false;
+    for (const auto& app : library_.apps) {
+      if (str::iequals(app.name, hb.name) || str::iequals(app.folder_name, hb.name) ||
+          str::icontains(app.sw.nro_path, paths::basename(hb.nro_path))) {
+        in_decomps = true;
+        break;
+      }
+    }
+    if (in_decomps) continue;
+
+    for (const auto& cat : local_catalog_.entries) {
+      if (str::iequals(cat.name, hb.name) || (!cat.sw.nro.empty() && str::iequals(cat.sw.nro, paths::basename(hb.nro_path)))) {
+        in_decomps = true;
+        break;
+      }
+    }
+    if (in_decomps) continue;
+
+    for (const auto& cat : mrship_catalog_.entries) {
+      if (str::iequals(cat.name, hb.name) || (!cat.sw.nro.empty() && str::iequals(cat.sw.nro, paths::basename(hb.nro_path)))) {
+        in_decomps = true;
+        break;
+      }
+    }
+    if (in_decomps) continue;
+
     ListItem item;
     item.title = hb.name;
     item.subtitle = hb.author.empty() ? hb.folder_path : hb.author;
@@ -558,15 +606,17 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
 }
 
 void App::draw_library_filters() {
-  const char* labels[] = {"Instalados", "Con actualizacion", "Ports MrShip"};
+  const char* labels[] = {i18n::tr("filter.installed"), i18n::tr("filter.with_update"), i18n::tr("filter.mrship_ports")};
   const int origin_x = theme_.sidebar_width;
   const int y = renderer_.height() - theme_.footer_height - theme_.px(kChipBarHeight) + theme_.px(8);
-  renderer_.draw_text("Y: filtrar", origin_x + theme_.content_padding, y + theme_.px(6), theme_.text_muted,
+  const std::string filter_lbl = std::string(i18n::t("btn.filter")) + " (Y)";
+  renderer_.draw_text(filter_lbl, origin_x + theme_.content_padding, y + theme_.px(6), theme_.text_muted,
                       theme_.font_small);
-  int x = origin_x + theme_.content_padding + theme_.px(90);
+  int x = origin_x + theme_.content_padding + renderer_.text_width(filter_lbl, theme_.font_small) + theme_.px(16);
   for (int index = 0; index < 3; ++index) {
     const bool active = index == library_filter_;
     const int chip_w = renderer_.text_width(labels[index], theme_.font_small, active) + theme_.px(24);
+    hit_filter_chips_.push_back({index, SDL_Rect{x, y, chip_w, theme_.px(30)}});
     renderer_.fill_round_rect(x, y, chip_w, theme_.px(30), theme_.px(8),
                               active ? theme_.accent.with_alpha(45) : theme_.panel_alt);
     renderer_.stroke_round_rect(x, y, chip_w, theme_.px(30), theme_.px(8),
@@ -580,12 +630,12 @@ void App::draw_library_filters() {
 // ------------------------------------------------------------------ fuente del catalogo
 
 std::string App::catalog_source_title() const {
-  return "Catálogo";
+  return i18n::t("tab.catalog");
 }
 
 std::string App::catalog_source_origin() const {
   switch (catalog_mode_) {
-    case CatalogMode::Master: return "Catálogo Maestro de Ports";
+    case CatalogMode::Master: return "Catálogo Maestro";
     case CatalogMode::Quiver: return "Quiver Online";
     case CatalogMode::Delanx: break;
   }
@@ -598,21 +648,21 @@ std::string App::catalog_source_label() const {
     case CatalogMode::Quiver: return "Quiver Online";
     case CatalogMode::Delanx: break;
   }
-  return "Catálogo Verificado";
+  return i18n::t("badge.verified");
 }
 
 std::string App::catalog_empty_text() const {
   if (catalog_show_favorites_) {
-    return "No tienes ningún título marcado como favorito. Pulsa X para marcarlo.";
+    return i18n::t("empty.favs");
   }
   switch (catalog_mode_) {
     case CatalogMode::Master:
-      return "Sin entradas en el catálogo maestro.";
+      return i18n::t("empty.master");
     case CatalogMode::Quiver:
-      return "Sin resultados. Pulsa L+R para buscar en Quiver.";
+      return i18n::t("empty.quiver");
     case CatalogMode::Delanx: break;
   }
-  return "Catálogo vacío.";
+  return i18n::t("empty.catalog");
 }
 
 void App::cycle_catalog_mode() {
@@ -623,7 +673,7 @@ void App::cycle_catalog_mode() {
   hit_targets_.clear();
   switch (catalog_mode_) {
     case CatalogMode::Master:
-      toast(str::format("Catálogo Maestro: %lu títulos",
+      toast(str::format("Catálogo Maestro: %lu",
                         static_cast<unsigned long>(master_catalog_.entries.size())));
       break;
     case CatalogMode::Quiver:
@@ -633,7 +683,7 @@ void App::cycle_catalog_mode() {
       refresh_catalog_page(true);
       break;
     case CatalogMode::Delanx:
-      toast("Catálogo Delanx (Switch verificado)");
+      toast(i18n::t("tab.catalog"));
       break;
   }
 }
@@ -642,11 +692,12 @@ void App::draw_catalog_filters() {
   const int origin_x = theme_.sidebar_width;
   const int y = renderer_.height() - theme_.footer_height - theme_.px(kChipBarHeight) + theme_.px(8);
 
-  const char* chip_labels[] = {"Todos", "Favoritos ★"};
+  const char* chip_labels[] = {i18n::tr("filter.all"), i18n::tr("filter.favorites")};
   int chip_x = origin_x + theme_.content_padding;
   for (int i = 0; i < 2; ++i) {
     const bool active = (i == 1) ? catalog_show_favorites_ : !catalog_show_favorites_;
     const int chip_w = renderer_.text_width(chip_labels[i], theme_.font_small, active) + theme_.px(24);
+    hit_filter_chips_.push_back({i, SDL_Rect{chip_x, y, chip_w, theme_.px(30)}});
     renderer_.fill_round_rect(chip_x, y, chip_w, theme_.px(30), theme_.px(8),
                               active ? theme_.accent.with_alpha(45) : theme_.panel_alt);
     renderer_.stroke_round_rect(chip_x, y, chip_w, theme_.px(30), theme_.px(8),
@@ -657,7 +708,7 @@ void App::draw_catalog_filters() {
   }
 
   // Acciones y atajos a la derecha
-  const std::string hint = "X: Favorito ★   Y: Filtrar   L+R: Buscar";
+  const std::string hint = std::string("X: ") + i18n::t("btn.favorite") + "   Y: " + i18n::t("btn.filter") + "   L/R: " + i18n::t("btn.search");
   const int right_limit = renderer_.width() - theme_.content_padding;
   renderer_.draw_text_right(hint, right_limit, y + theme_.px(6), theme_.text_muted, theme_.font_small);
 }
@@ -979,6 +1030,7 @@ void App::draw_details_overlay() {
     const int height = std::min(theme_.px(620), renderer_.height() - theme_.px(90));
     const int x = (renderer_.width() - width) / 2;
     const int y = (renderer_.height() - height) / 2;
+    details_card_rect_ = SDL_Rect{x, y, width, height};
 
     renderer_.fill_round_rect(x, y, width, height, theme_.px(18), theme_.panel);
     renderer_.stroke_round_rect(x, y, width, height, theme_.px(18), theme_.border, 1);
@@ -1038,15 +1090,15 @@ void App::draw_details_overlay() {
       chip_x += chip_w + theme_.px(8);
     };
 
-    chip("Homebrew", theme_.accent_alt);
+    chip(i18n::t("badge.homebrew"), theme_.accent_alt);
     if (!active_homebrew_.github_repo.empty()) {
-      chip("GitHub Vinculado", theme_.success);
+      chip(i18n::t("badge.gh_linked"), theme_.success);
     } else {
-      chip("Standalone NRO", theme_.text_muted);
+      chip(i18n::t("badge.standalone"), theme_.text_muted);
     }
     info_y += theme_.px(36);
 
-    const std::string ver_text = "Versión: " + (active_homebrew_.version.empty() ? "-" : ("v" + active_homebrew_.version));
+    const std::string ver_text = std::string(i18n::t("details.installed_ver")) + (active_homebrew_.version.empty() ? "-" : ("v" + active_homebrew_.version));
     renderer_.draw_text(ver_text, info_x, info_y, theme_.text_dim, theme_.font_small);
     info_y += theme_.px(24);
 
@@ -1152,6 +1204,7 @@ void App::draw_details_overlay() {
   const int height = std::min(theme_.px(620), renderer_.height() - theme_.px(90));
   const int x = (renderer_.width() - width) / 2;
   const int y = (renderer_.height() - height) / 2;
+  details_card_rect_ = SDL_Rect{x, y, width, height};
 
   renderer_.fill_round_rect(x, y, width, height, theme_.px(18), theme_.panel);
   renderer_.stroke_round_rect(x, y, width, height, theme_.px(18), theme_.border, 1);
@@ -1197,7 +1250,8 @@ void App::draw_details_overlay() {
     info_y += renderer_.font_height(theme_.font_body) + theme_.px(8);
   }
   if (!app.author.empty()) {
-    renderer_.draw_text("Autor: " + app.author, info_x, info_y, theme_.accent, theme_.font_body, true);
+    const std::string author_lbl = (i18n::current_language() == i18n::Language::English) ? "Author: " : "Autor: ";
+    renderer_.draw_text(author_lbl + app.author, info_x, info_y, theme_.accent, theme_.font_body, true);
     info_y += renderer_.font_height(theme_.font_body, true) + theme_.px(6);
   }
   if (!app.repository.empty()) {
@@ -1233,15 +1287,17 @@ void App::draw_details_overlay() {
     chip_x += chip_w + theme_.px(8);
   };
   if (app.mrship) chip("Harbour Masters", theme_.accent_alt);
-  if (app.verified_entry) chip("Verificado", theme_.accent);
-  if (app.installed) chip("Instalado", theme_.success);
-  if (app.update_available) chip("Actualizacion disponible", theme_.warning);
-  if (app.manually_managed()) chip("Manual", theme_.text_muted);
+  if (app.verified_entry) chip(i18n::t("badge.verified"), theme_.accent);
+  if (app.installed) chip(i18n::t("badge.installed"), theme_.success);
+  if (app.update_available) chip(i18n::t("badge.update"), theme_.warning);
+  if (app.manually_managed()) chip(i18n::t("badge.manual"), theme_.text_muted);
   for (const auto& tag : app.tags) chip(tag, theme_.accent);
   info_y += theme_.px(36);
 
-  const std::string versions = str::format("Instalada: %s    Disponible: %s",
+  const std::string versions = str::format("%s%s    %s%s",
+                                           i18n::t("details.installed_ver"),
                                            app.installed_version.empty() ? "-" : app.installed_version.c_str(),
+                                           i18n::t("details.available_ver"),
                                            app.latest_version.empty() ? "-" : app.latest_version.c_str());
   renderer_.draw_text(versions, info_x, info_y, theme_.text_dim, theme_.font_small);
   info_y += theme_.px(26);
@@ -1252,7 +1308,7 @@ void App::draw_details_overlay() {
     info_y += theme_.px(22);
     std::string suggested;
     if (has_non_standard_folder(app, &suggested)) {
-      renderer_.draw_text("Ruta no estándar (sugerida: /switch/" + suggested + ")", info_x, info_y, theme_.warning, theme_.font_small);
+      renderer_.draw_text(str::format(i18n::t("details.non_std_folder"), suggested.c_str()), info_x, info_y, theme_.warning, theme_.font_small);
       info_y += theme_.px(22);
     }
   } else {

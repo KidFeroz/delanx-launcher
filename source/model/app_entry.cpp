@@ -431,14 +431,70 @@ std::vector<SwitchInstall::RequiredFile> AppEntry::missing_user_files() const {
   return missing;
 }
 
+namespace {
+
+std::string clean_version_token(const std::string& v) {
+  std::string s = str::trim(v);
+  if (s.size() >= 2 && (s[0] == 'v' || s[0] == 'V') && (s[1] >= '0' && s[1] <= '9')) {
+    s = s.substr(1);
+  }
+  return s;
+}
+
+int compare_version_tokens(const std::string& v1, const std::string& v2) {
+  const std::string c1 = clean_version_token(v1);
+  const std::string c2 = clean_version_token(v2);
+  if (str::iequals(c1, c2)) return 0;
+
+  const auto parts1 = str::split(c1, '.');
+  const auto parts2 = str::split(c2, '.');
+  if (!parts1.empty() && !parts2.empty()) {
+    const size_t max_parts = std::max(parts1.size(), parts2.size());
+    for (size_t i = 0; i < max_parts; ++i) {
+      long n1 = 0;
+      long n2 = 0;
+      bool ok1 = false;
+      bool ok2 = false;
+      if (i < parts1.size()) {
+        char* end1 = nullptr;
+        n1 = std::strtol(parts1[i].c_str(), &end1, 10);
+        if (end1 != parts1[i].c_str()) ok1 = true;
+      }
+      if (i < parts2.size()) {
+        char* end2 = nullptr;
+        n2 = std::strtol(parts2[i].c_str(), &end2, 10);
+        if (end2 != parts2[i].c_str()) ok2 = true;
+      }
+      if (ok1 && ok2) {
+        if (n1 < n2) return -1;
+        if (n1 > n2) return 1;
+      } else {
+        if (i < parts1.size() && i < parts2.size()) {
+          int cmp = parts1[i].compare(parts2[i]);
+          if (cmp != 0) return cmp;
+        } else if (i < parts1.size()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+    }
+    return 0;
+  }
+  return c1.compare(c2);
+}
+
+}  // namespace
+
 bool AppEntry::update_available_for(const std::string& latest_tag) const {
   if (manually_managed()) return false;        // sin repositorio no hay nada que actualizar
   if (latest_tag.empty()) return false;
   if (!installed) return false;                // no esta instalada: sera una instalacion
   if (installed_version.empty()) return true;  // instalada pero sin version registrada
-  if (installed_version == latest_tag) return false;
-  if (!skipped_update_version.empty() && skipped_update_version == latest_tag) return false;
-  return true;
+  if (compare_version_tokens(installed_version, latest_tag) == 0) return false;
+  if (!skipped_update_version.empty() && compare_version_tokens(skipped_update_version, latest_tag) == 0) return false;
+  // Solo se avisa si la version online es estrictamente posterior a la instalada
+  return compare_version_tokens(installed_version, latest_tag) < 0;
 }
 
 std::string compose_display_name(const AppEntry& entry, LibraryNameStyle style) {

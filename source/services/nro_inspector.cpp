@@ -50,6 +50,7 @@ const KnownHomebrew kKnownHomebrewRegistry[] = {
 const char* const kKnownDecompSignatures[] = {
     "soh", "2ship", "starship", "ghostship", "spaghettify", "spaghettikart", "sm64", "zelda3", "smw",
     "macready", "golf", "shipwright", "keiichi", "alfa", "2harkinian", "harkinian",
+    "jak", "daxter", "opengoal", "jak-project", "jak1", "jak2",
     "openlara", "revolt", "fheroes2", "julius", "eduke32", "xash3d", "fallout",
     "daggerfall", "gta3", "gtasa", "openjazz", "vanilla-conquer", "redalert", "doom64ex",
     "nx-diffuser", "perfect_dark", "dusklight", "switchwaker", "tmc", "oracles",
@@ -58,7 +59,11 @@ const char* const kKnownDecompSignatures[] = {
     "silent-hill", "rechan", "gen1recomp", "gen2recomp", "tmc", "hla", "hl2",
     "max_nx", "serious-engine", "blood", "voidsw", "pcexhumed", "redneck",
     "hode", "f2b", "twin-e", "openclaw", "abuse", "cgenius", "opentyrian",
-    "aquaria", "celeste64", "vvvvvv", "projectz"
+    "aquaria", "celeste64", "vvvvvv", "projectz",
+    "devilutionx", "diablo", "gzdoom", "prboom", "crispy-doom",
+    "nxquake", "quakespasm", "nxquake2", "goldenballoon",
+    "sonic1", "sonic2", "sonic3air", "soniccd",
+    "re3", "revc", "vicecity", "corsixth"
 };
 
 std::string sanitize_name(const std::string& input) {

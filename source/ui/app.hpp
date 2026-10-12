@@ -249,6 +249,10 @@ class App {
   std::vector<std::pair<int, SDL_Rect>> hit_targets_;
   std::vector<std::pair<Tab, SDL_Rect>> hit_tabs_;
   std::vector<std::pair<Btn, SDL_Rect>> hit_footer_hints_;
+  std::vector<std::pair<int, SDL_Rect>> hit_dialog_options_;
+  std::vector<std::pair<int, SDL_Rect>> hit_filter_chips_;
+  SDL_Rect details_card_rect_{0, 0, 0, 0};
+  SDL_Rect dialog_card_rect_{0, 0, 0, 0};
 };
 
 }  // namespace delanx::ui
