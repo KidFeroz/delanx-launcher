@@ -151,16 +151,32 @@
         ]
       },
       "harbourMasters": true
+    },
+    {
+      "name": "2 Ship 2 Harkinian (Majora's Mask)",
+      "project": "2ship2harkinian-Switch",
+      "repository": "YoshiCrystal9/2ship2harkinian-Switch",
+      "repositorySource": "github",
+      "folderName": "MajorasMask-2Ship",
+      "tags": ["port", "decomp", "n64", "zelda"],
+      "releaseAssetFilter": "2Ship-*-NX.zip",
+      "requirements": "ROM propia de Majora's Mask (US); generar mm.o2r en PC y copiarlo junto a 2ship.nro; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/YoshiCrystal9/2ship2harkinian-Switch/releases/download/4.0.0/2Ship-Keiichi-Alfa-NX.zip",
+        "https://github.com/YoshiCrystal9/2ship2harkinian-Switch"
+      ],
+      "verified": true,
+      "notes": "Port comunitario para Switch del decomp de Harbour Masters. El zip 4.0.0 trae switch/2Ship-<version>-NX/2ship.nro + 2ship.o2r; la carpeta interna cambia con cada version, por eso se usa stripRoot y la deteccion busca un nivel de subcarpeta.",
+      "switch": {
+        "targetDir": "/switch/2ship",
+        "nro": "2ship.nro",
+        "stripRoot": true
+      },
+      "harbourMasters": true,
+      "appIconUrl": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Majora%27s%20Mask%20%28USA%29.png"
     }
   ],
   "unavailable": [
-    {
-      "name": "2ship2harkinian (Majora's Mask)",
-      "repository": "HarbourMasters/2ship2harkinian",
-      "reason": "Escaneados los 16 tags de release (5.0.1, 5.0.0, 4.0.2, 4.0.1, 4.0.0, 3.0.2, 3.0.1, 3.0.0 y anteriores): ningun asset Switch, solo Linux/Mac/Win64. El README no menciona Switch en absoluto.",
-      "lastChecked": "2026-10-11",
-      "workaround": null
-    },
     {
       "name": "Lighthouse (Banjo-Kazooie)",
       "repository": "HarbourMasters/Lighthouse",

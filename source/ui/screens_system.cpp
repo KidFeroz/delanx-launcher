@@ -531,7 +531,7 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
       renderer_.draw_text(asset_lines[0], text_x, icon_y + theme_.px(38), theme_.text_dim, theme_.font_small);
     }
 
-    // Barra de progreso estilizada
+    // Barra de progreso estilizada y animada
     const int bar_x = icon_x;
     const int bar_y = y + theme_.px(120);
     const int bar_w = width - theme_.px(48);
@@ -540,6 +540,16 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
     if (ratio > 0.001f) {
       const int fill_w = std::clamp(static_cast<int>(bar_w * ratio), bar_h, bar_w);
       renderer_.fill_round_rect(bar_x, bar_y, fill_w, bar_h, bar_h / 2, theme_.accent);
+
+      // Efecto shimmer animado que recorre la barra durante la descarga
+      renderer_.push_clip(bar_x, bar_y, fill_w, bar_h);
+      const uint32_t ticks = SDL_GetTicks();
+      const int shimmer_w = theme_.px(60);
+      const int shimmer_range = fill_w + shimmer_w * 2;
+      const int shimmer_pos = bar_x - shimmer_w + static_cast<int>((ticks / 3) % std::max(shimmer_range, 1));
+      renderer_.fill_round_rect(shimmer_pos, bar_y, shimmer_w, bar_h, bar_h / 2,
+                                Color::rgb(255, 255, 255, 75));
+      renderer_.pop_clip();
     }
 
     // Datos de descarga: bytes a la izquierda, porcentaje
@@ -885,6 +895,54 @@ void App::draw_controller_test_overlay() {
   renderer_.draw_text("Pulsa B o + para salir del test de mandos",
                       x + theme_.px(28), footer_modal_y + theme_.px(10),
                       theme_.text_muted, theme_.font_body);
+}
+
+void App::check_homebrew_update(const HomebrewAppInfo& hb) {
+  if (hb.github_repo.empty()) {
+    toast("Esta app no tiene repositorio GitHub asociado para comprobar actualizaciones");
+    return;
+  }
+  AppEntry temp_app;
+  temp_app.name = hb.name;
+  temp_app.repository = hb.github_repo;
+  temp_app.repository_source = "github";
+  temp_app.installed_version = hb.version;
+  temp_app.sw.target_dir = hb.folder_path;
+  temp_app.sw.nro = paths::basename(hb.nro_path);
+  temp_app.sw.home_dir = hb.folder_path;
+
+  begin_busy("Comprobando " + hb.name);
+  Release release;
+  ReleaseAsset asset;
+  std::string error;
+  const bool ok = fetch_candidate_release(temp_app, &release, &asset, &error);
+  end_busy();
+
+  if (!ok) {
+    open_dialog("Comprobación de actualización",
+                "No se pudo consultar el repositorio " + hb.github_repo + ": " + error,
+                {DialogOption{"Entendido", nullptr}});
+    return;
+  }
+
+  const bool has_update = temp_app.update_available_for(release.tag);
+  if (!has_update && !hb.version.empty()) {
+    toast(hb.name + " está al día (" + hb.version + ")");
+    return;
+  }
+
+  open_dialog("Actualización encontrada",
+              str::format("Se encontró una versión más reciente para %s:\n\nInstalada: %s\nDisponible: %s (%s)\n\n¿Deseas descargar e instalar la actualización ahora?",
+                          hb.name.c_str(),
+                          hb.version.empty() ? "-" : hb.version.c_str(),
+                          release.tag.c_str(),
+                          asset.name.c_str()),
+              {DialogOption{"Actualizar ahora", [this, temp_app, release, asset]() {
+                 run_install(temp_app, release, asset, "");
+                 refresh_homebrew();
+                 toast("Homebrew actualizado");
+               }},
+               DialogOption{"Cancelar", nullptr}});
 }
 
 }  // namespace delanx::ui

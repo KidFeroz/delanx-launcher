@@ -11,6 +11,7 @@
 #include "model/app_entry.hpp"
 #include "model/catalog.hpp"
 #include "model/settings.hpp"
+#include "services/nro_inspector.hpp"
 #include "services/quiver_catalog.hpp"
 #include "ui/input.hpp"
 #include "ui/renderer.hpp"
@@ -68,6 +69,9 @@ struct ListItem {
   int library_index = -1;
   int catalog_index = -1;
   int mrship_index = -1;
+  // Entrada de catalogo exacta de la que sale la tarjeta (nullptr si no aplica). Evita
+  // reinterpretar indices contra otro catalogo, que mostraba un juego distinto al elegido.
+  const CatalogEntry* source = nullptr;
   std::string unavailable_reason;
 };
 
@@ -136,7 +140,14 @@ class App {
   void launch_app(int library_index);
   void launch_nro(const std::string& nro_path);
   void uninstall_app(int library_index);
-  void add_catalog_entry_to_library(int catalog_index);
+  // Registra la entrada exacta de la tarjeta en la biblioteca; devuelve su indice o -1.
+  int add_catalog_entry_to_library(const ListItem& item);
+  // Abre la ficha de la tarjeta (instalada) o lanza la instalacion (no instalada).
+  void activate_catalog_item(const ListItem& item);
+  void open_details_for_homebrew(const HomebrewAppInfo& hb);
+  void check_homebrew_update(const HomebrewAppInfo& hb);
+  void refresh_homebrew();
+  int current_item_count();
   void check_updates();
   void refresh_catalog_page(bool reset);
   void load_local_catalogs();
@@ -182,6 +193,9 @@ class App {
   bool hide_unsupported_switch_ = true;
   bool details_open_ = false;
   int details_index_ = -1;
+  bool details_is_homebrew_ = false;
+  HomebrewAppInfo active_homebrew_;
+  std::vector<HomebrewAppInfo> homebrew_cache_;
   bool controller_test_open_ = false;
 
   // Catalogo online (Quiver) y filtros

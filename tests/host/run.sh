@@ -47,8 +47,9 @@ if ! command -v "$CXX" >/dev/null 2>&1; then
 fi
 
 COMMON_SRC="source/core/strings.cpp source/core/json.cpp source/core/paths.cpp \
-source/core/time.cpp source/core/sha256.cpp \
-source/model/app_entry.cpp source/model/catalog.cpp source/model/settings.cpp"
+source/core/time.cpp source/core/sha256.cpp source/core/i18n.cpp \
+source/model/app_entry.cpp source/model/catalog.cpp source/model/settings.cpp \
+source/services/nro_inspector.cpp"
 
 mkdir -p build/host
 

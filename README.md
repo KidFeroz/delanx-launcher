@@ -91,7 +91,7 @@ Delanx implementa el protocolo de encadenamiento binario de `libnx` (`envSetNext
 2. Delanx comprueba los activos o datos requeridos por el ejecutable.
 3. Se invoca `envSetNextLoad(target_nro_path, target_argv)`.
 4. Delanx libera sus recursos (contexto SDL2, descriptores de archivos, buffers de red) y finaliza con código de salida limpio.
-5. El cargador del entorno (`hbmenu`, `Sphaira` o forwarder NSP) ejecuta de forma atómica el NRO objetivo.
+5. El cargador del entorno (`hbmenu` o forwarder NSP) ejecuta de forma atómica el NRO objetivo.
 
 ---
 
@@ -232,5 +232,19 @@ Agradecemos las contribuciones de la comunidad. Para mantener la robustez y cali
 
 Desarrollado y mantenido por **[KidFeroz](https://github.com/KidFeroz)**. Este software es libre y se distribuye bajo los términos de la licencia **GNU General Public License v3.0 (GPLv3)**. Consulta el archivo [LICENSE](LICENSE) para más detalles. Esta licencia garantiza que Delanx y cualquier fork o trabajo derivado permanezcan siempre libres y abiertos para la comunidad.
 
-* **devkitPro & Switchbrew:** Por la toolchain y la biblioteca `libnx`.
-* **Proyectos Decomp & Porting:** A todos los equipos de ingeniería inversa y homebrew que hacen posible la preservación del software en plataformas modernas.
+### 💖 Créditos de Código Abierto y Agradecimientos
+
+Agradecemos profundamente a los siguientes proyectos y desarrolladores del ecosistema abierto:
+
+* **[devkitPro](https://devkitpro.org) & [Switchbrew (libnx)](https://github.com/switchbrew/libnx):** Por la toolchain devkitA64 y la biblioteca base `libnx` que hace posible el desarrollo nativo en Nintendo Switch.
+* **[The Homebrew App Store](https://github.com/fortheusers/hb-appstore) (`fortheusers`):** Por el ecosistema pionero de catálogos y gestión de paquetes homebrew para Switch.
+* **[Quiver Launcher](https://github.com/tgeorgiadis/quiver-launcher) (`tgeorgiadis`):** Por la inspiración inicial en esquemas de catálogo y estructura de decompilaciones.
+* **[Harbour Masters](https://github.com/HarbourMasters):** Por los extraordinarios proyectos de ingeniería inversa y descompilación: Shipwright (*Ocarina of Time*), Starship (*Star Fox 64*), Ghostship (*Super Mario 64*) y Spaghettify (*Mario Kart 64*).
+* **[YoshiCrystal9](https://github.com/YoshiCrystal9/2ship2harkinian-Switch):** Por el port nativo de 2 Ship 2 Harkinian (*Majora's Mask*) para Nintendo Switch.
+* **[SDL2](https://www.libsdl.org/) & extensiones (`SDL2_image`, `SDL2_ttf`):** Por la robusta capa de renderizado 2D, decodificación de texturas y gestión de fuentes tipográficas y controles.
+* **[libcurl](https://curl.se/) & [mbedtls](https://github.com/Mbed-TLS/mbedtls):** Por el soporte de red y comunicación cifrada con APIs REST.
+* **[Jansson](https://github.com/akheron/jansson):** Por la librería ligera de análisis y serialización JSON en C.
+* **[libarchive](https://www.libarchive.org/):** Por el motor eficiente y seguro de descompresión de archivos ZIP, 7z y tarballs.
+* **[SteamGridDB](https://www.steamgriddb.com/) & [libretro-thumbnails](https://github.com/libretro/libretro-thumbnails):** Por los repositorios de carátulas e iconografía de la comunidad de preservación.
+* **Tipografías:** Barlow Condensed, Cal Sans e Inter (licenciadas bajo SIL Open Font License).
+* **A toda la comunidad de decompilación y preservación:** A todos los equipos de ingeniería inversa y homebrew que hacen posible disfrutar de estas obras maestras de forma nativa en Nintendo Switch.

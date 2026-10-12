@@ -367,18 +367,54 @@ std::string AppEntry::icon_cache_path() const {
 void AppEntry::refresh_install_state() {
   installed_version.clear();
   installed = false;
-  // Sin ruta instalada ni folderName no hay nada que inspeccionar (y effective_target
-  // devolveria el directorio Apps entero).
-  if (install_path.empty() && folder_name.empty()) return;
+  if (install_path.empty() && folder_name.empty() && sw.target_dir.empty() && sw.nro.empty()) return;
 
-  const std::string dir = install_dir();
-  const bool has_version_file = paths::exists(version_file());
-  if (has_version_file) {
-    if (const auto text = paths::read_file(version_file())) {
-      installed_version = str::trim(*text);
+  std::vector<std::string> candidates;
+  const std::string primary_dir = install_dir();
+  if (!primary_dir.empty()) candidates.push_back(primary_dir);
+  if (!sw.target_dir.empty()) candidates.push_back(paths::to_sd_path(sw.target_dir));
+  if (!sw.home_dir.empty()) candidates.push_back(paths::to_sd_path(sw.home_dir));
+  if (!folder_name.empty()) {
+    candidates.push_back(paths::to_sd_path("/switch/" + folder_name));
+    candidates.push_back(paths::to_sd_path("/switch/" + str::lower(folder_name)));
+  }
+  if (!sw.target_dir.empty()) {
+    const std::string base = paths::basename(sw.target_dir);
+    candidates.push_back(paths::to_sd_path("/switch/" + base));
+    candidates.push_back(paths::to_sd_path("/switch/" + str::lower(base)));
+  }
+  if (!project.empty()) {
+    candidates.push_back(paths::to_sd_path("/switch/" + project));
+    candidates.push_back(paths::to_sd_path("/switch/" + str::lower(project)));
+  }
+  if (!sw.nro.empty()) {
+    candidates.push_back(paths::to_sd_path("/switch/" + sw.nro));
+    candidates.push_back(paths::to_sd_path("/switch/" + str::lower(sw.nro)));
+  }
+
+  for (const std::string& dir : candidates) {
+    if (dir.empty()) continue;
+    // Evitar raices compartidas de la SD
+    const std::string lower_dir = str::lower(dir);
+    if (lower_dir == str::lower(paths::to_sd_path("/")) ||
+        lower_dir == str::lower(paths::to_sd_path("/switch")) ||
+        lower_dir == str::lower(paths::to_sd_path("/switch/"))) {
+      continue;
+    }
+
+    const std::string vfile = paths::join(dir, "version.txt");
+    const bool has_version_file = paths::exists(vfile);
+    if (has_version_file) {
+      if (const auto text = paths::read_file(vfile)) {
+        installed_version = str::trim(*text);
+      }
+    }
+    if (has_version_file || has_launch_nro(sw, dir)) {
+      installed = true;
+      install_path = dir;
+      return;
     }
   }
-  installed = has_version_file || has_launch_nro(sw, dir);
 }
 
 std::vector<SwitchInstall::RequiredFile> AppEntry::missing_user_files() const {

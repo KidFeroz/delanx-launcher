@@ -1,12 +1,14 @@
 // Delanx — pantallas de navegacion: biblioteca, catalogo (local y Quiver) y Harbour Masters.
 #include <algorithm>
 
+#include "core/i18n.hpp"
 #include "core/paths.hpp"
 #include "core/strings.hpp"
 #include "platform/switch_platform.hpp"
 #include "platform/text_input.hpp"
 #include "services/artwork.hpp"
 #include "services/http.hpp"
+#include "services/nro_inspector.hpp"
 #include "ui/app.hpp"
 
 namespace delanx::ui {
@@ -44,12 +46,12 @@ void App::draw_tab_bar() {
   };
 
   const TabDesc tabs[] = {
-      {Tab::Library, "Biblioteca"},
-      {Tab::Catalog, "Catálogo"},
-      {Tab::MrShip, "MrShip"},
-      {Tab::Homebrew, "Homebrew"},
-      {Tab::Downloads, "Actualizaciones"},
-      {Tab::Settings, "Ajustes"},
+      {Tab::Library, i18n::tr("tab.library")},
+      {Tab::Catalog, i18n::tr("tab.catalog")},
+      {Tab::MrShip, i18n::tr("tab.mrship")},
+      {Tab::Homebrew, i18n::tr("tab.homebrew")},
+      {Tab::Downloads, i18n::tr("tab.downloads")},
+      {Tab::Settings, i18n::tr("tab.settings")},
   };
 
   int cursor_x = origin_x + theme_.content_padding;
@@ -276,8 +278,7 @@ std::vector<ListItem> App::build_catalog_items() {
       continue;
     }
 
-    const AppEntry* existing = library_.find_by_identity(entry.repository);
-    if (!existing) existing = library_.find(entry.name);
+    const AppEntry* existing = library_.find_by_identity(entry.to_app_entry().identity_key());
     const bool is_installed = (existing != nullptr && existing->installed);
     const bool is_fav = is_favorite(entry.name) || (!entry.repository.empty() && is_favorite(entry.repository));
 
@@ -290,6 +291,8 @@ std::vector<ListItem> App::build_catalog_items() {
     item.title = entry.name;
     item.subtitle = entry.project.empty() ? entry.repository : entry.project;
     item.catalog_index = static_cast<int>(index);
+    item.source = &entry;
+    if (existing) item.library_index = static_cast<int>(existing - library_.apps.data());
     item.icon_url = entry.app_icon_url;
     item.mrship = entry.mrship;
     item.verified = entry.verified;
@@ -319,10 +322,16 @@ std::vector<ListItem> App::build_mrship_items() {
     item.title = entry.name;
     item.subtitle = entry.project.empty() ? entry.repository : entry.project;
     item.catalog_index = static_cast<int>(index);
+    item.source = &entry;
     item.icon_url = entry.app_icon_url;
     item.mrship = true;
     item.verified = entry.verified;
-    item.badge = entry.verified ? "Con build Switch" : "Sin verificar";
+    const AppEntry* existing = library_.find_by_identity(entry.to_app_entry().identity_key());
+    if (existing && existing->installed) {
+      item.installed = true;
+      item.library_index = static_cast<int>(existing - library_.apps.data());
+    }
+    item.badge = item.installed ? "Instalado" : (entry.verified ? "Con build Switch" : "Sin verificar");
     item.meta = entry.sw.nro.empty() ? entry.requirements : entry.sw.nro;
     items.push_back(item);
   }
@@ -343,81 +352,34 @@ std::vector<ListItem> App::build_mrship_items() {
   return items;
 }
 
+void App::refresh_homebrew() {
+  homebrew_cache_ = scan_switch_homebrew();
+}
+
 std::vector<ListItem> App::build_homebrew_items() {
+  if (homebrew_cache_.empty()) {
+    refresh_homebrew();
+  }
   std::vector<ListItem> items;
-  const std::string switch_dir = paths::to_sd_path("/switch");
-  if (!paths::exists(switch_dir)) return items;
-
-  std::vector<std::string> decomp_names;
-  decomp_names.push_back("delanx");
-  for (const auto& app : library_.apps) {
-    if (!app.folder_name.empty()) decomp_names.push_back(str::lower(app.folder_name));
-    if (!app.sw.nro.empty()) decomp_names.push_back(str::lower(paths::basename(app.sw.nro)));
-  }
-  for (const auto& entry : local_catalog_.entries) {
-    if (!entry.folder_name.empty()) decomp_names.push_back(str::lower(entry.folder_name));
-    if (!entry.sw.nro.empty()) decomp_names.push_back(str::lower(paths::basename(entry.sw.nro)));
-  }
-  for (const auto& entry : master_catalog_.entries) {
-    if (!entry.folder_name.empty()) decomp_names.push_back(str::lower(entry.folder_name));
-    if (!entry.sw.nro.empty()) decomp_names.push_back(str::lower(paths::basename(entry.sw.nro)));
-  }
-
-  auto is_decomp = [&](const std::string& name) {
-    const std::string lower = str::lower(name);
-    for (const auto& d : decomp_names) {
-      if (lower == d || str::starts_with(lower, d) || str::ends_with(lower, d)) return true;
-    }
-    return false;
-  };
-
-  const auto dir_list = paths::list_dir(switch_dir);
-  for (const std::string& name : dir_list) {
-    if (name == "." || name == ".." || str::iequals(name, "delanx")) continue;
-    const std::string full = paths::join(switch_dir, name);
-    if (paths::is_dir(full)) {
-      if (is_decomp(name)) continue;
-      std::string nro_path;
-      const std::string candidate = paths::join(full, name + ".nro");
-      if (paths::exists(candidate) && !paths::is_dir(candidate)) {
-        nro_path = candidate;
-      } else {
-        for (const std::string& sub : paths::list_dir(full)) {
-          if (paths::extension(sub) == ".nro") {
-            nro_path = paths::join(full, sub);
-            break;
-          }
-        }
-      }
-      if (nro_path.empty()) continue;
-
-      ListItem item;
-      item.title = name;
-      item.subtitle = "/switch/" + name;
-      item.badge = "Homebrew";
-      item.installed = true;
-      item.meta = nro_path;
-
-      std::string icon_cand = paths::join(full, "icon.png");
-      if (!paths::exists(icon_cand)) icon_cand = paths::join(full, name + ".png");
-      if (paths::exists(icon_cand)) item.icon_url = icon_cand;
-      else item.icon_url = "romfs:/icons/default.png";
-
-      items.push_back(item);
-    } else if (paths::extension(name) == ".nro") {
-      const std::string base = name.substr(0, name.size() - 4);
-      if (is_decomp(base)) continue;
-      ListItem item;
-      item.title = base;
-      item.subtitle = "/switch/" + name;
-      item.badge = "Homebrew";
-      item.installed = true;
-      item.meta = full;
-      item.icon_url = "romfs:/icons/default.png";
-      items.push_back(item);
-    }
+  for (size_t index = 0; index < homebrew_cache_.size(); ++index) {
+    const auto& hb = homebrew_cache_[index];
+    ListItem item;
+    item.title = hb.name;
+    item.subtitle = hb.author.empty() ? hb.folder_path : hb.author;
+    item.badge = i18n::tr("badge.homebrew");
+    item.installed = true;
+    item.meta = hb.version.empty() ? hb.nro_path : ("v" + hb.version);
+    item.icon_url = hb.icon_path;
+    item.unavailable_reason = hb.github_repo;
+    items.push_back(item);
   }
   return items;
+}
+
+void App::open_details_for_homebrew(const HomebrewAppInfo& hb) {
+  active_homebrew_ = hb;
+  details_is_homebrew_ = true;
+  details_open_ = true;
 }
 
 // ------------------------------------------------------------------ dibujo de listas
@@ -496,20 +458,10 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
 
       renderer_.fill_round_rect(art_x, art_y, art_w, art_box_h, theme_.px(8), theme_.panel_alt);
       Texture* artwork = nullptr;
-      if (item.library_index >= 0) {
+      if (item.library_index >= 0 && static_cast<size_t>(item.library_index) < library_.apps.size()) {
         artwork = icon_for(library_.apps[static_cast<size_t>(item.library_index)]);
-      } else if (item.catalog_index >= 0) {
-        const CatalogEntry* entry = nullptr;
-        if (catalog_mode_ == CatalogMode::Master && static_cast<size_t>(item.catalog_index) < master_catalog_.entries.size()) {
-          entry = &master_catalog_.entries[static_cast<size_t>(item.catalog_index)];
-        } else if (catalog_mode_ == CatalogMode::Delanx && static_cast<size_t>(item.catalog_index) < local_catalog_.entries.size()) {
-          entry = &local_catalog_.entries[static_cast<size_t>(item.catalog_index)];
-        }
-        if (entry) {
-          artwork = icon_for(entry->to_app_entry());
-        }
-      } else if (item.mrship_index >= 0 && static_cast<size_t>(item.mrship_index) < mrship_catalog_.entries.size()) {
-        artwork = icon_for(mrship_catalog_.entries[static_cast<size_t>(item.mrship_index)].to_app_entry());
+      } else if (item.source) {
+        artwork = icon_for(item.source->to_app_entry());
       } else if (!item.icon_url.empty()) {
         artwork = renderer_.texture(item.icon_url);
       }
@@ -741,6 +693,10 @@ const CatalogEntry* App::catalog_metadata_for(const AppEntry& app) const {
 
 void App::on_accept() {
   if (details_open_) {
+    if (details_is_homebrew_) {
+      launch_nro(active_homebrew_.nro_path);
+      return;
+    }
     if (details_index_ >= 0 && details_index_ < static_cast<int>(library_.apps.size())) {
       AppEntry& app = library_.apps[static_cast<size_t>(details_index_)];
       if (app.installed) {
@@ -763,21 +719,7 @@ void App::on_accept() {
     case Tab::Catalog: {
       const std::vector<ListItem> items = build_catalog_items();
       if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
-        const ListItem& item = items[static_cast<size_t>(focus_)];
-        if (item.installed) {
-          const AppEntry* app = library_.find(item.title);
-          if (app) {
-            for (size_t i = 0; i < library_.apps.size(); ++i) {
-              if (library_.apps[i].identity_key() == app->identity_key()) {
-                details_index_ = static_cast<int>(i);
-                details_open_ = true;
-                break;
-              }
-            }
-          }
-        } else {
-          add_catalog_entry_to_library(item.catalog_index);
-        }
+        activate_catalog_item(items[static_cast<size_t>(focus_)]);
       }
       break;
     }
@@ -790,15 +732,14 @@ void App::on_accept() {
                                                                  : item.unavailable_reason,
                       {DialogOption{"Entendido", nullptr}});
         } else {
-          add_catalog_entry_to_library(item.catalog_index);
+          activate_catalog_item(item);
         }
       }
       break;
     }
     case Tab::Homebrew: {
-      const std::vector<ListItem> items = build_homebrew_items();
-      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
-        launch_nro(items[static_cast<size_t>(focus_)].meta);
+      if (focus_ >= 0 && focus_ < static_cast<int>(homebrew_cache_.size())) {
+        open_details_for_homebrew(homebrew_cache_[static_cast<size_t>(focus_)]);
       }
       break;
     }
@@ -808,6 +749,16 @@ void App::on_accept() {
 }
 
 void App::on_secondary() {
+  if (details_open_) {
+    if (details_is_homebrew_) {
+      check_homebrew_update(active_homebrew_);
+      return;
+    }
+    if (details_index_ >= 0 && details_index_ < static_cast<int>(library_.apps.size())) {
+      install_app(details_index_, false);
+    }
+    return;
+  }
   switch (tab_) {
     case Tab::Library: {
       const std::vector<ListItem> items = build_library_items();
@@ -829,14 +780,13 @@ void App::on_secondary() {
     case Tab::MrShip: {
       const std::vector<ListItem> items = build_mrship_items();
       if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
-        add_catalog_entry_to_library(items[static_cast<size_t>(focus_)].catalog_index);
+        activate_catalog_item(items[static_cast<size_t>(focus_)]);
       }
       break;
     }
     case Tab::Homebrew: {
-      const std::vector<ListItem> items = build_homebrew_items();
-      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
-        launch_nro(items[static_cast<size_t>(focus_)].meta);
+      if (focus_ >= 0 && focus_ < static_cast<int>(homebrew_cache_.size())) {
+        check_homebrew_update(homebrew_cache_[static_cast<size_t>(focus_)]);
       }
       break;
     }
@@ -893,20 +843,25 @@ void App::open_search() {
   refresh_catalog_page(true);
 }
 
-void App::add_catalog_entry_to_library(int index) {
+int App::add_catalog_entry_to_library(const ListItem& item) {
   AppEntry entry;
-  if (tab_ == Tab::MrShip) {
-    if (index < 0 || index >= static_cast<int>(mrship_catalog_.entries.size())) return;
-    const CatalogEntry& source = mrship_catalog_.entries[static_cast<size_t>(index)];
-    entry = source.to_app_entry();
-  } else if (catalog_mode_ == CatalogMode::Quiver) {
-    if (index < 0 || index >= static_cast<int>(catalog_online_.size())) return;
-    const quiver::CatalogApp& source = catalog_online_[static_cast<size_t>(index)];
+  if (item.source) {
+    entry = item.source->to_app_entry();
+    if (!item.source->verified) {
+      // El aviso viaja con la app a la biblioteca: alli no hay chapa de "sin verificar".
+      const std::string note =
+          "Entrada del catalogo maestro: sin verificar que el proyecto publique un .nro para Switch. "
+          "Comprueba los assets del repositorio antes de instalarla.";
+      entry.requirements = entry.requirements.empty() ? note : (entry.requirements + " " + note);
+    }
+  } else if (catalog_mode_ == CatalogMode::Quiver && item.catalog_index >= 0 &&
+             item.catalog_index < static_cast<int>(catalog_online_.size())) {
+    const quiver::CatalogApp& source = catalog_online_[static_cast<size_t>(item.catalog_index)];
     if (source.repository.empty()) {
       open_dialog(source.name, "Esta entrada del catalogo no publica repositorio, asi que no se puede "
                                "descargar nada automaticamente. Puedes crearla a mano como app manual.",
                   {DialogOption{"Entendido", nullptr}});
-      return;
+      return -1;
     }
     entry.name = source.name;
     entry.project = source.project_name;
@@ -921,33 +876,33 @@ void App::add_catalog_entry_to_library(int index) {
         "Entrada del catalogo de Quiver (escritorio): normalmente NO publica builds de Switch. "
         "Comprueba los assets del repositorio antes de instalarla.";
   } else {
-    // Delanx (verificado) o maestro: ambos son catalogos locales con el mismo formato.
-    const Catalog& catalog = (catalog_mode_ == CatalogMode::Master) ? master_catalog_ : local_catalog_;
-    if (index < 0 || index >= static_cast<int>(catalog.entries.size())) return;
-    const CatalogEntry& source = catalog.entries[static_cast<size_t>(index)];
-    entry = source.to_app_entry();
-    if (catalog_mode_ == CatalogMode::Master) {
-      // El aviso viaja con la app a la biblioteca: alli no hay chapa de "sin verificar".
-      const std::string note =
-          "Entrada del catalogo maestro: sin verificar que el proyecto publique un .nro para Switch. "
-          "Comprueba los assets del repositorio antes de instalarla.";
-      entry.requirements = entry.requirements.empty() ? note : (entry.requirements + " " + note);
-    }
+    return -1;
   }
 
   if (entry.folder_name.empty()) entry.folder_name = entry.name;
   const std::string key = entry.identity_key();
-  for (const auto& existing : library_.apps) {
-    if (existing.identity_key() == key) {
-      toast("Ya esta en la biblioteca: " + display_name(existing));
-      return;
-    }
+  for (size_t i = 0; i < library_.apps.size(); ++i) {
+    if (library_.apps[i].identity_key() == key) return static_cast<int>(i);
   }
   entry.refresh_install_state();
   library_.apps.push_back(entry);
   queue_artwork(entry);
   save_library();
-  toast("Anadida a la biblioteca: " + display_name(entry));
+  return static_cast<int>(library_.apps.size()) - 1;
+}
+
+void App::activate_catalog_item(const ListItem& item) {
+  if (item.installed && item.library_index >= 0 &&
+      item.library_index < static_cast<int>(library_.apps.size())) {
+    details_index_ = item.library_index;
+    details_open_ = true;
+    return;
+  }
+  const int index = add_catalog_entry_to_library(item);
+  if (index < 0) return;
+  // La biblioteca solo muestra lo instalado: la ficha ofrece instalar esta entrada exacta.
+  details_index_ = index;
+  details_open_ = true;
 }
 
 void App::refresh_catalog_page(bool reset) {
@@ -977,6 +932,137 @@ void App::refresh_catalog_page(bool reset) {
 // ------------------------------------------------------------------ detalles
 
 void App::draw_details_overlay() {
+  if (details_is_homebrew_) {
+    renderer_.fill_rect(0, 0, renderer_.width(), renderer_.height(), theme_.overlay);
+    const int width = std::min(theme_.px(980), renderer_.width() - theme_.px(120));
+    const int height = std::min(theme_.px(620), renderer_.height() - theme_.px(90));
+    const int x = (renderer_.width() - width) / 2;
+    const int y = (renderer_.height() - height) / 2;
+
+    renderer_.fill_round_rect(x, y, width, height, theme_.px(18), theme_.panel);
+    renderer_.stroke_round_rect(x, y, width, height, theme_.px(18), theme_.border, 1);
+
+    // Icono (formato cuadrado tipico de NRO 220x220)
+    const int art_w = theme_.px(220);
+    const int art_h = theme_.px(220);
+    renderer_.fill_round_rect(x + theme_.px(28), y + theme_.px(28), art_w, art_h, theme_.px(14),
+                              theme_.panel_alt);
+    renderer_.stroke_round_rect(x + theme_.px(28), y + theme_.px(28), art_w, art_h, theme_.px(14),
+                                theme_.border, 1);
+    Texture* artwork = !active_homebrew_.icon_path.empty() ? renderer_.texture(active_homebrew_.icon_path) : nullptr;
+    if (artwork) {
+      renderer_.draw_texture_fit(artwork, x + theme_.px(28), y + theme_.px(28), art_w, art_h);
+    } else {
+      renderer_.draw_text_centered(initials(active_homebrew_.name), x + theme_.px(28) + art_w / 2,
+                                   y + theme_.px(28) + art_h / 2 - theme_.px(20), theme_.text_muted,
+                                   theme_.font_header, true);
+    }
+
+    const int info_x = x + theme_.px(28) + art_w + theme_.px(26);
+    const int info_w = x + width - info_x - theme_.px(28);
+    int info_y = y + theme_.px(30);
+
+    // Limite de recorte para prevenir cualquier desbordamiento de texto hacia el pie
+    renderer_.push_clip(info_x, y + theme_.px(20), info_w, height - theme_.px(82));
+
+    const std::vector<std::string> title_lines = renderer_.wrap_text(active_homebrew_.name, theme_.font_header, info_w, true);
+    for (const auto& line : title_lines) {
+      renderer_.draw_text(line, info_x, info_y, theme_.text, theme_.font_header, true);
+      info_y += renderer_.font_height(theme_.font_header, true) + theme_.px(2);
+    }
+    info_y += theme_.px(4);
+
+    if (!active_homebrew_.author.empty()) {
+      renderer_.draw_text(active_homebrew_.author, info_x, info_y, theme_.text_dim, theme_.font_body);
+      info_y += renderer_.font_height(theme_.font_body) + theme_.px(8);
+    }
+
+    // Chapas identificativas
+    int chip_x = info_x;
+    auto chip = [&](const std::string& text, const Color& color) {
+      const int chip_w = renderer_.text_width(text, theme_.font_small) + theme_.px(18);
+      if (chip_x + chip_w > info_x + info_w) {
+        chip_x = info_x;
+        info_y += theme_.px(30);
+      }
+      renderer_.fill_round_rect(chip_x, info_y, chip_w, theme_.px(24), theme_.px(6), color.with_alpha(46));
+      renderer_.stroke_round_rect(chip_x, info_y, chip_w, theme_.px(24), theme_.px(6), color.with_alpha(90), 1);
+      renderer_.draw_text(text, chip_x + theme_.px(9), info_y + theme_.px(3), color, theme_.font_small, true);
+      chip_x += chip_w + theme_.px(8);
+    };
+
+    chip("Homebrew", theme_.accent_alt);
+    if (!active_homebrew_.github_repo.empty()) {
+      chip("GitHub Vinculado", theme_.success);
+    } else {
+      chip("Standalone NRO", theme_.text_muted);
+    }
+    info_y += theme_.px(36);
+
+    const std::string ver_text = "Versión: " + (active_homebrew_.version.empty() ? "-" : ("v" + active_homebrew_.version));
+    renderer_.draw_text(ver_text, info_x, info_y, theme_.text_dim, theme_.font_small);
+    info_y += theme_.px(24);
+
+    if (!active_homebrew_.github_repo.empty()) {
+      renderer_.draw_text("Repositorio: " + active_homebrew_.github_repo, info_x, info_y, theme_.text_muted, theme_.font_small);
+      info_y += theme_.px(24);
+    }
+
+    renderer_.draw_text("Ejecutable: " + active_homebrew_.nro_path, info_x, info_y, theme_.text_muted, theme_.font_small);
+    info_y += theme_.px(24);
+
+    if (!active_homebrew_.folder_path.empty()) {
+      renderer_.draw_text("Ubicación: " + active_homebrew_.folder_path, info_x, info_y, theme_.text_muted, theme_.font_small);
+      info_y += theme_.px(24);
+    }
+
+    info_y += theme_.px(8);
+    if (!active_homebrew_.github_repo.empty()) {
+      renderer_.draw_text("Esta aplicación cuenta con soporte autónomo de actualizaciones mediante GitHub Releases.",
+                          info_x, info_y, theme_.accent, theme_.font_small);
+    } else {
+      renderer_.draw_text("Aplicación instalada localmente en la tarjeta SD (sin repositorio registrado).",
+                          info_x, info_y, theme_.text_dim, theme_.font_small);
+    }
+
+    renderer_.pop_clip();
+
+    // Pie de acciones
+    const int footer_y = y + height - theme_.px(54);
+    renderer_.fill_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+                              theme_.panel_alt);
+    renderer_.stroke_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+                                theme_.border, 1);
+
+    struct ModalHint {
+      Btn btn;
+      std::string label;
+    };
+    std::vector<ModalHint> modal_hints;
+    modal_hints.push_back({Btn::A, "Lanzar"});
+    if (!active_homebrew_.github_repo.empty()) {
+      modal_hints.push_back({Btn::X, "Actualizar"});
+    }
+    modal_hints.push_back({Btn::B, "Cerrar"});
+
+    int total_hints_w = 0;
+    for (const auto& h : modal_hints) {
+      total_hints_w += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+    }
+    int hint_x = x + (width - total_hints_w) / 2;
+    for (const auto& h : modal_hints) {
+      const int radius = theme_.px(11);
+      renderer_.fill_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.card_focus);
+      renderer_.stroke_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.border, 1);
+      renderer_.draw_text_centered(button_glyph(h.btn), hint_x + radius, footer_y + theme_.px(11), theme_.text,
+                                   theme_.font_small, true);
+      renderer_.draw_text(h.label, hint_x + radius * 2 + theme_.px(8), footer_y + theme_.px(10), theme_.text,
+                          theme_.font_small);
+      hint_x += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+    }
+    return;
+  }
+
   if (details_index_ < 0 || details_index_ >= static_cast<int>(library_.apps.size())) {
     details_open_ = false;
     return;
@@ -1012,8 +1098,16 @@ void App::draw_details_overlay() {
   const int info_w = x + width - info_x - theme_.px(28);
   int info_y = y + theme_.px(30);
 
-  renderer_.draw_text(app.name, info_x, info_y, theme_.text, theme_.font_header, true);
-  info_y += renderer_.font_height(theme_.font_header, true) + theme_.px(4);
+  // Limite de recorte para prevenir cualquier desbordamiento de texto hacia el pie
+  renderer_.push_clip(info_x, y + theme_.px(20), info_w, height - theme_.px(82));
+
+  const std::vector<std::string> name_lines = renderer_.wrap_text(app.name, theme_.font_header, info_w, true);
+  for (const auto& line : name_lines) {
+    renderer_.draw_text(line, info_x, info_y, theme_.text, theme_.font_header, true);
+    info_y += renderer_.font_height(theme_.font_header, true) + theme_.px(2);
+  }
+  info_y += theme_.px(4);
+
   if (!app.project.empty()) {
     renderer_.draw_text(app.project, info_x, info_y, theme_.text_dim, theme_.font_body);
     info_y += renderer_.font_height(theme_.font_body) + theme_.px(8);
@@ -1102,6 +1196,8 @@ void App::draw_details_overlay() {
       info_y += theme_.px(22);
     }
   }
+
+  renderer_.pop_clip();
 
   // Acciones disponibles centradas en el pie del modal
   const int footer_y = y + height - theme_.px(54);
