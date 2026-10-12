@@ -4,10 +4,10 @@
     <source media="(prefers-color-scheme: light)" srcset="docs/assets/delanx-horizontal-light.svg">
     <img alt="DELANX" src="docs/assets/delanx-horizontal-dark.svg" width="560">
   </picture>
-</p>
+
 
 # Delanx — Homebrew Port & Decompilation Manager para Nintendo Switch
-
+</p>
 <p align="center">
   <a href="https://github.com/KidFeroz/Delanx/releases"><img src="https://img.shields.io/badge/release-v0.1.0--experimental-blue.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
