@@ -483,7 +483,7 @@ void test_catalog_consistency() {
           "el repo de Harbour Masters es de la organizacion (" + entry.repository + ")");
     check(!entry.requirements.empty(), "explica que debe aportar el usuario (" + entry.name + ")");
   }
-  check(harbour == 5, "5 entradas de Harbour Masters (" + std::to_string(harbour) + ")");
+  check(harbour == 6, "6 entradas de Harbour Masters (" + std::to_string(harbour) + ")");
 }
 
 }  // namespace

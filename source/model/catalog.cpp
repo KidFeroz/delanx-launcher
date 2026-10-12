@@ -169,6 +169,7 @@ CatalogEntry CatalogEntry::from_json(const json::Value& node) {
   if (!node.is_object()) return entry;
 
   entry.name = node.string("name");
+  entry.author = str::trim(node.string("author"));
   entry.project = node.string("project");
   entry.repository = str::trim(node.string("repository"));
 
@@ -200,6 +201,7 @@ CatalogEntry CatalogEntry::from_json(const json::Value& node) {
 AppEntry CatalogEntry::to_app_entry() const {
   AppEntry app;
   app.name = name;
+  app.author = author;
   app.project = project;
   app.repository = repository;
   app.repository_source = repository_source.empty() ? "github" : str::lower(repository_source);

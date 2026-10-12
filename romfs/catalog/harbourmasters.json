@@ -67,6 +67,7 @@
     },
     {
       "name": "Starship (Star Fox 64)",
+      "author": "HarbourMasters",
       "project": "Starship",
       "repository": "HarbourMasters/Starship",
       "repositorySource": "github",
@@ -89,6 +90,36 @@
           {
             "path": "sdmc:/switch/Starship/sf64.o2r",
             "description": "Generado en PC desde tu ROM US 1.0/1.1 de Star Fox 64 (nombre de fichero documentado en el README); debe quedar junto al .nro"
+          }
+        ]
+      },
+      "harbourMasters": true
+    },
+    {
+      "name": "Starship (SonicDcer & Lywx)",
+      "author": "SonicDcer & Lywx",
+      "project": "Starship",
+      "repository": "HarbourMasters/Starship",
+      "repositorySource": "github",
+      "folderName": "StarFox64-Starship-SonicDcer",
+      "tags": ["port", "decomp", "n64", "starfox", "sonicdcer"],
+      "releaseAssetFilter": "Starship-*-Switch.zip",
+      "requirements": "ROM propia de Star Fox 64 (US 1.0/1.1); generar sf64.o2r en PC; CFW Atmosphère",
+      "switchProof": [
+        "https://github.com/HarbourMasters/Starship/releases/download/v2.0.0/Starship-Barnard-Alfa-Switch.zip",
+        "https://github.com/HarbourMasters/Starship"
+      ],
+      "verified": true,
+      "notes": "Port oficial de Star Fox 64 para Switch desarrollado y mantenido por SonicDcer y Lywx dentro del proyecto Harbour Masters.",
+      "switch": {
+        "targetDir": "/switch/Starship",
+        "nro": "Starship.nro",
+        "nroPath": "Starship.nro",
+        "stripRoot": false,
+        "requiredUserFiles": [
+          {
+            "path": "sdmc:/switch/Starship/sf64.o2r",
+            "description": "Generado en PC desde tu ROM US 1.0/1.1 de Star Fox 64; debe quedar junto al .nro"
           }
         ]
       },

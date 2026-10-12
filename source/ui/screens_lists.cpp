@@ -763,6 +763,26 @@ void App::on_secondary() {
       return;
     }
     if (details_index_ >= 0 && details_index_ < static_cast<int>(library_.apps.size())) {
+      AppEntry& app = library_.apps[static_cast<size_t>(details_index_)];
+      std::string suggested;
+      if (has_non_standard_folder(app, &suggested)) {
+        show_confirm(i18n::t("dialog.repair_folder_title"),
+                     str::format(i18n::t("confirm.organize_folder_body"),
+                                 paths::basename(app.install_dir()).c_str(),
+                                 ("/switch/" + suggested).c_str()),
+                     i18n::t("btn.repair_folder"), [this, details_idx = details_index_, suggested]() {
+                       if (details_idx < static_cast<int>(library_.apps.size())) {
+                         std::string err;
+                         if (organize_decomp_folder(library_.apps[static_cast<size_t>(details_idx)], suggested, &err)) {
+                           save_library();
+                           toast(i18n::t("toast.organize_ok"));
+                         } else {
+                           toast(err.empty() ? i18n::t("toast.organize_failed") : err, true);
+                         }
+                       }
+                     });
+        return;
+      }
       install_app(details_index_, false);
     }
     return;
@@ -1176,6 +1196,10 @@ void App::draw_details_overlay() {
     renderer_.draw_text(app.project, info_x, info_y, theme_.text_dim, theme_.font_body);
     info_y += renderer_.font_height(theme_.font_body) + theme_.px(8);
   }
+  if (!app.author.empty()) {
+    renderer_.draw_text("Autor: " + app.author, info_x, info_y, theme_.accent, theme_.font_body, true);
+    info_y += renderer_.font_height(theme_.font_body, true) + theme_.px(6);
+  }
   if (!app.repository.empty()) {
     renderer_.draw_text(app.repository, info_x, info_y, theme_.text_muted, theme_.font_small);
     info_y += theme_.px(26);
@@ -1295,8 +1319,14 @@ void App::draw_details_overlay() {
   if (app.installed) {
     actions.push_back({Btn::A, i18n::t("btn.launch"), theme_.success.with_alpha(45),
                        theme_.success, theme_.text, theme_.success, theme_.bg});
-    actions.push_back({Btn::X, i18n::t("btn.update"), theme_.accent.with_alpha(40),
-                       theme_.accent, theme_.text, theme_.accent, theme_.bg});
+    std::string suggested;
+    if (has_non_standard_folder(app, &suggested)) {
+      actions.push_back({Btn::X, i18n::t("btn.repair_folder"), theme_.warning.with_alpha(40),
+                         theme_.warning, theme_.text, theme_.warning, theme_.bg});
+    } else {
+      actions.push_back({Btn::X, i18n::t("btn.update"), theme_.accent.with_alpha(40),
+                         theme_.accent, theme_.text, theme_.accent, theme_.bg});
+    }
     actions.push_back({Btn::Y, i18n::t("btn.uninstall"), theme_.danger.with_alpha(40),
                        theme_.danger, theme_.danger, theme_.danger, Color::rgb(255, 255, 255)});
   } else {

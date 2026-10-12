@@ -49,6 +49,7 @@ struct Release {
 
 struct CatalogEntry {
   std::string name;
+  std::string author;
   std::string project;
   std::string repository;
   std::string repository_source = "github";

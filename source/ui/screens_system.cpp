@@ -540,6 +540,70 @@ bool App::fetch_candidate_release(const AppEntry& app, Release* release, Release
   return true;
 }
 
+void App::draw_corner_notification_card(const AppEntry& app, float ratio, int64_t done, int64_t total) {
+  const int card_w = theme_.px(440);
+  const int card_h = theme_.px(94);
+  const int card_x = renderer_.width() - card_w - theme_.px(24);
+  const int card_y = theme_.topbar_height + theme_.px(14);
+
+  renderer_.fill_round_rect(card_x, card_y, card_w, card_h, theme_.px(14), theme_.panel);
+  renderer_.stroke_round_rect(card_x, card_y, card_w, card_h, theme_.px(14), theme_.accent, 2);
+
+  const int icon_size = theme_.px(60);
+  const int icon_x = card_x + theme_.px(14);
+  const int icon_y = card_y + theme_.px(17);
+  renderer_.fill_round_rect(icon_x, icon_y, icon_size, icon_size, theme_.px(10), theme_.panel_alt);
+  Texture* icon = icon_for(app);
+  if (!icon) icon = renderer_.texture("romfs:/icons/delanx-icon.png");
+  if (icon) {
+    renderer_.draw_texture_fit(icon, icon_x, icon_y, icon_size, icon_size);
+  } else {
+    renderer_.draw_text_centered(str::initials(app.name), icon_x + icon_size / 2,
+                                 icon_y + icon_size / 2 - theme_.px(12), theme_.text_muted,
+                                 theme_.font_title, true);
+  }
+
+  const int text_x = icon_x + icon_size + theme_.px(14);
+  const int text_max_w = card_w - (text_x - card_x) - theme_.px(14);
+  std::string action_title = std::string(i18n::t("notify.installing")) + ": " + display_name(app);
+  if (!install_queue_.empty()) {
+    action_title += str::format(" (+%lu)", static_cast<unsigned long>(install_queue_.size()));
+  }
+  const std::vector<std::string> title_lines =
+      renderer_.wrap_text(action_title, theme_.font_body, text_max_w, true, FontFace::Brand);
+  if (!title_lines.empty()) {
+    renderer_.draw_text(title_lines[0], text_x, card_y + theme_.px(14), theme_.text, theme_.font_body, true,
+                        FontFace::Brand);
+  }
+
+  const int bar_x = text_x;
+  const int bar_y = card_y + theme_.px(42);
+  const int bar_w = text_max_w;
+  const int bar_h = theme_.px(10);
+  renderer_.fill_round_rect(bar_x, bar_y, bar_w, bar_h, bar_h / 2, theme_.panel_alt);
+  if (ratio > 0.001f) {
+    const int fill_w = std::clamp(static_cast<int>(bar_w * ratio), bar_h, bar_w);
+    renderer_.fill_round_rect(bar_x, bar_y, fill_w, bar_h, bar_h / 2, theme_.accent);
+
+    renderer_.push_clip(bar_x, bar_y, fill_w, bar_h);
+    const uint32_t ticks = SDL_GetTicks();
+    const int shimmer_w = theme_.px(40);
+    const int shimmer_range = fill_w + shimmer_w * 2;
+    const int shimmer_pos = bar_x - shimmer_w + static_cast<int>((ticks / 3) % std::max(shimmer_range, 1));
+    renderer_.fill_round_rect(shimmer_pos, bar_y, shimmer_w, bar_h, bar_h / 2,
+                              Color::rgb(255, 255, 255, 90));
+    renderer_.pop_clip();
+  }
+
+  const std::string bytes_str =
+      str::format("%s / %s", str::human_size(static_cast<uint64_t>(done)).c_str(),
+                  str::human_size(static_cast<uint64_t>(total)).c_str());
+  renderer_.draw_text(bytes_str, bar_x, card_y + theme_.px(60), theme_.text_muted, theme_.font_small);
+  const std::string pct_str = str::format("%d%%", static_cast<int>(ratio * 100.0f));
+  renderer_.draw_text_right(pct_str, card_x + card_w - theme_.px(16), card_y + theme_.px(60),
+                            theme_.accent, theme_.font_small, true);
+}
+
 bool App::run_install(const AppEntry& app, const Release& release, const ReleaseAsset& asset,
                       const std::string& expected_sha256) {
   if (installing_active_) {
@@ -547,109 +611,45 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
     return false;
   }
   installing_active_ = true;
+  current_installing_key_ = app.identity_key();
 
   InstallRequest request;
   request.app = app;
   request.release = release;
   request.asset = asset;
   request.expected_sha256 = expected_sha256;
-  // La interfaz ya pidio confirmacion antes de llegar aqui, asi que una release sin
-  // checksum publicado puede instalarse si el usuario lo acepto.
   request.allow_unverified = expected_sha256.empty();
 
   uint32_t last_draw = 0;
   const auto progress = [&](int64_t done, int64_t total) -> bool {
     const uint32_t now = SDL_GetTicks();
-    if (now - last_draw < 60 && done != total) return true;
+    if (now - last_draw < 33 && done != total) {
+      input_.update();
+      handle_input();
+      return !input_.quit_requested();
+    }
     last_draw = now;
     const float ratio = total > 0 ? static_cast<float>(done) / static_cast<float>(total) : 0.0f;
 
-    // Dibujo normal no bloqueante de la pantalla de fondo
-    draw_background();
-    if (tab_ == Tab::Library) {
-      draw_list_screen(i18n::t("tab.library"), "", build_library_items(), i18n::t("empty.library"));
-    } else if (tab_ == Tab::Catalog) {
-      draw_list_screen(catalog_source_title(), catalog_source_origin(), build_catalog_items(), catalog_empty_text());
-    } else if (tab_ == Tab::MrShip) {
-      draw_list_screen("Harbour Masters", "Ports N64", build_mrship_items(), i18n::t("empty.mrship"));
-    } else if (tab_ == Tab::Homebrew) {
-      draw_list_screen(i18n::t("tab.homebrew"), "/switch", build_homebrew_items(), i18n::t("empty.homebrew"));
-    } else if (tab_ == Tab::Downloads) {
-      draw_downloads_screen();
-    } else if (tab_ == Tab::Settings) {
-      draw_settings_screen();
-    }
-    draw_sidebar();
-    draw_topbar();
-    draw_footer();
+    // Dibujo normal no bloqueante de la aplicacion completa (pantallas, overlays, detalles y navegacion)
+    draw();
 
     // Notificacion emergente elegante en la esquina superior derecha
-    const int card_w = theme_.px(440);
-    const int card_h = theme_.px(94);
-    const int card_x = renderer_.width() - card_w - theme_.px(24);
-    const int card_y = theme_.topbar_height + theme_.px(14);
-
-    renderer_.fill_round_rect(card_x, card_y, card_w, card_h, theme_.px(14), theme_.panel);
-    renderer_.stroke_round_rect(card_x, card_y, card_w, card_h, theme_.px(14), theme_.accent, 2);
-
-    const int icon_size = theme_.px(60);
-    const int icon_x = card_x + theme_.px(14);
-    const int icon_y = card_y + theme_.px(17);
-    renderer_.fill_round_rect(icon_x, icon_y, icon_size, icon_size, theme_.px(10), theme_.panel_alt);
-    Texture* icon = icon_for(app);
-    if (!icon) icon = renderer_.texture("romfs:/icons/delanx-icon.png");
-    if (icon) {
-      renderer_.draw_texture_fit(icon, icon_x, icon_y, icon_size, icon_size);
-    } else {
-      renderer_.draw_text_centered(str::initials(app.name), icon_x + icon_size / 2,
-                                   icon_y + icon_size / 2 - theme_.px(12), theme_.text_muted,
-                                   theme_.font_title, true);
-    }
-
-    const int text_x = icon_x + icon_size + theme_.px(14);
-    const int text_max_w = card_w - (text_x - card_x) - theme_.px(14);
-    const std::string action_title = std::string(i18n::t("notify.installing")) + ": " + display_name(app);
-    const std::vector<std::string> title_lines = renderer_.wrap_text(action_title, theme_.font_body, text_max_w, true, FontFace::Brand);
-    if (!title_lines.empty()) {
-      renderer_.draw_text(title_lines[0], text_x, card_y + theme_.px(14), theme_.text, theme_.font_body, true, FontFace::Brand);
-    }
-
-    const int bar_x = text_x;
-    const int bar_y = card_y + theme_.px(42);
-    const int bar_w = text_max_w;
-    const int bar_h = theme_.px(10);
-    renderer_.fill_round_rect(bar_x, bar_y, bar_w, bar_h, bar_h / 2, theme_.panel_alt);
-    if (ratio > 0.001f) {
-      const int fill_w = std::clamp(static_cast<int>(bar_w * ratio), bar_h, bar_w);
-      renderer_.fill_round_rect(bar_x, bar_y, fill_w, bar_h, bar_h / 2, theme_.accent);
-
-      renderer_.push_clip(bar_x, bar_y, fill_w, bar_h);
-      const uint32_t ticks = SDL_GetTicks();
-      const int shimmer_w = theme_.px(40);
-      const int shimmer_range = fill_w + shimmer_w * 2;
-      const int shimmer_pos = bar_x - shimmer_w + static_cast<int>((ticks / 3) % std::max(shimmer_range, 1));
-      renderer_.fill_round_rect(shimmer_pos, bar_y, shimmer_w, bar_h, bar_h / 2,
-                                Color::rgb(255, 255, 255, 90));
-      renderer_.pop_clip();
-    }
-
-    const std::string bytes_str = str::format("%s / %s", str::human_size(static_cast<uint64_t>(done)).c_str(),
-                                              str::human_size(static_cast<uint64_t>(total)).c_str());
-    renderer_.draw_text(bytes_str, bar_x, card_y + theme_.px(60), theme_.text_muted, theme_.font_small);
-    const std::string pct_str = str::format("%d%%", static_cast<int>(ratio * 100.0f));
-    renderer_.draw_text_right(pct_str, card_x + card_w - theme_.px(16), card_y + theme_.px(60),
-                              theme_.accent, theme_.font_small, true);
+    draw_corner_notification_card(app, ratio, done, total);
 
     renderer_.end_frame();
 
     input_.update();
     handle_input();
-    if (input_.pressed(Btn::B)) return false;
+
+    // Solo abortar si el usuario solicito salir explícitamente de Delanx
+    if (input_.quit_requested()) return false;
     return true;
   };
 
   const InstallReport report = install_release(request, progress);
   installing_active_ = false;
+  current_installing_key_.clear();
 
   DownloadItem item;
   item.app_name = display_name(app);
@@ -669,19 +669,42 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
       }
     }
     save_library();
-    return true;
+  } else {
+    toast(report.message.empty() ? i18n::t("info.install_failed") : report.message, true);
   }
-  toast(report.message.empty() ? i18n::t("info.install_failed") : report.message, true);
-  return false;
+
+  // Procesar siguiente instalacion en la cola si existe
+  if (!install_queue_.empty()) {
+    QueuedInstall next = install_queue_.front();
+    install_queue_.erase(install_queue_.begin());
+    install_app(next.library_index, next.force_unverified);
+  }
+
+  return report.status == InstallStatus::Ok;
 }
 
 void App::install_app(int library_index, bool force_unverified) {
-  if (installing_active_) {
-    toast(i18n::t("notify.busy_warning"), true);
-    return;
-  }
   if (library_index < 0 || library_index >= static_cast<int>(library_.apps.size())) return;
   const AppEntry app = library_.apps[static_cast<size_t>(library_index)];
+  const std::string app_key = app.identity_key();
+
+  if (installing_active_) {
+    if (current_installing_key_ == app_key) {
+      toast(str::format("%s %s", display_name(app).c_str(), i18n::t("notify.already_active")), true);
+      return;
+    }
+    for (const auto& q : install_queue_) {
+      if (q.identity_key == app_key) {
+        toast(str::format("%s %s", display_name(app).c_str(), i18n::t("notify.already_queued")), true);
+        return;
+      }
+    }
+    install_queue_.push_back({library_index, force_unverified, display_name(app), app_key});
+    toast(str::format("%s (%lu %s)", display_name(app).c_str(),
+                      static_cast<unsigned long>(install_queue_.size()),
+                      i18n::t("notify.queued_count")));
+    return;
+  }
 
   begin_busy(std::string(i18n::t("info.checking")) + ": " + display_name(app));
   Release release;
@@ -715,6 +738,31 @@ void App::install_app(int library_index, bool force_unverified) {
 
   if (app.installed) {
     const bool has_update = app.update_available_for(release.tag);
+    std::string suggested;
+    const bool non_std = has_non_standard_folder(app, &suggested);
+
+    if (non_std) {
+      std::vector<DialogOption> opts;
+      opts.push_back(DialogOption{i18n::t("btn.reinstall_and_repair"), [this, library_index, release, asset, expected, suggested]() {
+        AppEntry& target = library_.apps[static_cast<size_t>(library_index)];
+        std::string err;
+        organize_decomp_folder(target, suggested, &err);
+        save_library();
+        run_install(target, release, asset, expected);
+      }});
+      opts.push_back(DialogOption{i18n::t("btn.reinstall_current"), [this, library_index, release, asset, expected]() {
+        run_install(library_.apps[static_cast<size_t>(library_index)], release, asset, expected);
+      }});
+      opts.push_back(DialogOption{i18n::t("btn.cancel"), nullptr});
+
+      const std::string body = str::format(i18n::t("dialog.repair_folder_body"),
+                                           display_name(app).c_str(),
+                                           app.install_dir().c_str(),
+                                           ("/switch/" + suggested).c_str());
+      open_dialog(i18n::t("dialog.repair_folder_title"), body, opts);
+      return;
+    }
+
     if (!has_update) {
       const std::string body = str::format(i18n::t("dialog.up_to_date_body"),
                                            display_name(app).c_str(),

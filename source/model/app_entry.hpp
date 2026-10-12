@@ -53,6 +53,7 @@ struct AppEntry {
   // ---- contrato Quiver (apps.json) ----
   std::string name;
   std::string project;
+  std::string author;
   std::string custom_display_name;
   std::string repository;          // "owner/repo" o "namespace/project"; vacio = manual
   std::string repository_source;   // "github" (por defecto) | "gitlab"

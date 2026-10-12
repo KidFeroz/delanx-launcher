@@ -145,6 +145,7 @@ AppEntry AppEntry::from_json(const json::Value& node) {
   // ---- contrato Quiver ----
   entry.name = node.string("name");
   entry.project = node.string("project");
+  entry.author = node.string("author");
   entry.custom_display_name = node.string("customDisplayName");
   entry.repository = str::trim(node.string("repository"));  // vacio => manually managed
   entry.folder_name = str::trim(node.string("folderName"));
@@ -259,6 +260,7 @@ json::Builder AppEntry::to_json() const {
   }
 
   if (!project.empty()) root.set("project", project);
+  if (!author.empty()) root.set("author", author);
   if (!custom_display_name.empty()) root.set("customDisplayName", custom_display_name);
   if (!tags.empty()) root.set_strings("tags", tags);
   if (!catalog_entry_id.empty()) root.set("catalogEntryId", catalog_entry_id);

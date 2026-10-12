@@ -308,10 +308,15 @@ void test_local_catalog() {
   auto harbour_catalog = delanx::Catalog::load_file("romfs/catalog/harbourmasters.json");
   check(harbour_catalog.has_value(), "se carga harbourmasters.json");
   if (harbour_catalog) {
-    check(harbour_catalog->entries.size() == 6,
-          "6 entradas de Harbour Masters, obtenidas " + std::to_string(harbour_catalog->entries.size()));
+    check(harbour_catalog->entries.size() == 7,
+          "7 entradas de Harbour Masters, obtenidas " + std::to_string(harbour_catalog->entries.size()));
     check(harbour_catalog->unavailable.size() == 2,
           "2 proyectos sin build de Switch, obtenidos " + std::to_string(harbour_catalog->unavailable.size()));
+    bool found_sonic = false;
+    for (const auto& entry : harbour_catalog->entries) {
+      if (entry.author == "SonicDcer & Lywx") found_sonic = true;
+    }
+    check(found_sonic, "Starship de SonicDcer & Lywx identificado con autor especifico");
     for (const auto& entry : harbour_catalog->unavailable) {
       check(!entry.reason.empty(), "cada proyecto no disponible explica el motivo");
     }

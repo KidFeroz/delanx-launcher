@@ -19,6 +19,7 @@ struct FolderSignature {
   const char* const dir_tokens[8];   // Palabras clave en el nombre de la carpeta
   const char* const nro_tokens[6];   // Palabras clave en el nombre del fichero .nro
   const char* const file_signatures[6]; // Ficheros clave dentro de la carpeta (.otr, .o2r, etc.)
+  const char* const author_tokens[6];   // Autores conocidos para distinguir variantes
 };
 
 const FolderSignature kSignatures[] = {
@@ -28,6 +29,7 @@ const FolderSignature kSignatures[] = {
         {"macready", "golf", "shipwright", "soh", "ocarina", nullptr},
         {"soh.nro", "shipwright.nro", "oot.nro", nullptr},
         {"oot.otr", "oot-mq.otr", "soh.otr", nullptr},
+        {"harbour", nullptr},
     },
     {
         "2ship",
@@ -35,13 +37,15 @@ const FolderSignature kSignatures[] = {
         {"2ship", "keiichi", "alfa", "2harkinian", "majora", nullptr},
         {"2ship.nro", "2ship2harkinian.nro", "mm.nro", nullptr},
         {"mm.o2r", "2ship.o2r", nullptr},
+        {"harbour", "yoshicrystal", nullptr},
     },
     {
         "starship",
         "Starship",
-        {"starship", "starfox", "sf64", nullptr},
-        {"starship.nro", "sf64.nro", nullptr},
-        {"sf64.otr", nullptr},
+        {"starship", "starfox", "sf64", "sonicdcer", "sonicdcs", "lywx", nullptr},
+        {"starship.nro", "sf64.nro", "sonicdcer.nro", nullptr},
+        {"sf64.otr", "sf64.o2r", "starship.o2r", nullptr},
+        {"sonicdcer", "sonicdcs", "lywx", "harbour", nullptr},
     },
     {
         "spaghettify",
@@ -49,6 +53,7 @@ const FolderSignature kSignatures[] = {
         {"spaghetti", "spaghettikart", "mk64", nullptr},
         {"spaghettikart.nro", "mk64.nro", nullptr},
         {"mk64.otr", nullptr},
+        {"harbour", nullptr},
     },
     {
         "sm64",
@@ -56,6 +61,7 @@ const FolderSignature kSignatures[] = {
         {"sm64", "ghostship", nullptr},
         {"sm64.nro", "sm64.us.f3dex2e.nro", nullptr},
         {"sm64.us.z64", nullptr},
+        {"harbour", nullptr},
     },
     {
         "zelda3",
@@ -63,6 +69,7 @@ const FolderSignature kSignatures[] = {
         {"zelda3", "alttp", nullptr},
         {"zelda3.nro", nullptr},
         {"zelda3_assets.dat", nullptr},
+        {nullptr},
     },
     {
         "perfect_dark",
@@ -70,6 +77,7 @@ const FolderSignature kSignatures[] = {
         {"perfect_dark", "perfectdark", nullptr},
         {"perfect_dark.nro", nullptr},
         {"pd.ntsc-final.z64", "pd.pal-final.z64", nullptr},
+        {nullptr},
     },
     {
         "smw",
@@ -77,18 +85,21 @@ const FolderSignature kSignatures[] = {
         {"smw", nullptr},
         {"smw.nro", nullptr},
         {nullptr},
+        {nullptr},
     },
 };
 
 // Comprueba si un directorio coincide con alguna firma de decompilacion
 const FolderSignature* match_signature(const std::string& folder_name,
                                        const std::vector<std::string>& files,
-                                       const std::string& nro_name) {
+                                       const std::string& nro_name,
+                                       const std::string& author = "") {
   const std::string lower_folder = str::lower(folder_name);
   const std::string lower_nro = str::lower(nro_name);
+  const std::string lower_author = str::lower(author);
 
   for (const auto& sig : kSignatures) {
-    // 1. Coincidencia por archivo de firma dentro de la carpeta (ej. oot.otr, mm.o2r, sf64.otr)
+    // 1. Coincidencia por archivo de firma dentro de la carpeta (ej. oot.otr, mm.o2r, sf64.o2r)
     for (int i = 0; sig.file_signatures[i] != nullptr; ++i) {
       const char* file_sig = sig.file_signatures[i];
       for (const auto& f : files) {
@@ -96,7 +107,18 @@ const FolderSignature* match_signature(const std::string& folder_name,
       }
     }
 
-    // 2. Coincidencia combinada de carpeta + nro
+    // 2. Coincidencia por autor
+    bool author_match = false;
+    if (!lower_author.empty()) {
+      for (int i = 0; sig.author_tokens[i] != nullptr; ++i) {
+        if (str::icontains(lower_author, sig.author_tokens[i])) {
+          author_match = true;
+          break;
+        }
+      }
+    }
+
+    // 3. Coincidencia combinada de carpeta + nro
     bool folder_match = false;
     for (int i = 0; sig.dir_tokens[i] != nullptr; ++i) {
       if (str::icontains(lower_folder, sig.dir_tokens[i])) {
@@ -115,7 +137,7 @@ const FolderSignature* match_signature(const std::string& folder_name,
       }
     }
 
-    if (folder_match || nro_match) {
+    if (author_match || folder_match || nro_match) {
       return &sig;
     }
   }
@@ -123,10 +145,31 @@ const FolderSignature* match_signature(const std::string& folder_name,
 }
 
 const CatalogEntry* find_catalog_for_sig(const FolderSignature* sig,
-                                        const std::vector<Catalog>& catalogs) {
+                                        const std::vector<Catalog>& catalogs,
+                                        const std::string& author = "") {
   if (!sig) return nullptr;
   const std::string target_id = sig->id_keyword;
+  const std::string lower_author = str::lower(author);
 
+  // Pasada 1: si hay autor, buscar coincidencia especifica por autor en el catalogo
+  if (!lower_author.empty()) {
+    for (const auto& cat : catalogs) {
+      for (const auto& entry : cat.entries) {
+        const std::string cat_author = str::lower(entry.author);
+        const std::string cat_name = str::lower(entry.name);
+        if (str::icontains(cat_name, target_id) || str::icontains(str::lower(entry.project), target_id)) {
+          if (!cat_author.empty() && str::icontains(lower_author, cat_author)) {
+            return &entry;
+          }
+          if (str::icontains(lower_author, "sonic") && str::icontains(cat_name, "sonic")) {
+            return &entry;
+          }
+        }
+      }
+    }
+  }
+
+  // Pasada 2: busqueda general por palabra clave
   for (const auto& cat : catalogs) {
     for (const auto& entry : cat.entries) {
       const std::string lower_name = str::lower(entry.name);
@@ -194,22 +237,30 @@ int scan_and_adopt_decomps(Library& library, const std::vector<Catalog>& catalog
     }
 
     if (nro_path.empty()) continue;
-    if (is_homebrew_app(paths::basename(nro_path), "")) continue;
+    HomebrewAppInfo nro_info = inspect_nro(nro_path, name);
+    if (!nro_info.is_decomp && is_homebrew_app(nro_info.name, "")) continue;
 
-    const FolderSignature* sig = match_signature(name, files, nro_file);
+    const FolderSignature* sig = match_signature(name, files, nro_file, nro_info.author);
     if (!sig) continue;
 
-    const CatalogEntry* cat_entry = find_catalog_for_sig(sig, catalogs);
+    const CatalogEntry* cat_entry = find_catalog_for_sig(sig, catalogs, nro_info.author);
     if (!cat_entry) continue;
 
     // Buscar si ya existe en la biblioteca
     AppEntry* existing = nullptr;
     const std::string cat_key = cat_entry->to_app_entry().identity_key();
     for (auto& app : library.apps) {
+      if (str::iequals(app.install_dir(), full_path)) {
+        existing = &app;
+        break;
+      }
+      if (!nro_info.author.empty() && !app.author.empty() && !str::iequals(app.author, nro_info.author)) {
+        // Autores distintos: son NROs independientes de distintos desarrolladores
+        continue;
+      }
       if (app.identity_key() == cat_key ||
           str::iequals(app.name, cat_entry->name) ||
-          str::iequals(app.folder_name, name) ||
-          str::iequals(app.install_dir(), full_path)) {
+          str::iequals(app.folder_name, name)) {
         existing = &app;
         break;
       }
@@ -221,6 +272,10 @@ int scan_and_adopt_decomps(Library& library, const std::vector<Catalog>& catalog
       existing->sw.target_dir = full_path;
       existing->sw.nro = nro_file;
       existing->installed = true;
+      if (!nro_info.author.empty()) existing->author = nro_info.author;
+      if (!nro_info.version.empty() && existing->installed_version.empty()) {
+        existing->installed_version = nro_info.version;
+      }
       const std::string vfile = paths::join(full_path, "version.txt");
       if (paths::exists(vfile)) {
         if (auto text = paths::read_file(vfile)) {
@@ -235,6 +290,8 @@ int scan_and_adopt_decomps(Library& library, const std::vector<Catalog>& catalog
       new_entry.sw.target_dir = full_path;
       new_entry.sw.nro = nro_file;
       new_entry.installed = true;
+      if (!nro_info.author.empty()) new_entry.author = nro_info.author;
+      if (!nro_info.version.empty()) new_entry.installed_version = nro_info.version;
       const std::string vfile = paths::join(full_path, "version.txt");
       if (paths::exists(vfile)) {
         if (auto text = paths::read_file(vfile)) {

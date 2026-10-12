@@ -150,6 +150,9 @@ const Entry kTranslations[] = {
     {"notify.installing", "Instalando", "Installing"},
     {"notify.busy_warning", "Descarga en curso. Espera a que termine.", "Download in progress. Please wait until finished."},
     {"notify.completed", "Instalación completada", "Installation completed"},
+    {"notify.already_active", "ya se está descargando", "is already downloading"},
+    {"notify.already_queued", "ya está en la cola de descargas", "is already in the download queue"},
+    {"notify.queued_count", "en cola", "queued"},
 
     // Dialogos de actualizacion, reinstalacion y organizacion
     {"dialog.up_to_date_title", "Aplicación al día", "Application Up to Date"},
@@ -159,6 +162,11 @@ const Entry kTranslations[] = {
     {"btn.organize_folder", "Organizar carpeta", "Organize folder"},
     {"confirm.organize_folder_title", "Organizar carpeta de decomp", "Organize Decomp Folder"},
     {"confirm.organize_folder_body", "¿Deseas renombrar y organizar la carpeta:\n'%s'\na la ruta estándar:\n'%s'?", "Do you want to rename and organize folder:\n'%s'\nto standard path:\n'%s'?"},
+    {"dialog.repair_folder_title", "Reparar ruta de instalación", "Repair Installation Path"},
+    {"dialog.repair_folder_body", "La carpeta actual de %s está en una ruta no estándar:\n'%s'\n\n¿Deseas reparar y mover la carpeta a la ruta estándar sugerida?\n'%s'", "%s is currently installed in a non-standard path:\n'%s'\n\nDo you want to repair and move the folder to the suggested standard path?\n'%s'"},
+    {"btn.repair_folder", "Reparar ruta", "Repair path"},
+    {"btn.reinstall_and_repair", "Reinstalar y reparar", "Reinstall & repair"},
+    {"btn.reinstall_current", "Reinstalar en ruta actual", "Reinstall in current path"},
     {"toast.organize_ok", "Carpeta organizada correctamente", "Folder organized successfully"},
     {"toast.organize_failed", "No se pudo renombrar la carpeta", "Failed to rename folder"},
 };

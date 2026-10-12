@@ -227,6 +227,17 @@ class App {
   std::string busy_label_;
   uint32_t busy_started_ms_ = 0;
   bool installing_active_ = false;
+  std::string current_installing_key_;
+
+  struct QueuedInstall {
+    int library_index;
+    bool force_unverified;
+    std::string app_name;
+    std::string identity_key;
+  };
+  std::vector<QueuedInstall> install_queue_;
+
+  void draw_corner_notification_card(const AppEntry& app, float ratio, int64_t done, int64_t total);
 
   bool launching_ = false;
   std::string launch_error_;
