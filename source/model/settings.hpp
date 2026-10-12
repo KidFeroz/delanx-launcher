@@ -48,15 +48,16 @@ struct Settings {
 
   // ---- extensiones Delanx ----
   std::string DelanxCatalogBaseUrl = "https://api.quiverlauncher.com/api/v1";
-  bool DelanxHarbourMastersSection = true;
+  bool DelanxMrShipSection = true;
   bool DelanxIncludeUnverified = true;
   bool DelanxUseNativeInstallPaths = true;
   bool DelanxAutoCheckUpdatesOnBoot = false;
   bool DelanxConfirmBlockedReleases = true;
   std::string DelanxLastTab = "library";
-  std::string DelanxTheme = "sphaira-dark";
+  std::string DelanxTheme = "delanx-dark";
   std::string DelanxLanguage = "es";
   int DelanxGridColumns = 0;  // 0 = automatico segun modo de arranque
+  std::vector<std::string> DelanxFavorites;
 
   // Claves del fichero que esta version no conoce: se guardan como JSON literal para
   // reescribirlas tal cual y no borrar ajustes de Quiver (u otra version de Delanx).

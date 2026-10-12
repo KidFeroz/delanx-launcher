@@ -41,6 +41,7 @@ const char* const kKnownKeys[] = {
     "CatalogHideLibraryApps",
     "EnableGamepadInput",
     "DelanxCatalogBaseUrl",
+    "DelanxMrShipSection",
     "DelanxHarbourMastersSection",
     "DelanxIncludeUnverified",
     "DelanxUseNativeInstallPaths",
@@ -50,6 +51,7 @@ const char* const kKnownKeys[] = {
     "DelanxTheme",
     "DelanxLanguage",
     "DelanxGridColumns",
+    "DelanxFavorites",
 };
 
 bool is_known_key(const char* key) {
@@ -184,7 +186,10 @@ Settings Settings::from_json(const json::Value& node) {
 
   // ---- extensiones Delanx ----
   read_string(node, "DelanxCatalogBaseUrl", settings.DelanxCatalogBaseUrl, extra);
-  read_bool(node, "DelanxHarbourMastersSection", settings.DelanxHarbourMastersSection, extra);
+  read_bool(node, "DelanxMrShipSection", settings.DelanxMrShipSection, extra);
+  if (node.get("DelanxHarbourMastersSection").valid() && !node.get("DelanxMrShipSection").valid()) {
+    read_bool(node, "DelanxHarbourMastersSection", settings.DelanxMrShipSection, extra);
+  }
   read_bool(node, "DelanxIncludeUnverified", settings.DelanxIncludeUnverified, extra);
   read_bool(node, "DelanxUseNativeInstallPaths", settings.DelanxUseNativeInstallPaths, extra);
   read_bool(node, "DelanxAutoCheckUpdatesOnBoot", settings.DelanxAutoCheckUpdatesOnBoot, extra);
@@ -193,6 +198,7 @@ Settings Settings::from_json(const json::Value& node) {
   read_string(node, "DelanxTheme", settings.DelanxTheme, extra);
   read_string(node, "DelanxLanguage", settings.DelanxLanguage, extra);
   read_int(node, "DelanxGridColumns", settings.DelanxGridColumns, extra);
+  read_strings(node, "DelanxFavorites", settings.DelanxFavorites, extra);
 
   // ---- claves que no conocemos: se conservan para reescribirlas igual ----
   json_t* object = node.raw();
@@ -239,7 +245,7 @@ json::Builder Settings::to_json() const {
 
   // ---- extensiones Delanx ----
   root.set("DelanxCatalogBaseUrl", DelanxCatalogBaseUrl);
-  root.set("DelanxHarbourMastersSection", DelanxHarbourMastersSection);
+  root.set("DelanxMrShipSection", DelanxMrShipSection);
   root.set("DelanxIncludeUnverified", DelanxIncludeUnverified);
   root.set("DelanxUseNativeInstallPaths", DelanxUseNativeInstallPaths);
   root.set("DelanxAutoCheckUpdatesOnBoot", DelanxAutoCheckUpdatesOnBoot);
@@ -248,6 +254,7 @@ json::Builder Settings::to_json() const {
   root.set("DelanxTheme", DelanxTheme);
   root.set("DelanxLanguage", DelanxLanguage);
   root.set("DelanxGridColumns", static_cast<int64_t>(DelanxGridColumns));
+  root.set_strings("DelanxFavorites", DelanxFavorites);
 
   // Claves heredadas de otras versiones, aplicadas al final: si una clave conocida venia
   // con un tipo que no representamos, su valor original gana sobre el nuestro.
@@ -282,8 +289,7 @@ void Settings::ensure_initialized() {
 }
 
 bool Settings::is_dark() const {
-  // Automatic se resuelve a oscuro: es el tema por defecto de la consola (y el de hbmenu,
-  // Sphaira y el menu de Switch), asi que no se consulta el sistema.
+  // Automatic se resuelve a oscuro: es el tema por defecto de la consola y del menu de Switch.
   return ThemeMode == ThemeTextMode::Dark || ThemeMode == ThemeTextMode::Automatic;
 }
 

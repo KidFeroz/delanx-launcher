@@ -65,7 +65,7 @@ struct CatalogEntry {
   std::string rom_source_hint;  // clave "romSourceHint" (de donde sacar la ROM propia)
   std::vector<std::string> switch_proof;
   bool verified = false;
-  bool harbour_masters = false;
+  bool mrship = false;
   std::string notes;
   SwitchInstall sw;
 

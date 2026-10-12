@@ -17,26 +17,106 @@ constexpr int kChipBarHeight = 46;
 Color badge_color(const Theme& theme, const ListItem& item) {
   if (item.unavailable) return theme.warning;
   if (item.unverified) return theme.warning;  // catalogo maestro: sin verificar
-  if (item.harbour) return theme.accent_alt;
+  if (item.mrship) return theme.accent_alt;
   if (item.update) return theme.warning;
   if (item.installed) return theme.success;
   if (item.verified) return theme.accent;
   return theme.text_muted;
 }
 
-std::string initials(const std::string& text) {
-  std::string out;
-  for (char c : text) {
-    if (std::isalpha(static_cast<unsigned char>(c))) {
-      out.push_back(static_cast<char>(std::toupper(static_cast<unsigned char>(c))));
-      if (out.size() >= 2) break;
-    }
-  }
-  if (out.empty()) out = "?";
-  return out;
-}
+using str::initials;
 
 }  // namespace
+
+void App::draw_tab_bar() {
+  const int origin_x = theme_.sidebar_width;
+  const int y = theme_.topbar_height;
+  const int width = renderer_.width() - origin_x;
+  const int height = theme_.tab_bar_height;
+
+  // Fondo sutil con linea separadora inferior
+  renderer_.fill_rect(origin_x, y, width, height, theme_.panel.with_alpha(180));
+  renderer_.fill_rect(origin_x, y + height - 1, width, 1, theme_.border);
+
+  struct TabDesc {
+    Tab tab;
+    const char* label;
+  };
+
+  const TabDesc tabs[] = {
+      {Tab::Library, "Biblioteca"},
+      {Tab::Catalog, "Catálogo"},
+      {Tab::MrShip, "MrShip"},
+      {Tab::Homebrew, "Homebrew"},
+      {Tab::Downloads, "Actualizaciones"},
+      {Tab::Settings, "Ajustes"},
+  };
+
+  int cursor_x = origin_x + theme_.content_padding;
+  const int pill_y = y + theme_.px(6);
+  const int pill_h = height - theme_.px(12);
+
+  for (size_t i = 0; i < sizeof(tabs) / sizeof(tabs[0]); ++i) {
+    const Tab t = tabs[i].tab;
+    const bool active = (tab_ == t);
+    const bool hovered = (in_tab_bar_ && tab_hover_ == static_cast<int>(i));
+
+    const int text_w = renderer_.text_width(tabs[i].label, theme_.font_body, active, FontFace::Brand);
+    const int pill_w = text_w + theme_.px(28);
+
+    const SDL_Rect hit_rect{cursor_x, y, pill_w, height};
+    hit_tabs_.push_back({t, hit_rect});
+
+    if (active) {
+      // Píldora activa con relieve y gradiente suave neon
+      renderer_.vertical_gradient(cursor_x, pill_y, pill_w, pill_h,
+                                  theme_.accent.with_alpha(80), theme_.accent.with_alpha(35), 6);
+      renderer_.stroke_round_rect(cursor_x, pill_y, pill_w, pill_h, theme_.px(8),
+                                  theme_.accent, 2);
+      // Linea de acento luminosa inferior
+      renderer_.fill_round_rect(cursor_x + theme_.px(8), pill_y + pill_h - theme_.px(3),
+                                pill_w - theme_.px(16), theme_.px(3), theme_.px(1), theme_.accent);
+      renderer_.draw_text(tabs[i].label, cursor_x + theme_.px(14), pill_y + theme_.px(6),
+                          theme_.text, theme_.font_body, true, FontFace::Brand);
+    } else if (hovered) {
+      // Estado hover/seleccionado con D-Pad / stick izquierdo antes de pulsar A
+      renderer_.vertical_gradient(cursor_x, pill_y, pill_w, pill_h,
+                                  theme_.card_focus, theme_.panel_alt, 4);
+      renderer_.stroke_round_rect(cursor_x, pill_y, pill_w, pill_h, theme_.px(8),
+                                  theme_.focus_ring.with_alpha(180), 2);
+      renderer_.draw_text(tabs[i].label, cursor_x + theme_.px(14), pill_y + theme_.px(6),
+                          theme_.text, theme_.font_body, false, FontFace::Brand);
+    } else {
+      // Píldora normal
+      renderer_.draw_text(tabs[i].label, cursor_x + theme_.px(14), pill_y + theme_.px(6),
+                          theme_.text_dim, theme_.font_body, false, FontFace::Brand);
+    }
+
+    cursor_x += pill_w + theme_.px(10);
+  }
+}
+
+// ------------------------------------------------------------------ favoritos
+
+bool App::is_favorite(const std::string& identity) const {
+  if (identity.empty()) return false;
+  for (const auto& fav : settings_.DelanxFavorites) {
+    if (str::iequals(fav, identity)) return true;
+  }
+  return false;
+}
+
+void App::toggle_favorite(const std::string& identity) {
+  if (identity.empty()) return;
+  auto it = std::find_if(settings_.DelanxFavorites.begin(), settings_.DelanxFavorites.end(),
+                         [&](const std::string& item) { return str::iequals(item, identity); });
+  if (it != settings_.DelanxFavorites.end()) {
+    settings_.DelanxFavorites.erase(it);
+  } else {
+    settings_.DelanxFavorites.push_back(identity);
+  }
+  save_settings();
+}
 
 // ------------------------------------------------------------------ construccion de listas
 
@@ -44,9 +124,9 @@ std::vector<ListItem> App::build_library_items() {
   std::vector<ListItem> items;
   for (size_t index = 0; index < library_.apps.size(); ++index) {
     const AppEntry& app = library_.apps[index];
-    if (library_filter_ == 1 && !app.installed) continue;
-    if (library_filter_ == 2 && !app.update_available) continue;
-    if (library_filter_ == 3 && !app.harbour_masters) continue;
+    if (!app.installed) continue;  // Solo los decompilados/ports instalados en la consola
+    if (library_filter_ == 1 && !app.update_available) continue;
+    if (library_filter_ == 2 && !app.mrship) continue;
 
     ListItem item;
     item.title = display_name(app);
@@ -54,7 +134,7 @@ std::vector<ListItem> App::build_library_items() {
     item.icon_url = app.app_icon_url;
     item.installed = app.installed;
     item.update = app.update_available;
-    item.harbour = app.harbour_masters;
+    item.mrship = app.mrship;
     item.verified = app.verified_entry;
     item.library_index = static_cast<int>(index);
     if (app.update_available) {
@@ -74,11 +154,100 @@ std::vector<ListItem> App::build_library_items() {
   return items;
 }
 
+bool App::has_switch_build(const CatalogEntry& entry) const {
+  if (entry.verified) return true;
+  if (!entry.switch_proof.empty()) return true;
+
+  // Si está explicitamente catalogado como unavailable por HarbourMasters, no tiene build
+  for (const auto& unavail : mrship_catalog_.unavailable) {
+    if (str::iequals(unavail.repository, entry.repository) ||
+        str::iequals(unavail.name, entry.name)) {
+      return false;
+    }
+  }
+  for (const auto& unavail : local_catalog_.unavailable) {
+    if (str::iequals(unavail.repository, entry.repository) ||
+        str::iequals(unavail.name, entry.name)) {
+      return false;
+    }
+  }
+
+  // Comprobar si tiene NRO configurado o filtro de assets hacia switch
+  const std::string filter = str::lower(entry.release_asset_filter);
+  const std::string nro = str::lower(entry.sw.nro);
+  if (!nro.empty() || filter.find(".nro") != std::string::npos || filter.find("switch") != std::string::npos) {
+    return true;
+  }
+
+  // Lista de repositorios del catálogo maestro verificados con build de Switch
+  static const char* const kKnownSwitchRepos[] = {
+      "PalindromicBreadLoaf/NX-Diffuser",
+      "perfect-dark-pc-port/perfect_dark",
+      "fgsfdsfgs/doom64ex",
+      "fildicio/jak-project-switch",
+      "centollOS/SwitchWaker",
+      "souldbminerr/dusklight-nx",
+      "KawaiiBunga/Melee-NX",
+      "new-coke/strikers",
+      "StevensND/nfsmw-nx",
+      "ChaykaDed/silent-hill-decomp-nx",
+      "CostelaCNX/ReChan-Switch",
+      "XProger/OpenLara",
+      "bryanthaboi/gen1recomp",
+      "UNDERdecoded/Gen2Recomped",
+      "delsonazevedo/Zelda-LA-DX-HD-Updated",
+      "toniisound/oracles-nx",
+      "HayatoG/tmc",
+      "boraeskicioglu/sonic_advance2_nx",
+      "Thorhax/Daytona-NX-Modern",
+      "Thorhax/VF2-NX-Modern",
+      "Thorhax/Virtual-On-NX",
+      "Thorhax/Killer-Instinct-NX-Modern",
+      "boraeskicioglu/sonic_the_fighters_nx",
+      "fgsfdsfgs/eduke32",
+      "fgsfdsfgs/Serious-Engine",
+      "FWGS/xash3d-fwgs",
+      "NaGaa95/hl2_nx",
+      "NaGaa95/max_nx_v2.1.131",
+      "ryandeering/fallout-ce-switch",
+      "ryandeering/fallout2-ce-switch",
+      "ChanseyIsTheBest/daggerfall_nx",
+      "bvschaik/julius",
+      "capsterx-switch/Vanilla-Conquer",
+      "ihhub/fheroes2",
+      "ChanseyIsTheBest/revolt_nx",
+      "mariob0y/gta3-nx",
+      "NaGaa95/gtasa_nx",
+      "KranKRival/OpenJazzNX",
+  };
+  for (const char* repo : kKnownSwitchRepos) {
+    if (str::iequals(entry.repository, repo)) return true;
+  }
+
+  const std::string text = str::lower(entry.notes + " " + entry.requirements);
+  if (text.find("para pc") != std::string::npos ||
+      text.find("solo pc") != std::string::npos ||
+      text.find("verificado actualmente para pc") != std::string::npos ||
+      text.find("soporte switch en desarrollo") != std::string::npos ||
+      text.find("pendiente release de binario .nro") != std::string::npos ||
+      text.find("pendiente publicacion de release nro") != std::string::npos ||
+      text.find("pendiente publicación de release nro") != std::string::npos ||
+      text.find("pendiente de release oficial para switch") != std::string::npos ||
+      text.find("pendiente release oficial de puerto switch") != std::string::npos ||
+      text.find("solo linux/mac/win") != std::string::npos) {
+    return false;
+  }
+
+  // Por defecto, las entradas sin confirmación de Switch quedan ocultas cuando hide_unsupported_switch_ está activo
+  return false;
+}
+
 std::vector<ListItem> App::build_catalog_items() {
   std::vector<ListItem> items;
   if (catalog_mode_ == CatalogMode::Quiver) {
     for (size_t index = 0; index < catalog_online_.size(); ++index) {
       const quiver::CatalogApp& entry = catalog_online_[index];
+      if (library_.find_by_identity(entry.repository) || library_.find(entry.name)) continue;
       ListItem item;
       item.title = entry.name;
       item.subtitle = entry.project_name.empty() ? entry.repository : entry.project_name;
@@ -97,70 +266,156 @@ std::vector<ListItem> App::build_catalog_items() {
     return items;
   }
 
-  if (catalog_mode_ == CatalogMode::Master) {
-    // Catalogo maestro del usuario: TODAS las entradas son propuestas sin comprobar que el
-    // proyecto publique un .nro para Switch, asi que la chapa lo dice sin rodeos.
-    const Catalog& catalog = master_catalog_;
-    for (size_t index = 0; index < catalog.entries.size(); ++index) {
-      const CatalogEntry& entry = catalog.entries[index];
-      ListItem item;
-      item.title = entry.name;
-      item.subtitle = entry.project.empty() ? entry.repository : entry.project;
-      item.catalog_index = static_cast<int>(index);
-      item.icon_url = entry.app_icon_url;
-      item.harbour = entry.harbour_masters;
-      item.verified = entry.verified;
-      item.unverified = !entry.verified;
-      item.badge = entry.verified ? entry.badge() : "Sin verificar";
-      item.meta = entry.sw.nro;  // .nro propuesto en el maestro (aun sin confirmar)
-      items.push_back(item);
+  const Catalog& catalog = (catalog_mode_ == CatalogMode::Master && !master_catalog_.entries.empty())
+                               ? master_catalog_
+                               : local_catalog_;
+  for (size_t index = 0; index < catalog.entries.size(); ++index) {
+    const CatalogEntry& entry = catalog.entries[index];
+    // Ocultar por defecto los que no tienen build para Switch
+    if (hide_unsupported_switch_ && !has_switch_build(entry)) {
+      continue;
     }
-    return items;
-  }
 
-  for (size_t index = 0; index < local_catalog_.entries.size(); ++index) {
-    const CatalogEntry& entry = local_catalog_.entries[index];
+    const AppEntry* existing = library_.find_by_identity(entry.repository);
+    if (!existing) existing = library_.find(entry.name);
+    const bool is_installed = (existing != nullptr && existing->installed);
+    const bool is_fav = is_favorite(entry.name) || (!entry.repository.empty() && is_favorite(entry.repository));
+
+    // Si el filtro de favoritos está activo, omitir los no favoritos
+    if (catalog_show_favorites_ && !is_fav) {
+      continue;
+    }
+
     ListItem item;
     item.title = entry.name;
     item.subtitle = entry.project.empty() ? entry.repository : entry.project;
     item.catalog_index = static_cast<int>(index);
     item.icon_url = entry.app_icon_url;
-    item.harbour = entry.harbour_masters;
+    item.mrship = entry.mrship;
     item.verified = entry.verified;
-    item.badge = entry.badge();
-    const bool has_nro = !entry.sw.nro.empty() || !entry.sw.nro_path.empty();
-    item.meta = has_nro ? entry.sw.nro : "ver .nro no confirmado";
+    item.unverified = !entry.verified;
+    item.installed = is_installed;
+    if (is_installed) {
+      item.badge = "Instalado";
+    } else if (is_fav) {
+      item.badge = entry.verified ? "★ Verificado" : "★ Favorito";
+    } else {
+      item.badge = entry.verified ? entry.badge() : "Sin verificar";
+    }
+    item.meta = entry.sw.nro.empty() ? entry.requirements : entry.sw.nro;
     items.push_back(item);
   }
   return items;
 }
 
-std::vector<ListItem> App::build_harbour_items() {
+std::vector<ListItem> App::build_mrship_items() {
   std::vector<ListItem> items;
-  for (size_t index = 0; index < harbour_catalog_.entries.size(); ++index) {
-    const CatalogEntry& entry = harbour_catalog_.entries[index];
+  for (size_t index = 0; index < mrship_catalog_.entries.size(); ++index) {
+    const CatalogEntry& entry = mrship_catalog_.entries[index];
+    if (hide_unsupported_switch_ && !has_switch_build(entry)) {
+      continue;
+    }
     ListItem item;
     item.title = entry.name;
     item.subtitle = entry.project.empty() ? entry.repository : entry.project;
     item.catalog_index = static_cast<int>(index);
     item.icon_url = entry.app_icon_url;
-    item.harbour = true;
+    item.mrship = true;
     item.verified = entry.verified;
     item.badge = entry.verified ? "Con build Switch" : "Sin verificar";
     item.meta = entry.sw.nro.empty() ? entry.requirements : entry.sw.nro;
     items.push_back(item);
   }
-  for (size_t index = 0; index < harbour_catalog_.unavailable.size(); ++index) {
-    const UnavailableEntry& entry = harbour_catalog_.unavailable[index];
-    ListItem item;
-    item.title = entry.name;
-    item.subtitle = entry.repository;
-    item.harbour_index = static_cast<int>(index);
-    item.unavailable = true;
-    item.badge = "Sin build Switch";
-    item.unavailable_reason = entry.reason;
-    item.meta = entry.workaround.empty() ? "no disponible" : "nightly disponible";
-    items.push_back(item);
+  if (!hide_unsupported_switch_) {
+    for (size_t index = 0; index < mrship_catalog_.unavailable.size(); ++index) {
+      const UnavailableEntry& entry = mrship_catalog_.unavailable[index];
+      ListItem item;
+      item.title = entry.name;
+      item.subtitle = entry.repository;
+      item.mrship_index = static_cast<int>(index);
+      item.unavailable = true;
+      item.badge = "Sin build Switch";
+      item.unavailable_reason = entry.reason;
+      item.meta = entry.workaround.empty() ? "no disponible" : "nightly disponible";
+      items.push_back(item);
+    }
+  }
+  return items;
+}
+
+std::vector<ListItem> App::build_homebrew_items() {
+  std::vector<ListItem> items;
+  const std::string switch_dir = paths::to_sd_path("/switch");
+  if (!paths::exists(switch_dir)) return items;
+
+  std::vector<std::string> decomp_names;
+  decomp_names.push_back("delanx");
+  for (const auto& app : library_.apps) {
+    if (!app.folder_name.empty()) decomp_names.push_back(str::lower(app.folder_name));
+    if (!app.sw.nro.empty()) decomp_names.push_back(str::lower(paths::basename(app.sw.nro)));
+  }
+  for (const auto& entry : local_catalog_.entries) {
+    if (!entry.folder_name.empty()) decomp_names.push_back(str::lower(entry.folder_name));
+    if (!entry.sw.nro.empty()) decomp_names.push_back(str::lower(paths::basename(entry.sw.nro)));
+  }
+  for (const auto& entry : master_catalog_.entries) {
+    if (!entry.folder_name.empty()) decomp_names.push_back(str::lower(entry.folder_name));
+    if (!entry.sw.nro.empty()) decomp_names.push_back(str::lower(paths::basename(entry.sw.nro)));
+  }
+
+  auto is_decomp = [&](const std::string& name) {
+    const std::string lower = str::lower(name);
+    for (const auto& d : decomp_names) {
+      if (lower == d || str::starts_with(lower, d) || str::ends_with(lower, d)) return true;
+    }
+    return false;
+  };
+
+  const auto dir_list = paths::list_dir(switch_dir);
+  for (const std::string& name : dir_list) {
+    if (name == "." || name == ".." || str::iequals(name, "delanx")) continue;
+    const std::string full = paths::join(switch_dir, name);
+    if (paths::is_dir(full)) {
+      if (is_decomp(name)) continue;
+      std::string nro_path;
+      const std::string candidate = paths::join(full, name + ".nro");
+      if (paths::exists(candidate) && !paths::is_dir(candidate)) {
+        nro_path = candidate;
+      } else {
+        for (const std::string& sub : paths::list_dir(full)) {
+          if (paths::extension(sub) == ".nro") {
+            nro_path = paths::join(full, sub);
+            break;
+          }
+        }
+      }
+      if (nro_path.empty()) continue;
+
+      ListItem item;
+      item.title = name;
+      item.subtitle = "/switch/" + name;
+      item.badge = "Homebrew";
+      item.installed = true;
+      item.meta = nro_path;
+
+      std::string icon_cand = paths::join(full, "icon.png");
+      if (!paths::exists(icon_cand)) icon_cand = paths::join(full, name + ".png");
+      if (paths::exists(icon_cand)) item.icon_url = icon_cand;
+      else item.icon_url = "romfs:/icons/default.png";
+
+      items.push_back(item);
+    } else if (paths::extension(name) == ".nro") {
+      const std::string base = name.substr(0, name.size() - 4);
+      if (is_decomp(base)) continue;
+      ListItem item;
+      item.title = base;
+      item.subtitle = "/switch/" + name;
+      item.badge = "Homebrew";
+      item.installed = true;
+      item.meta = full;
+      item.icon_url = "romfs:/icons/default.png";
+      items.push_back(item);
+    }
   }
   return items;
 }
@@ -170,17 +425,23 @@ std::vector<ListItem> App::build_harbour_items() {
 void App::draw_list_screen(const std::string& title, const std::string& subtitle,
                            const std::vector<ListItem>& items, const std::string& empty_text) {
   const int origin_x = theme_.sidebar_width;
-  const int origin_y = theme_.topbar_height;
+  const int origin_y = theme_.topbar_height + theme_.tab_bar_height;
   const int content_w = renderer_.width() - origin_x;
   const int content_h = renderer_.height() - origin_y - theme_.footer_height;
   const bool has_chips = (tab_ == Tab::Library || tab_ == Tab::Catalog);
   const int bottom_bar = has_chips ? theme_.px(kChipBarHeight) : 0;
 
-  renderer_.draw_text(subtitle, origin_x + theme_.content_padding, origin_y + theme_.px(8), theme_.text_muted,
-                      theme_.font_small);
-  renderer_.draw_text_right(str::format("%lu elementos", static_cast<unsigned long>(items.size())),
-                            renderer_.width() - theme_.content_padding, origin_y + theme_.px(8),
+  const std::string counter_str = str::format("%lu elementos", static_cast<unsigned long>(items.size()));
+  const int counter_w = renderer_.text_width(counter_str, theme_.font_small);
+  renderer_.draw_text_right(counter_str, renderer_.width() - theme_.content_padding, origin_y + theme_.px(8),
                             theme_.text_muted, theme_.font_small);
+
+  const int avail_sub_w = renderer_.width() - theme_.content_padding * 2 - counter_w - theme_.px(16);
+  const std::vector<std::string> sub_lines = renderer_.wrap_text(subtitle, theme_.font_small, avail_sub_w);
+  if (!sub_lines.empty()) {
+    renderer_.draw_text(sub_lines[0], origin_x + theme_.content_padding, origin_y + theme_.px(8), theme_.text_muted,
+                        theme_.font_small);
+  }
 
   const int grid_top = origin_y + theme_.px(34);
   const int grid_height = content_h - theme_.px(34) - bottom_bar;
@@ -194,7 +455,7 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
   const int columns = std::max(grid_columns_, 1);
   const int gap = theme_.gap;
   const int card_w = (content_w - theme_.content_padding * 2 - gap * (columns - 1)) / columns;
-  const int card_h = card_w * 9 / 16 + theme_.px(86);
+  const int card_h = card_w * 9 / 16 + theme_.px(108);
   const int rows = static_cast<int>((items.size() + static_cast<size_t>(columns) - 1) / columns);
 
   focus_ = std::clamp(focus_, 0, static_cast<int>(items.size()) - 1);
@@ -218,13 +479,22 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
       renderer_.fill_round_rect(card_x, card_y, card_w, card_h, theme_.card_radius,
                                 focused ? theme_.card_focus : theme_.card);
       if (focused) {
-        renderer_.stroke_round_rect(card_x, card_y, card_w, card_h, theme_.card_radius, theme_.focus_ring, 2);
+        const uint32_t ticks = SDL_GetTicks();
+        const float pulse = 0.5f + 0.5f * sinf(ticks * 0.007f);
+        const Color ring_color = theme_.accent.with_alpha(static_cast<uint8_t>(180 + 75 * pulse));
+        renderer_.stroke_round_rect(card_x, card_y, card_w, card_h, theme_.card_radius, ring_color, 3);
+      } else {
+        renderer_.stroke_round_rect(card_x, card_y, card_w, card_h, theme_.card_radius, theme_.border, 1);
       }
 
-      // Zona de caratula
+      // Zona de caratula con conservacion de relacion de aspecto y degradado
       const int art_h = card_w * 9 / 16;
-      renderer_.fill_round_rect(card_x + theme_.px(8), card_y + theme_.px(8), card_w - theme_.px(16),
-                                art_h - theme_.px(8), theme_.px(8), theme_.panel_alt);
+      const int art_x = card_x + theme_.px(8);
+      const int art_y = card_y + theme_.px(8);
+      const int art_w = card_w - theme_.px(16);
+      const int art_box_h = art_h - theme_.px(8);
+
+      renderer_.fill_round_rect(art_x, art_y, art_w, art_box_h, theme_.px(8), theme_.panel_alt);
       Texture* artwork = nullptr;
       if (item.library_index >= 0) {
         artwork = icon_for(library_.apps[static_cast<size_t>(item.library_index)]);
@@ -238,50 +508,77 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
         if (entry) {
           artwork = icon_for(entry->to_app_entry());
         }
-      } else if (item.harbour_index >= 0 && static_cast<size_t>(item.harbour_index) < harbour_catalog_.entries.size()) {
-        artwork = icon_for(harbour_catalog_.entries[static_cast<size_t>(item.harbour_index)].to_app_entry());
-      }
-      if (artwork) {
-        renderer_.draw_texture(artwork, card_x + theme_.px(8), card_y + theme_.px(8), card_w - theme_.px(16),
-                               art_h - theme_.px(8));
-      } else {
-        renderer_.draw_text_centered(initials(item.title), card_x + card_w / 2,
-                                     card_y + theme_.px(8) + (art_h - theme_.px(8)) / 2 - theme_.px(18),
-                                     theme_.text_muted, theme_.font_header, true);
+      } else if (item.mrship_index >= 0 && static_cast<size_t>(item.mrship_index) < mrship_catalog_.entries.size()) {
+        artwork = icon_for(mrship_catalog_.entries[static_cast<size_t>(item.mrship_index)].to_app_entry());
+      } else if (!item.icon_url.empty()) {
+        artwork = renderer_.texture(item.icon_url);
       }
 
-      // Texto
+      if (!artwork) {
+        artwork = renderer_.texture("romfs:/icons/default.png");
+      }
+
+      if (artwork) {
+        renderer_.draw_texture_cover(artwork, art_x, art_y, art_w, art_box_h);
+        // Sutil degradado en la parte inferior de la caratula para darle profundidad
+        renderer_.vertical_gradient(art_x, art_y + art_box_h - theme_.px(28), art_w, theme_.px(28),
+                                   Color::rgb(0, 0, 0, 0), Color::rgb(14, 16, 22, 160), 8);
+      } else {
+        renderer_.draw_text_centered(initials(item.title), card_x + card_w / 2,
+                                     art_y + art_box_h / 2 - theme_.px(14),
+                                     theme_.text_muted, theme_.font_header, true, FontFace::Brand);
+      }
+
+      // Texto de la tarjeta con margen interior seguro
       const int text_x = card_x + theme_.px(12);
       const int text_w = card_w - theme_.px(24);
-      int text_y = card_y + art_h + theme_.px(4);
-      const std::vector<std::string> title_lines = renderer_.wrap_text(item.title, theme_.font_body, text_w, true);
+      int text_y = card_y + art_h + theme_.px(8);
+      const int badge_h = theme_.px(22);
+      const int badge_y = card_y + card_h - badge_h - theme_.px(10);
+
+      // Titulo (max 2 lineas con salto de linea y elipsis de seguridad)
+      const std::vector<std::string> title_lines = renderer_.wrap_text(item.title, theme_.font_body, text_w, true, FontFace::Brand);
+      const int title_line_h = renderer_.font_height(theme_.font_body, true, FontFace::Brand) + 1;
       for (size_t line = 0; line < title_lines.size() && line < 2; ++line) {
-        renderer_.draw_text(title_lines[line], text_x, text_y, theme_.text, theme_.font_body, true);
-        text_y += renderer_.font_height(theme_.font_body, true) + 1;
+        renderer_.draw_text(title_lines[line], text_x, text_y, theme_.text, theme_.font_body, true, FontFace::Brand);
+        text_y += title_line_h;
       }
-      if (!item.subtitle.empty()) {
+
+      // Subtitulo (solo si cabe comodamente por encima de las chapas)
+      if (!item.subtitle.empty() && (text_y + renderer_.font_height(theme_.font_small) <= badge_y - theme_.px(4))) {
         const std::vector<std::string> subtitle_lines =
-            renderer_.wrap_text(item.subtitle, theme_.font_small, text_w);
+            renderer_.wrap_text(item.subtitle, theme_.font_small, text_w, false, FontFace::Regular);
         if (!subtitle_lines.empty()) {
-          renderer_.draw_text(subtitle_lines[0], text_x, text_y + 1, theme_.text_dim, theme_.font_small);
+          renderer_.draw_text(subtitle_lines[0], text_x, text_y, theme_.text_dim, theme_.font_small, false, FontFace::Regular);
         }
       }
 
-      // Chapa de estado
+      // Chapa de estado y metadato a la derecha sin colisionar
       if (!item.badge.empty()) {
-        const int badge_w = renderer_.text_width(item.badge, theme_.font_small) + theme_.px(16);
+        const int badge_pad = theme_.px(14);
+        const int badge_w = renderer_.text_width(item.badge, theme_.font_small, true, FontFace::Condensed) + badge_pad;
         const Color color = badge_color(theme_, item);
-        renderer_.fill_round_rect(card_x + theme_.px(10), card_y + card_h - theme_.px(30), badge_w,
-                                  theme_.px(24), theme_.px(8), color.with_alpha(46));
-        renderer_.draw_text(item.badge, card_x + theme_.px(18), card_y + card_h - theme_.px(26), color,
-                            theme_.font_small, true);
-      }
-      if (!item.meta.empty()) {
-        const std::vector<std::string> meta_lines =
-            renderer_.wrap_text(item.meta, theme_.font_small, text_w);
-        std::string meta = meta_lines.empty() ? item.meta : meta_lines[0];
-        renderer_.draw_text_right(meta, card_x + card_w - theme_.px(12), card_y + card_h - theme_.px(26),
-                                  theme_.text_muted, theme_.font_small);
+        renderer_.fill_round_rect(card_x + theme_.px(10), badge_y, badge_w, badge_h, theme_.px(6), color.with_alpha(46));
+        renderer_.stroke_round_rect(card_x + theme_.px(10), badge_y, badge_w, badge_h, theme_.px(6), color.with_alpha(100), 1);
+        renderer_.draw_text(item.badge, card_x + theme_.px(10) + theme_.px(7), badge_y + theme_.px(3), color,
+                           theme_.font_small, true, FontFace::Condensed);
+
+        if (!item.meta.empty()) {
+          const int avail_meta_w = card_w - theme_.px(20) - badge_w - theme_.px(12);
+          if (avail_meta_w > theme_.px(32)) {
+            const std::vector<std::string> meta_lines = renderer_.wrap_text(item.meta, theme_.font_small, avail_meta_w, false, FontFace::Condensed);
+            if (!meta_lines.empty()) {
+              renderer_.draw_text_right(meta_lines[0], card_x + card_w - theme_.px(10), badge_y + theme_.px(3),
+                                        theme_.text_muted, theme_.font_small, false, FontFace::Condensed);
+            }
+          }
+        }
+      } else if (!item.meta.empty()) {
+        const int avail_meta_w = card_w - theme_.px(20);
+        const std::vector<std::string> meta_lines = renderer_.wrap_text(item.meta, theme_.font_small, avail_meta_w, false, FontFace::Condensed);
+        if (!meta_lines.empty()) {
+          renderer_.draw_text(meta_lines[0], card_x + theme_.px(10), badge_y + theme_.px(3), theme_.text_muted, theme_.font_small, false, FontFace::Condensed);
+        }
       }
     }
   }
@@ -301,19 +598,21 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
 }
 
 void App::draw_library_filters() {
-  const char* labels[] = {"Todas", "Instaladas", "Con actualizacion", "Harbour Masters"};
+  const char* labels[] = {"Instalados", "Con actualizacion", "Ports MrShip"};
   const int origin_x = theme_.sidebar_width;
   const int y = renderer_.height() - theme_.footer_height - theme_.px(kChipBarHeight) + theme_.px(8);
   renderer_.draw_text("Y: filtrar", origin_x + theme_.content_padding, y + theme_.px(6), theme_.text_muted,
                       theme_.font_small);
   int x = origin_x + theme_.content_padding + theme_.px(90);
-  for (int index = 0; index < 4; ++index) {
+  for (int index = 0; index < 3; ++index) {
     const bool active = index == library_filter_;
-    const int chip_w = renderer_.text_width(labels[index], theme_.font_small) + theme_.px(24);
+    const int chip_w = renderer_.text_width(labels[index], theme_.font_small, active) + theme_.px(24);
     renderer_.fill_round_rect(x, y, chip_w, theme_.px(30), theme_.px(8),
-                              active ? theme_.accent.with_alpha(60) : theme_.panel_alt);
+                              active ? theme_.accent.with_alpha(45) : theme_.panel_alt);
+    renderer_.stroke_round_rect(x, y, chip_w, theme_.px(30), theme_.px(8),
+                                active ? theme_.accent : theme_.border, active ? 2 : 1);
     renderer_.draw_text(labels[index], x + theme_.px(12), y + theme_.px(5),
-                        active ? theme_.accent : theme_.text_dim, theme_.font_small, active);
+                        active ? theme_.text : theme_.text_dim, theme_.font_small, active);
     x += chip_w + theme_.px(10);
   }
 }
@@ -321,42 +620,39 @@ void App::draw_library_filters() {
 // ------------------------------------------------------------------ fuente del catalogo
 
 std::string App::catalog_source_title() const {
-  switch (catalog_mode_) {
-    case CatalogMode::Master: return "Catalogo maestro (sin verificar)";
-    case CatalogMode::Quiver: return "Catalogo Quiver (online)";
-    case CatalogMode::Delanx: break;
-  }
-  return "Catalogo Delanx (Switch verificado)";
+  return "Catálogo";
 }
 
 std::string App::catalog_source_origin() const {
   switch (catalog_mode_) {
-    case CatalogMode::Master: return "romfs:/catalog/ports-master.json";
-    case CatalogMode::Quiver: return "api.quiverlauncher.com";
+    case CatalogMode::Master: return "Catálogo Maestro de Ports";
+    case CatalogMode::Quiver: return "Quiver Online";
     case CatalogMode::Delanx: break;
   }
-  return "romfs:/catalog/switch-catalog.json";
+  return "Catálogo Delanx";
 }
 
 std::string App::catalog_source_label() const {
   switch (catalog_mode_) {
-    case CatalogMode::Master: return "Fuente: catalogo maestro (local, sin verificar)";
-    case CatalogMode::Quiver: return "Fuente: Quiver (online)";
+    case CatalogMode::Master: return "Catálogo Maestro";
+    case CatalogMode::Quiver: return "Quiver Online";
     case CatalogMode::Delanx: break;
   }
-  return "Fuente: Delanx (local, verificada)";
+  return "Catálogo Verificado";
 }
 
 std::string App::catalog_empty_text() const {
+  if (catalog_show_favorites_) {
+    return "No tienes ningún título marcado como favorito. Pulsa X para marcarlo.";
+  }
   switch (catalog_mode_) {
     case CatalogMode::Master:
-      // El catalogo maestro lo genera otro proceso: puede no existir todavia.
-      return "Sin entradas en el catalogo maestro (" + catalog_source_origin() + ").";
+      return "Sin entradas en el catálogo maestro.";
     case CatalogMode::Quiver:
-      return "Sin resultados. Pulsa X para buscar en Quiver.";
+      return "Sin resultados. Pulsa L+R para buscar en Quiver.";
     case CatalogMode::Delanx: break;
   }
-  return "Catalogo vacio.";
+  return "Catálogo vacío.";
 }
 
 void App::cycle_catalog_mode() {
@@ -364,23 +660,20 @@ void App::cycle_catalog_mode() {
   catalog_mode_ = static_cast<CatalogMode>((static_cast<int>(catalog_mode_) + 1) % 3);
   focus_ = 0;
   scroll_ = 0;
-  // Las zonas pulsables son del fotograma anterior: un toque simultaneo al cambio de fuente
-  // no debe golpear las tarjetas que acabamos de dejar atras.
   hit_targets_.clear();
   switch (catalog_mode_) {
     case CatalogMode::Master:
-      toast(str::format("Catalogo maestro: %lu títulos sin verificar",
+      toast(str::format("Catálogo Maestro: %lu títulos",
                         static_cast<unsigned long>(master_catalog_.entries.size())));
       break;
     case CatalogMode::Quiver:
       catalog_online_.clear();
       catalog_cursor_.clear();
       catalog_done_ = false;
-      // refresh_catalog_page ya avisa (exito o error) con su propio toast.
-      refresh_catalog_page(true);  // unica fuente con red: se consulta al entrar
+      refresh_catalog_page(true);
       break;
     case CatalogMode::Delanx:
-      toast("Catalogo Delanx (Switch verificado)");
+      toast("Catálogo Delanx (Switch verificado)");
       break;
   }
 }
@@ -388,31 +681,25 @@ void App::cycle_catalog_mode() {
 void App::draw_catalog_filters() {
   const int origin_x = theme_.sidebar_width;
   const int y = renderer_.height() - theme_.footer_height - theme_.px(kChipBarHeight) + theme_.px(8);
-  const bool online = catalog_mode_ == CatalogMode::Quiver;
-  renderer_.draw_text(catalog_source_label(), origin_x + theme_.content_padding, y + theme_.px(6),
-                      online ? theme_.warning : theme_.accent, theme_.font_small, true);
-  int x = origin_x + theme_.content_padding + theme_.px(300);
-  if (catalog_mode_ == CatalogMode::Master) {
-    // Advertencia explicita: el maestro son propuestas del usuario, ninguna comprobada.
-    const std::string warning =
-        str::format("%lu títulos del catálogo maestro: sin verificar que publiquen .nro para Switch",
-                    static_cast<unsigned long>(master_catalog_.entries.size()));
-    renderer_.draw_text(warning, x, y + theme_.px(6), theme_.warning, theme_.font_small, true);
-    x += renderer_.text_width(warning, theme_.font_small) + theme_.px(24);
-    renderer_.draw_text("Y: cambiar de fuente", x, y + theme_.px(6), theme_.text_muted, theme_.font_small);
-  } else if (online) {
-    const std::string info =
-        catalog_search_.empty() ? "Sin busqueda (-)" : str::format("Busqueda: %s", catalog_search_.c_str());
-    renderer_.draw_text(info, x, y + theme_.px(6), theme_.text_dim, theme_.font_small);
-    x += theme_.px(260);
-    renderer_.draw_text("X: buscar    Y: cambiar de fuente", x, y + theme_.px(6), theme_.text_muted,
-                        theme_.font_small);
-  } else {
-    renderer_.draw_text("Releases verificadas con .nro para Switch", x, y + theme_.px(6), theme_.text_dim,
-                        theme_.font_small);
-    x += theme_.px(340);
-    renderer_.draw_text("Y: cambiar de fuente", x, y + theme_.px(6), theme_.text_muted, theme_.font_small);
+
+  const char* chip_labels[] = {"Todos", "Favoritos ★"};
+  int chip_x = origin_x + theme_.content_padding;
+  for (int i = 0; i < 2; ++i) {
+    const bool active = (i == 1) ? catalog_show_favorites_ : !catalog_show_favorites_;
+    const int chip_w = renderer_.text_width(chip_labels[i], theme_.font_small, active) + theme_.px(24);
+    renderer_.fill_round_rect(chip_x, y, chip_w, theme_.px(30), theme_.px(8),
+                              active ? theme_.accent.with_alpha(45) : theme_.panel_alt);
+    renderer_.stroke_round_rect(chip_x, y, chip_w, theme_.px(30), theme_.px(8),
+                                active ? theme_.accent : theme_.border, active ? 2 : 1);
+    renderer_.draw_text(chip_labels[i], chip_x + theme_.px(12), y + theme_.px(5),
+                        active ? theme_.text : theme_.text_dim, theme_.font_small, active);
+    chip_x += chip_w + theme_.px(10);
   }
+
+  // Acciones y atajos a la derecha
+  const std::string hint = "X: Favorito ★   Y: Filtrar   L+R: Buscar";
+  const int right_limit = renderer_.width() - theme_.content_padding;
+  renderer_.draw_text_right(hint, right_limit, y + theme_.px(6), theme_.text_muted, theme_.font_small);
 }
 
 // ------------------------------------------------------------------ metadatos de catalogo
@@ -421,7 +708,7 @@ const CatalogEntry* App::catalog_metadata_for(const AppEntry& app) const {
   // Busca la entrada de catalogo de la que salio la app para poder mostrar sus metadatos
   // informativos. Primero por repositorio (identidad fuerte) y despues por folderName, que
   // solo vale si no contradice a un repositorio conocido.
-  const Catalog* catalogs[] = {&master_catalog_, &local_catalog_, &harbour_catalog_};
+  const Catalog* catalogs[] = {&master_catalog_, &local_catalog_, &mrship_catalog_};
   const auto has_info = [](const CatalogEntry& entry) {
     return !entry.category.empty() || !entry.asset_type.empty() || !entry.rom_source_hint.empty();
   };
@@ -465,18 +752,56 @@ void App::on_accept() {
     return;
   }
   switch (tab_) {
-    case Tab::Library:
-      if (!library_.apps.empty()) {
-        details_index_ = std::clamp(focus_, 0, static_cast<int>(library_.apps.size()) - 1);
+    case Tab::Library: {
+      const std::vector<ListItem> items = build_library_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        details_index_ = items[static_cast<size_t>(focus_)].library_index;
         details_open_ = true;
       }
       break;
-    case Tab::Catalog:
-      add_catalog_entry_to_library(focus_);
+    }
+    case Tab::Catalog: {
+      const std::vector<ListItem> items = build_catalog_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        const ListItem& item = items[static_cast<size_t>(focus_)];
+        if (item.installed) {
+          const AppEntry* app = library_.find(item.title);
+          if (app) {
+            for (size_t i = 0; i < library_.apps.size(); ++i) {
+              if (library_.apps[i].identity_key() == app->identity_key()) {
+                details_index_ = static_cast<int>(i);
+                details_open_ = true;
+                break;
+              }
+            }
+          }
+        } else {
+          add_catalog_entry_to_library(item.catalog_index);
+        }
+      }
       break;
-    case Tab::HarbourMasters:
-      add_catalog_entry_to_library(focus_);
+    }
+    case Tab::MrShip: {
+      const std::vector<ListItem> items = build_mrship_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        const ListItem& item = items[static_cast<size_t>(focus_)];
+        if (item.unavailable) {
+          open_dialog(item.title, item.unavailable_reason.empty() ? "Este proyecto no publica build de Switch."
+                                                                 : item.unavailable_reason,
+                      {DialogOption{"Entendido", nullptr}});
+        } else {
+          add_catalog_entry_to_library(item.catalog_index);
+        }
+      }
       break;
+    }
+    case Tab::Homebrew: {
+      const std::vector<ListItem> items = build_homebrew_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        launch_nro(items[static_cast<size_t>(focus_)].meta);
+      }
+      break;
+    }
     default:
       break;
   }
@@ -485,15 +810,36 @@ void App::on_accept() {
 void App::on_secondary() {
   switch (tab_) {
     case Tab::Library: {
-      if (!library_.apps.empty()) {
-        install_app(std::clamp(focus_, 0, static_cast<int>(library_.apps.size()) - 1), false);
+      const std::vector<ListItem> items = build_library_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        install_app(items[static_cast<size_t>(focus_)].library_index, false);
       }
       break;
     }
-    case Tab::Catalog:
-    case Tab::HarbourMasters:
-      add_catalog_entry_to_library(focus_);
+    case Tab::Catalog: {
+      const std::vector<ListItem> items = build_catalog_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        const ListItem& item = items[static_cast<size_t>(focus_)];
+        toggle_favorite(item.title);
+        toast(is_favorite(item.title) ? ("★ Marcado como favorito: " + item.title)
+                                      : ("Eliminado de favoritos: " + item.title));
+      }
       break;
+    }
+    case Tab::MrShip: {
+      const std::vector<ListItem> items = build_mrship_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        add_catalog_entry_to_library(items[static_cast<size_t>(focus_)].catalog_index);
+      }
+      break;
+    }
+    case Tab::Homebrew: {
+      const std::vector<ListItem> items = build_homebrew_items();
+      if (focus_ >= 0 && focus_ < static_cast<int>(items.size())) {
+        launch_nro(items[static_cast<size_t>(focus_)].meta);
+      }
+      break;
+    }
     default:
       break;
   }
@@ -502,23 +848,26 @@ void App::on_secondary() {
 void App::on_tertiary() {
   switch (tab_) {
     case Tab::Library:
-      library_filter_ = (library_filter_ + 1) % 4;
+      library_filter_ = (library_filter_ + 1) % 3;
       focus_ = 0;
       scroll_ = 0;
       break;
     case Tab::Catalog:
-      cycle_catalog_mode();  // Delanx -> Master -> Quiver
+      catalog_show_favorites_ = !catalog_show_favorites_;
+      focus_ = 0;
+      scroll_ = 0;
+      toast(catalog_show_favorites_ ? "Mostrando solo Favoritos ★" : "Mostrando todo el Catálogo");
       break;
-    case Tab::HarbourMasters: {
-      const std::vector<ListItem> items = build_harbour_items();
+    case Tab::MrShip: {
+      const std::vector<ListItem> items = build_mrship_items();
       if (focus_ < static_cast<int>(items.size()) && items[static_cast<size_t>(focus_)].unavailable) {
         const ListItem& item = items[static_cast<size_t>(focus_)];
         open_dialog(item.title, item.unavailable_reason, {DialogOption{"Entendido", nullptr}});
       } else {
-        open_dialog("Harbour Masters",
-                    "Los ports de Harbour Masters no incluyen los datos del juego: necesitas tu propia ROM "
-                    "y, en la mayoria de casos, generar los ficheros .otr/.o2r en un PC antes de copiarlos "
-                    "a la SD. Delanx instala el .nro y te recuerda que ficheros faltan.",
+        open_dialog("Ports N64 (Harbour Masters)",
+                    "Los ports creados por Harbour Masters no incluyen los datos con copyright del juego: necesitas tu propia ROM "
+                    "y generar los ficheros .otr/.o2r en un PC antes de copiarlos "
+                    "a la tarjeta SD. Delanx instala el .nro y te recuerda los ficheros que faltan.",
                     {DialogOption{"Entendido", nullptr}});
       }
       break;
@@ -546,17 +895,10 @@ void App::open_search() {
 
 void App::add_catalog_entry_to_library(int index) {
   AppEntry entry;
-  if (tab_ == Tab::HarbourMasters) {
-    const std::vector<ListItem> items = build_harbour_items();
-    if (index < 0 || index >= static_cast<int>(items.size())) return;
-    const ListItem& item = items[static_cast<size_t>(index)];
-    if (item.unavailable || item.catalog_index < 0) {
-      open_dialog(item.title, item.unavailable_reason.empty() ? "Este proyecto no publica build de Switch."
-                                                             : item.unavailable_reason,
-                  {DialogOption{"Entendido", nullptr}});
-      return;
-    }
-    entry = harbour_catalog_.entries[static_cast<size_t>(item.catalog_index)].to_app_entry();
+  if (tab_ == Tab::MrShip) {
+    if (index < 0 || index >= static_cast<int>(mrship_catalog_.entries.size())) return;
+    const CatalogEntry& source = mrship_catalog_.entries[static_cast<size_t>(index)];
+    entry = source.to_app_entry();
   } else if (catalog_mode_ == CatalogMode::Quiver) {
     if (index < 0 || index >= static_cast<int>(catalog_online_.size())) return;
     const quiver::CatalogApp& source = catalog_online_[static_cast<size_t>(index)];
@@ -650,20 +992,23 @@ void App::draw_details_overlay() {
   renderer_.fill_round_rect(x, y, width, height, theme_.px(18), theme_.panel);
   renderer_.stroke_round_rect(x, y, width, height, theme_.px(18), theme_.border, 1);
 
-  // Icono / caratula
-  const int art_size = theme_.px(220);
-  renderer_.fill_round_rect(x + theme_.px(28), y + theme_.px(28), art_size, art_size, theme_.px(14),
+  // Icono / caratula (proporciones de portada de juego 220x280)
+  const int art_w = theme_.px(220);
+  const int art_h = theme_.px(280);
+  renderer_.fill_round_rect(x + theme_.px(28), y + theme_.px(28), art_w, art_h, theme_.px(14),
                             theme_.panel_alt);
+  renderer_.stroke_round_rect(x + theme_.px(28), y + theme_.px(28), art_w, art_h, theme_.px(14),
+                              theme_.border, 1);
   Texture* artwork = icon_for(app);
   if (artwork) {
-    renderer_.draw_nro_icon(artwork, x + theme_.px(28), y + theme_.px(28), art_size);
+    renderer_.draw_texture_fit(artwork, x + theme_.px(28), y + theme_.px(28), art_w, art_h);
   } else {
-    renderer_.draw_text_centered(initials(app.name), x + theme_.px(28) + art_size / 2,
-                                 y + theme_.px(28) + art_size / 2 - theme_.px(20), theme_.text_muted,
+    renderer_.draw_text_centered(initials(app.name), x + theme_.px(28) + art_w / 2,
+                                 y + theme_.px(28) + art_h / 2 - theme_.px(20), theme_.text_muted,
                                  theme_.font_header, true);
   }
 
-  const int info_x = x + theme_.px(28) + art_size + theme_.px(26);
+  const int info_x = x + theme_.px(28) + art_w + theme_.px(26);
   const int info_w = x + width - info_x - theme_.px(28);
   int info_y = y + theme_.px(30);
 
@@ -692,29 +1037,33 @@ void App::draw_details_overlay() {
     info_y += theme_.px(4);  // un poco de aire antes de las chapas
   }
 
-  // Chapas
+  // Chapas de estado y etiquetas (con salto de linea para evitar desbordamiento)
   int chip_x = info_x;
   auto chip = [&](const std::string& text, const Color& color) {
     const int chip_w = renderer_.text_width(text, theme_.font_small) + theme_.px(18);
-    renderer_.fill_round_rect(chip_x, info_y, chip_w, theme_.px(26), theme_.px(8), color.with_alpha(46));
+    if (chip_x + chip_w > info_x + info_w) {
+      chip_x = info_x;
+      info_y += theme_.px(30);
+    }
+    renderer_.fill_round_rect(chip_x, info_y, chip_w, theme_.px(24), theme_.px(6), color.with_alpha(46));
+    renderer_.stroke_round_rect(chip_x, info_y, chip_w, theme_.px(24), theme_.px(6), color.with_alpha(90), 1);
     renderer_.draw_text(text, chip_x + theme_.px(9), info_y + theme_.px(3), color, theme_.font_small, true);
     chip_x += chip_w + theme_.px(8);
   };
-  if (app.harbour_masters) chip("Harbour Masters", theme_.accent_alt);
+  if (app.mrship) chip("Harbour Masters", theme_.accent_alt);
   if (app.verified_entry) chip("Verificado", theme_.accent);
   if (app.installed) chip("Instalado", theme_.success);
   if (app.update_available) chip("Actualizacion disponible", theme_.warning);
   if (app.manually_managed()) chip("Manual", theme_.text_muted);
   for (const auto& tag : app.tags) chip(tag, theme_.accent);
-  info_y += theme_.px(38);
+  info_y += theme_.px(36);
 
   const std::string versions = str::format("Instalada: %s    Disponible: %s",
                                            app.installed_version.empty() ? "-" : app.installed_version.c_str(),
                                            app.latest_version.empty() ? "-" : app.latest_version.c_str());
   renderer_.draw_text(versions, info_x, info_y, theme_.text_dim, theme_.font_small);
   info_y += theme_.px(26);
-  // homeDir = carpeta final de la app (donde vive el .nro); targetDir = raiz de extraccion.
-  // Si no hay homeDir, la app vive en la raiz de extraccion.
+
   const std::string install_target = app.sw.home_dir.empty() ? app.sw.target_dir : app.sw.home_dir;
   if (!install_target.empty()) {
     renderer_.draw_text("Instala en: " + install_target, info_x, info_y, theme_.text_muted, theme_.font_small);
@@ -733,13 +1082,13 @@ void App::draw_details_overlay() {
   if (!app.requirements.empty()) {
     info_y += theme_.px(6);
     info_y += renderer_.draw_text_wrapped("Requisitos: " + app.requirements, info_x, info_y, theme_.warning,
-                                         theme_.font_small, info_w, 3);
+                                         theme_.font_small, info_w, 2);
   }
 
   // Ficheros que debe aportar el usuario
   info_y += theme_.px(10);
   renderer_.draw_text("Ficheros del usuario", info_x, info_y, theme_.text, theme_.font_body, true);
-  info_y += theme_.px(28);
+  info_y += theme_.px(26);
   if (app.sw.required_user_files.empty()) {
     renderer_.draw_text("Esta app no necesita ficheros adicionales.", info_x, info_y, theme_.text_muted,
                         theme_.font_small);
@@ -754,23 +1103,37 @@ void App::draw_details_overlay() {
     }
   }
 
-  // Acciones disponibles
-  const int footer_y = y + height - theme_.px(58);
+  // Acciones disponibles centradas en el pie del modal
+  const int footer_y = y + height - theme_.px(54);
   renderer_.fill_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
                             theme_.panel_alt);
-  int hint_x = x + theme_.px(36);
-  auto hint = [&](Btn button, const std::string& label) {
-    const int radius = theme_.px(12);
-    renderer_.fill_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.card);
-    renderer_.draw_text_centered(button_glyph(button), hint_x + radius, footer_y + theme_.px(11), theme_.text,
-                                 theme_.font_small, true);
-    renderer_.draw_text(label, hint_x + radius * 2 + theme_.px(8), footer_y + theme_.px(10), theme_.text_dim,
-                        theme_.font_small);
-    hint_x += theme_.px(30) + renderer_.text_width(label, theme_.font_small) + theme_.px(28);
+  renderer_.stroke_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+                              theme_.border, 1);
+
+  struct ModalHint {
+    Btn btn;
+    std::string label;
   };
-  hint(Btn::A, app.installed ? "Lanzar" : "Instalar");
-  hint(Btn::X, app.installed ? "Actualizar" : "Reinstalar");
-  hint(Btn::B, "Cerrar");
+  std::vector<ModalHint> modal_hints;
+  modal_hints.push_back({Btn::A, app.installed ? "Lanzar" : "Instalar"});
+  modal_hints.push_back({Btn::X, app.installed ? "Actualizar" : "Reinstalar"});
+  modal_hints.push_back({Btn::B, "Cerrar"});
+
+  int total_hints_w = 0;
+  for (const auto& h : modal_hints) {
+    total_hints_w += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+  }
+  int hint_x = x + (width - total_hints_w) / 2;
+  for (const auto& h : modal_hints) {
+    const int radius = theme_.px(11);
+    renderer_.fill_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.card_focus);
+    renderer_.stroke_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.border, 1);
+    renderer_.draw_text_centered(button_glyph(h.btn), hint_x + radius, footer_y + theme_.px(11), theme_.text,
+                                 theme_.font_small, true);
+    renderer_.draw_text(h.label, hint_x + radius * 2 + theme_.px(8), footer_y + theme_.px(10), theme_.text,
+                        theme_.font_small);
+    hint_x += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+  }
 }
 
 }  // namespace delanx::ui

@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/delanx-horizontal-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/delanx-horizontal-light.svg">
+    <img alt="DELANX" src="docs/assets/delanx-horizontal-dark.svg" width="560">
+  </picture>
+</p>
+
 # Delanx — Homebrew Port & Decompilation Manager para Nintendo Switch
 
 [![Release](https://img.shields.io/badge/release-v0.1.0--experimental-blue.svg)](https://github.com/KidFeroz/Delanx/releases)
@@ -8,9 +16,7 @@
 [![Author](https://img.shields.io/badge/Author-KidFeroz-informational.svg?logo=github)](https://github.com/KidFeroz)
 [![Vibecoded with AI](https://img.shields.io/badge/developed%20with-AI%20%2F%20Vibecoding-8A2BE2.svg)](#-declaración-de-desarrollo-asistido-por-ia-vibecoding)
 
-**Delanx** es un gestor y cargador (*launcher*) nativo de alto rendimiento implementado en **C++20** para Nintendo Switch (Horizon OS). Su propósito es centralizar la catalogación, instalación, verificación criptográfica y ejecución de adaptaciones de código (*source ports*), decompilaciones (*decomps*) y recompilaciones estáticas (*recomps*) dentro del ecosistema homebrew.
-
-Inspirado conceptualmente en la organización de catálogos de **Quiver Launcher**, Delanx es un desarrollo independiente hecho en binario nativo AArch64 (C++20) específicamente adaptado a las características de Nintendo Switch.
+**Delanx** es un gestor y cargador (*launcher*) nativo implementado en **C++20** para Nintendo Switch (Horizon OS). Su propósito es organizar, verificar la presencia de archivos requeridos y ejecutar adaptaciones de código (*source ports*), decompilaciones (*decomps*) y recompilaciones (*recomps*) dentro del ecosistema homebrew.
 
 > [!NOTE]
 > **Hecho por un entusiasta en casa con asistencia de IA (*Vibecoding*)**  
@@ -37,9 +43,9 @@ Inspirado conceptualmente en la organización de catálogos de **Quiver Launcher
 
 ---
 
-## ⚙️ Motivación Técnica e Inspiración
+## ⚙️ Enfoque y Diseño
 
-Delanx toma como inspiración el orden y la filosofía de catalogación de librerías de escritorio y el tener un repositorio para la Nintendo Switch donde el usuario pueda encontrar decomps de forma sencilla, como Quiver Launcher, pero reimaginada desde cero para ser un entorno nativo, rápido y autónomo en Horizon OS:
+Delanx fue diseñado para ser un entorno nativo, rápido y autónomo en Horizon OS:
 
 1. **Desarrollo 100% Nativo:** Código C++20 compilado directamente contra `libnx`, `SDL2` y portlibs de `devkitPro` para un arranque instantáneo y uso mínimo de RAM en consola.
 2. **Esquema de Datos Flexible (`apps.json`):** Adopta un formato JSON tolerante y extensible, permitiendo compatibilidad opcional con bibliotecas existentes mientras gestiona los parámetros propios de Switch bajo el objeto `"switch"`.
@@ -227,5 +233,4 @@ Agradecemos las contribuciones de la comunidad. Para mantener la robustez y cali
 Desarrollado y mantenido por **[KidFeroz](https://github.com/KidFeroz)**. Este software es libre y se distribuye bajo los términos de la licencia **GNU General Public License v3.0 (GPLv3)**. Consulta el archivo [LICENSE](LICENSE) para más detalles. Esta licencia garantiza que Delanx y cualquier fork o trabajo derivado permanezcan siempre libres y abiertos para la comunidad.
 
 * **devkitPro & Switchbrew:** Por la toolchain y la biblioteca `libnx`.
-* **Inspiración:** Al proyecto Quiver Launcher por la inspiración conceptual en la organización de catálogos.
-* **Proyectos Decomp & Porting:** A todos los equipos de ingeniería inversa que hacen posible la preservación del software histórico en plataformas modernas.
+* **Proyectos Decomp & Porting:** A todos los equipos de ingeniería inversa y homebrew que hacen posible la preservación del software en plataformas modernas.

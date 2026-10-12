@@ -19,6 +19,20 @@ constexpr float kPointerSpeed = 0.9f;
 
 int Input::index_of(Btn button) const { return static_cast<int>(button); }
 
+bool Input::pointer_visible() const {
+  if (!pointer_visible_) return false;
+  const uint32_t now = SDL_GetTicks();
+  if (pointer_last_moved_ms_ > 0 && (now - pointer_last_moved_ms_) > 2500) {
+    return false;
+  }
+  return true;
+}
+
+void Input::set_pointer_visible(bool visible) {
+  pointer_visible_ = visible;
+  if (visible) pointer_last_moved_ms_ = SDL_GetTicks();
+}
+
 void Input::set_screen_size(int width, int height) {
   screen_w_ = width > 0 ? width : screen_w_;
   screen_h_ = height > 0 ? height : screen_h_;
@@ -219,18 +233,23 @@ void Input::update_from_hid() {
     // Home y Capture son botones de sistema: no se usan en la navegacion.
 
     // Cruceta y stick izquierdo comparten los botones de direccion.
-    set_button(Btn::Up, held(HidNpadButton_Up) || pad.stick_ly < -kStick);
-    set_button(Btn::Down, held(HidNpadButton_Down) || pad.stick_ly > kStick);
+    // En libnx, stick_ly es POSITIVO hacia arriba y NEGATIVO hacia abajo.
+    set_button(Btn::Up, held(HidNpadButton_Up) || pad.stick_ly > kStick);
+    set_button(Btn::Down, held(HidNpadButton_Down) || pad.stick_ly < -kStick);
     set_button(Btn::Left, held(HidNpadButton_Left) || pad.stick_lx < -kStick);
     set_button(Btn::Right, held(HidNpadButton_Right) || pad.stick_lx > kStick);
 
-    // Stick derecho: mueve el cursor en pantalla.
+    // Stick derecho: mueve el cursor en pantalla (Y en pantalla crece hacia abajo).
     if (std::abs(pad.stick_rx) > kStick || std::abs(pad.stick_ry) > kStick) {
       pointer_visible_ = true;
+      pointer_last_moved_ms_ = SDL_GetTicks();
       const int step_x = pad.stick_rx * 18 / 32767;
       const int step_y = pad.stick_ry * 18 / 32767;
       pointer_x_ = std::clamp(pointer_x_ + step_x, 0, screen_w_ - 1);
-      pointer_y_ = std::clamp(pointer_y_ + step_y, 0, screen_h_ - 1);
+      pointer_y_ = std::clamp(pointer_y_ - step_y, 0, screen_h_ - 1);
+    } else if (pad.down != 0) {
+      // Si se pulsa cualquier boton fisico (A, B, cruceta, etc.), ocultar el cursor
+      pointer_visible_ = false;
     }
 
     // El HID de libnx responde siempre en Switch: se marca para que la interfaz lo sepa.
@@ -247,6 +266,7 @@ void Input::update_from_hid() {
       const int scaled_x = touch.x * screen_w_ / kTouchPanelWidth;
       const int scaled_y = touch.y * screen_h_ / kTouchPanelHeight;
       pointer_visible_ = true;
+      pointer_last_moved_ms_ = SDL_GetTicks();
       pointer_x_ = std::clamp(scaled_x, 0, screen_w_ - 1);
       pointer_y_ = std::clamp(scaled_y, 0, screen_h_ - 1);
       set_button(Btn::Touch, true);
@@ -272,6 +292,10 @@ bool Input::held(Btn button) const { return buttons_[index_of(button)].down; }
 bool Input::repeat(Btn button, uint32_t first_delay_ms, uint32_t repeat_ms) {
   ButtonState& state = buttons_[index_of(button)];
   if (!state.down) return false;
+  // En el fotograma exacto en que se presiona (tap rapido), responde de inmediato.
+  if (!state.down_last) {
+    return true;
+  }
   const uint32_t now = SDL_GetTicks();
   if (state.down_since == 0) state.down_since = now;
   const uint32_t elapsed = now - state.down_since;

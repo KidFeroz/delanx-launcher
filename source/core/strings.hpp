@@ -46,4 +46,7 @@ std::vector<std::string> wrap_text(const std::string& text, size_t max_chars);
 // Formatos de fecha relativos para la UI ("hace 3 d", "12 mar 2026").
 std::string relative_date(int64_t unix_seconds);
 
+// Extrae hasta 2 letras iniciales para marcadores de posicion de caratula.
+std::string initials(const std::string& text);
+
 }  // namespace delanx::str

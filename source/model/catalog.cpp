@@ -187,7 +187,7 @@ CatalogEntry CatalogEntry::from_json(const json::Value& node) {
   entry.rom_source_hint = str::trim(node.string("romSourceHint"));
   entry.switch_proof = node.string_array("switchProof");
   entry.verified = node.boolean("verified", false);
-  entry.harbour_masters = node.boolean("harbourMasters", false);
+  entry.mrship = node.boolean("mrship", node.boolean("harbourMasters", false));
   entry.notes = node.string("notes");
 
   // El bloque "switch" y sus normalizaciones (to_sd_path, descarte de rutas vacias) son
@@ -212,7 +212,7 @@ AppEntry CatalogEntry::to_app_entry() const {
   app.tags = str::normalize_tags(tags);
   app.release_asset_filter = release_asset_filter;
   app.requirements = requirements;
-  app.harbour_masters = harbour_masters;
+  app.mrship = mrship;
   app.verified_entry = verified;
   app.sw = sw;
   app.install_path.clear();  // el catalogo no fija ruta en la SD: manda switch.targetDir
@@ -232,7 +232,7 @@ AppEntry CatalogEntry::to_app_entry() const {
 }
 
 std::string CatalogEntry::badge() const {
-  if (harbour_masters) return "Harbour Masters";
+  if (mrship) return "MrShip";
   if (verified) return "Switch";
   return "Sin verificar";
 }

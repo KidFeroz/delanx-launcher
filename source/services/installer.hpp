@@ -66,6 +66,8 @@ bool extract_archive(const std::string& archive_path, const std::string& dest_di
 // Escribe version.txt e installed-build.txt (formato Quiver: "{filename}\n{sha256}\n").
 bool write_install_metadata(const AppEntry& app, const std::string& version, const std::string& asset_name,
                             const std::string& sha256);
+bool write_install_metadata_in(const std::string& dir, const std::string& version,
+                               const std::string& asset_name, const std::string& sha256);
 
 // Borra la carpeta de la app. Nunca borra ficheros aportados por el usuario salvo force_user_files.
 bool uninstall_app(const AppEntry& app, bool force_user_files, std::string* error);

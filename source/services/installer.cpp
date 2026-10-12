@@ -16,6 +16,7 @@
 #include "core/paths.hpp"
 #include "core/sha256.hpp"
 #include "core/strings.hpp"
+#include "platform/switch_platform.hpp"
 #include "services/http.hpp"
 
 namespace delanx {
@@ -564,11 +565,6 @@ std::vector<std::string> archive_root_components(const std::string& archive_path
   return prefix;
 }
 
-bool write_install_metadata(const AppEntry& app, const std::string& version, const std::string& asset_name,
-                            const std::string& sha256) {
-  return write_install_metadata_in(app.install_dir(), version, asset_name, sha256);
-}
-
 bool write_install_metadata_in(const std::string& dir, const std::string& version,
                                const std::string& asset_name, const std::string& sha256) {
   if (dir.empty()) return false;
@@ -581,6 +577,11 @@ bool write_install_metadata_in(const std::string& dir, const std::string& versio
   const bool build_ok = paths::write_file_atomic(paths::join(dir, "installed-build.txt"), build);
 
   return version_ok && build_ok;
+}
+
+bool write_install_metadata(const AppEntry& app, const std::string& version, const std::string& asset_name,
+                            const std::string& sha256) {
+  return write_install_metadata_in(app.install_dir(), version, asset_name, sha256);
 }
 
 bool uninstall_app(const AppEntry& app, bool force_user_files, std::string* error) {

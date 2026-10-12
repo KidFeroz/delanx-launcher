@@ -36,9 +36,9 @@ Color Color::mix(const Color& other, float t) const {
   return Color::rgb(blend(r, other.r), blend(g, other.g), blend(b, other.b), blend(a, other.a));
 }
 
-Theme Theme::sphaira_dark() { return Theme{}; }
+Theme Theme::delanx_dark() { return Theme{}; }
 
-Theme Theme::sphaira_light() {
+Theme Theme::delanx_light() {
   Theme theme;
   theme.dark = false;
   theme.bg = Color::rgb(238, 240, 244);
@@ -62,19 +62,20 @@ Theme Theme::sphaira_light() {
 void Theme::apply_scale(float factor) {
   scale = std::clamp(factor, 0.7f, 1.6f);
   const float s = scale;
-  sidebar_width = static_cast<int>(232 * s);
-  topbar_height = static_cast<int>(58 * s);
+  sidebar_width = 0;
+  topbar_height = static_cast<int>(52 * s);
+  tab_bar_height = static_cast<int>(44 * s);
   footer_height = static_cast<int>(46 * s);
   card_radius = static_cast<int>(12 * s);
-  gap = static_cast<int>(14 * s);
-  content_padding = static_cast<int>(22 * s);
+  gap = static_cast<int>(16 * s);
+  content_padding = static_cast<int>(28 * s);
   icon_size = static_cast<int>(96 * s);
   list_row_height = static_cast<int>(96 * s);
   scrollbar_width = static_cast<int>(6 * s);
-  font_small = static_cast<int>(17 * s);
-  font_body = static_cast<int>(21 * s);
-  font_title = static_cast<int>(26 * s);
-  font_header = static_cast<int>(32 * s);
+  font_small = static_cast<int>(15 * s);
+  font_body = static_cast<int>(19 * s);
+  font_title = static_cast<int>(24 * s);
+  font_header = static_cast<int>(30 * s);
 }
 
 int Theme::px(int value) const { return static_cast<int>(static_cast<float>(value) * scale); }

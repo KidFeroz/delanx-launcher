@@ -65,9 +65,6 @@ int main(int argc, char** argv) {
   printf("instcheck - verificacion de Delanx (sha256, time, installer, launcher, platform)\n");
   consoleUpdate(nullptr);
 
-  PadState pad;
-  padInitializeDefault(&pad);
-
   delanx::platform::init();
 
   // ---------------------------------------------------------------- sha256 ---
@@ -249,6 +246,15 @@ int main(int argc, char** argv) {
   delanx::LaunchTarget bad_target;
   check("request_next_nro(sin ruta)", !delanx::request_next_nro(bad_target, &error), error);
 
+  // ---------------------------------------------------- entrada / mandos ----
+  delanx::platform::PadSnapshot test_pad;
+  const bool pad_ok = delanx::platform::pad_poll(&test_pad);
+  check("pad_poll (HID libnx)", pad_ok, pad_ok ? "servicio activo" : "error en pad");
+
+  delanx::platform::TouchSnapshot test_touch;
+  const bool touch_ok = delanx::platform::touch_poll(&test_touch);
+  check("touch_poll (Tactil libnx)", touch_ok, touch_ok ? "servicio activo" : "error en tactil");
+
   // ------------------------------------------------------------- resumen ----
   const std::string summary = "instcheck: " + std::to_string(g_pass) + " OK, " + std::to_string(g_fail) + " FAIL";
   emit(summary);
@@ -257,13 +263,167 @@ int main(int argc, char** argv) {
   const std::string report_path = delanx::paths::join(delanx::paths::root(), "instcheck-report.txt");
   delanx::paths::write_file(report_path, g_log);
   printf("\nInforme escrito en %s\n", report_path.c_str());
-  printf("Pulsa + para salir.\n");
+  printf("\n[A] -> Iniciar TEST DE MANDOS Y PANTALLA TACTIL (en vivo)\n");
+  printf("[+] -> Salir al Homebrew Menu\n");
   consoleUpdate(nullptr);
 
+  bool enter_controller_test = false;
   while (appletMainLoop()) {
     consoleUpdate(nullptr);
-    padUpdate(&pad);
-    if ((padGetButtonsDown(&pad) & HidNpadButton_Plus) != 0) break;
+    delanx::platform::PadSnapshot snap;
+    if (delanx::platform::pad_poll(&snap)) {
+      if ((snap.pressed & HidNpadButton_Plus) != 0) break;
+      if ((snap.pressed & HidNpadButton_A) != 0) {
+        enter_controller_test = true;
+        break;
+      }
+    }
+  }
+
+  if (enter_controller_test) {
+    printf("\x1b[2J\x1b[H");
+    consoleUpdate(nullptr);
+
+    struct ButtonTest {
+      uint64_t mask;
+      const char* name;
+      int hit_count;
+    };
+
+    ButtonTest buttons[] = {
+      {HidNpadButton_A, "A (Aceptar)", 0},
+      {HidNpadButton_B, "B (Atras)", 0},
+      {HidNpadButton_X, "X", 0},
+      {HidNpadButton_Y, "Y", 0},
+      {HidNpadButton_Up, "Cruceta Arriba", 0},
+      {HidNpadButton_Down, "Cruceta Abajo", 0},
+      {HidNpadButton_Left, "Cruceta Izquierda", 0},
+      {HidNpadButton_Right, "Cruceta Derecha", 0},
+      {HidNpadButton_L, "L (Hombro L)", 0},
+      {HidNpadButton_R, "R (Hombro R)", 0},
+      {HidNpadButton_ZL, "ZL (Gatillo L)", 0},
+      {HidNpadButton_ZR, "ZR (Gatillo R)", 0},
+      {HidNpadButton_StickL, "Click Stick L", 0},
+      {HidNpadButton_StickR, "Click Stick R", 0},
+      {HidNpadButton_Minus, "Minus (-)", 0},
+      {HidNpadButton_Plus, "Plus (+)", 0},
+    };
+    constexpr size_t kNumButtons = sizeof(buttons) / sizeof(buttons[0]);
+
+    int last_touch_x = -1;
+    int last_touch_y = -1;
+    int touch_count_total = 0;
+    int exit_hold_frames = 0;
+
+    while (appletMainLoop()) {
+      delanx::platform::PadSnapshot snap;
+      delanx::platform::pad_poll(&snap);
+
+      delanx::platform::TouchSnapshot touch;
+      delanx::platform::touch_poll(&touch);
+
+      if (touch.active) {
+        last_touch_x = touch.x;
+        last_touch_y = touch.y;
+        ++touch_count_total;
+      }
+
+      for (size_t i = 0; i < kNumButtons; ++i) {
+        if ((snap.pressed & buttons[i].mask) != 0) {
+          buttons[i].hit_count++;
+        }
+      }
+
+      // Salida segura: mantener Plus por 90 frames (~1.5s) o pulsar Plus + Minus juntos
+      const bool plus_down = (snap.down & HidNpadButton_Plus) != 0;
+      const bool minus_down = (snap.down & HidNpadButton_Minus) != 0;
+      if (plus_down && minus_down) break;
+
+      if (plus_down) {
+        exit_hold_frames++;
+        if (exit_hold_frames >= 90) break;
+      } else {
+        exit_hold_frames = 0;
+      }
+
+      printf("\x1b[H");
+      printf("================================================================================\n");
+      printf("             DELANX - TEST DE MANDOS Y PANTALLA TACTIL EN CONSOLA               \n");
+      printf("================================================================================\n");
+
+      int tested_buttons = 0;
+      for (size_t i = 0; i < kNumButtons; ++i) {
+        if (buttons[i].hit_count > 0) tested_buttons++;
+      }
+
+      printf(" Progreso: %2d / %2d botones probados | Toques tactiles: %d                     \n\n",
+             tested_buttons, static_cast<int>(kNumButtons), touch_count_total);
+
+      for (size_t i = 0; i < kNumButtons; i += 2) {
+        const bool down_a = (snap.down & buttons[i].mask) != 0;
+        printf(" %-17s: [%s] x%-3d", buttons[i].name,
+               down_a ? "\x1b[7mPULSADO\x1b[0m" : "  ---  ", buttons[i].hit_count);
+
+        if (i + 1 < kNumButtons) {
+          const bool down_b = (snap.down & buttons[i + 1].mask) != 0;
+          printf("   |  %-17s: [%s] x%-3d\n", buttons[i + 1].name,
+                 down_b ? "\x1b[7mPULSADO\x1b[0m" : "  ---  ", buttons[i + 1].hit_count);
+        } else {
+          printf("\n");
+        }
+      }
+
+      printf("--------------------------------------------------------------------------------\n");
+      auto stick_label = [](int x, int y) -> const char* {
+        constexpr int kDeadzone = 9000;
+        if (y > kDeadzone && x > kDeadzone) return "ARRIBA-DERECHA";
+        if (y > kDeadzone && x < -kDeadzone) return "ARRIBA-IZQUIERDA";
+        if (y < -kDeadzone && x > kDeadzone) return "ABAJO-DERECHA";
+        if (y < -kDeadzone && x < -kDeadzone) return "ABAJO-IZQUIERDA";
+        if (y > kDeadzone) return "ARRIBA";
+        if (y < -kDeadzone) return "ABAJO";
+        if (x > kDeadzone) return "DERECHA";
+        if (x < -kDeadzone) return "IZQUIERDA";
+        return "CENTRO";
+      };
+
+      printf(" PALANCAS ANALOGICAS (Sticks):\n");
+      printf("  Stick L: X = %+6d | Y = %+6d  ->  %-16s                   \n",
+             snap.stick_lx, snap.stick_ly, stick_label(snap.stick_lx, snap.stick_ly));
+      printf("  Stick R: X = %+6d | Y = %+6d  ->  %-16s                   \n",
+             snap.stick_rx, snap.stick_ry, stick_label(snap.stick_rx, snap.stick_ry));
+      printf("  * Eje Y en Switch: Positivo (+) = ARRIBA, Negativo (-) = ABAJO               \n");
+
+      printf("--------------------------------------------------------------------------------\n");
+      printf(" PANTALLA TACTIL:\n");
+      if (touch.active) {
+        printf("  Estado: [\x1b[7m TOCANDO \x1b[0m]  Posicion actual: X = %4d, Y = %4d                 \n",
+               touch.x, touch.y);
+      } else {
+        printf("  Estado: [SIN TOQUE]  Ultima posicion : X = %4d, Y = %4d                 \n",
+               last_touch_x >= 0 ? last_touch_x : 0, last_touch_y >= 0 ? last_touch_y : 0);
+      }
+
+      printf("--------------------------------------------------------------------------------\n");
+      if (exit_hold_frames > 0) {
+        int pct = std::min(100, exit_hold_frames * 100 / 90);
+        char bar[21];
+        memset(bar, ' ', 20);
+        bar[20] = '\0';
+        int filled = std::min(20, pct / 5);
+        for (int b = 0; b < filled; ++b) bar[b] = '=';
+        printf(" Saliendo: Manteniendo [+]... [%s] %3d%%                      \n", bar, pct);
+      } else {
+        printf(" INSTRUCCIONES: Manten [+] durante 1.5s (o pulsa [+] y [-]) para salir.       \n");
+      }
+      printf("================================================================================\n");
+
+      consoleUpdate(nullptr);
+    }
+
+    printf("\x1b[2J\x1b[H");
+    printf("Test de mandos finalizado.\n");
+    consoleUpdate(nullptr);
   }
 
   delanx::platform::shutdown();

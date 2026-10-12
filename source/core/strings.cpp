@@ -243,4 +243,16 @@ std::string relative_date(int64_t unix_seconds) {
   return format("%lld a", static_cast<long long>(delta / (86400 * 365)));
 }
 
+std::string initials(const std::string& text) {
+  std::string out;
+  for (char c : text) {
+    if (std::isalpha(static_cast<unsigned char>(c))) {
+      out.push_back(static_cast<char>(std::toupper(static_cast<unsigned char>(c))));
+      if (out.size() >= 2) break;
+    }
+  }
+  if (out.empty()) out = "?";
+  return out;
+}
+
 }  // namespace delanx::str

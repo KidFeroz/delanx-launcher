@@ -139,7 +139,7 @@ void test_managed_roundtrip() {
   check(app.catalog.has_value(), "catalog (snapshot)");
   check(app.mods_sources.size() == 1, "mods.sources");
   check_eq(app.mods_layout, "folderPerMod", "mods.layout");
-  check(app.harbour_masters, "harbourMasters");
+  check(app.mrship, "mrship");
   check(app.verified_entry, "verified");
   check_eq(app.sw.target_dir, "sdmc:/switch/soh", "switch.targetDir normalizado");
   check_eq(app.sw.nro, "soh.nro", "switch.nro");
@@ -244,7 +244,7 @@ void test_settings_roundtrip() {
     "GitHubApiToken": "",
     "IconOpacity": 0.85,
     "AlgunaClaveFutura": { "a": 1, "b": [true, null] },
-    "DelanxHarbourMastersSection": false,
+    "DelanxMrShipSection": false,
     "DelanxGridColumns": 5
   })json";
   const std::string input = path_in_tmp("settings-in.json");
@@ -255,7 +255,7 @@ void test_settings_roundtrip() {
   check(settings.ListRowHeight == 120, "ListRowHeight leido");
   check(static_cast<int>(settings.ThemeMode) == 2, "ThemeTextMode leido como entero");
   check(static_cast<int>(settings.NameStyle) == 4, "LibraryNameStyle leido como entero");
-  check(!settings.DelanxHarbourMastersSection, "clave Delanx* leida");
+  check(!settings.DelanxMrShipSection, "clave Delanx* leida");
   check(settings.DelanxGridColumns == 5, "DelanxGridColumns leida");
   check(settings.HiddenApps.size() == 1, "HiddenApps");
 
@@ -293,7 +293,7 @@ void test_local_catalog() {
   for (const auto& entry : catalog->entries) {
     if (entry.name.empty() || entry.repository.empty() || entry.folder_name.empty()) ++broken;
     if (!entry.sw.nro.empty() || !entry.sw.nro_path.empty()) ++with_nro;
-    if (entry.harbour_masters) ++harbour;
+    if (entry.mrship) ++harbour;
     if (entry.verified) ++verified;
     const delanx::AppEntry app = entry.to_app_entry();
     if (app.repository.empty() || app.folder_name.empty()) ++broken;

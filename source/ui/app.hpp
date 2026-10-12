@@ -18,7 +18,7 @@
 
 namespace delanx::ui {
 
-enum class Tab { Library = 0, Catalog, HarbourMasters, Downloads, Settings, Count };
+enum class Tab { Library = 0, Catalog, MrShip, Homebrew, Downloads, Settings, Count };
 
 // Fuente activa de la pestana Catalogo: Y (y el boton +) ciclan entre las tres.
 //   Delanx  -> romfs:/catalog/switch-catalog.json (entradas verificadas)
@@ -61,13 +61,13 @@ struct ListItem {
   std::string icon_url;
   bool installed = false;
   bool update = false;
-  bool harbour = false;
+  bool mrship = false;
   bool unavailable = false;
   bool verified = false;
   bool unverified = false;  // chapa "Sin verificar" (catalogo maestro) en color de aviso
   int library_index = -1;
   int catalog_index = -1;
-  int harbour_index = -1;
+  int mrship_index = -1;
   std::string unavailable_reason;
 };
 
@@ -89,19 +89,23 @@ class App {
   // ---- estructura de la ventana ----
   void draw_background();
   void draw_topbar();
+  void draw_tab_bar();
   void draw_sidebar();
   void draw_footer();
   void draw_toast();
   void draw_dialog();
   void draw_busy_overlay();
   void draw_details_overlay();
+  void draw_controller_test_overlay();
   void draw_pointer();
 
   // ---- pantallas ----
   std::vector<ListItem> build_library_items();
   std::vector<ListItem> build_catalog_items();
-  std::vector<ListItem> build_harbour_items();
+  std::vector<ListItem> build_mrship_items();
+  std::vector<ListItem> build_homebrew_items();
   std::vector<ListItem> build_update_items();
+  bool has_switch_build(const CatalogEntry& entry) const;
   void draw_list_screen(const std::string& title, const std::string& subtitle,
                         const std::vector<ListItem>& items, const std::string& empty_text);
   void draw_downloads_screen();
@@ -130,6 +134,7 @@ class App {
   void install_app(int library_index, bool force_unverified);
   void update_all_pending();
   void launch_app(int library_index);
+  void launch_nro(const std::string& nro_path);
   void uninstall_app(int library_index);
   void add_catalog_entry_to_library(int catalog_index);
   void check_updates();
@@ -166,28 +171,37 @@ class App {
   Library library_;
   Catalog local_catalog_;
   Catalog master_catalog_;  // romfs:/catalog/ports-master.json (puede no existir)
-  Catalog harbour_catalog_;
+  Catalog mrship_catalog_;
 
   Tab tab_ = Tab::Library;
   int focus_ = 0;
   int scroll_ = 0;
   int grid_columns_ = 4;
+  bool in_tab_bar_ = false;
+  int tab_hover_ = 0;
+  bool hide_unsupported_switch_ = true;
   bool details_open_ = false;
   int details_index_ = -1;
+  bool controller_test_open_ = false;
 
-  // Catalogo online (Quiver)
+  // Catalogo online (Quiver) y filtros
   std::vector<quiver::CatalogApp> catalog_online_;
   std::string catalog_cursor_;
   bool catalog_done_ = false;
-  CatalogMode catalog_mode_ = CatalogMode::Delanx;
+  CatalogMode catalog_mode_ = CatalogMode::Master;
   std::string catalog_console_ = "switch";
   std::string catalog_project_type_;
   std::string catalog_sort_ = "added";
   std::string catalog_search_;
   int catalog_filter_focus_ = 0;
+  bool catalog_show_favorites_ = false;
+
+  // Favoritos (por identidad: repository o name)
+  bool is_favorite(const std::string& identity) const;
+  void toggle_favorite(const std::string& identity);
 
   // Biblioteca: filtros
-  int library_filter_ = 0;  // 0 todos, 1 instalados, 2 actualizaciones, 3 harbour masters
+  int library_filter_ = 0;  // 0 todos, 1 instalados, 2 actualizaciones, 3 mrship
 
   std::vector<DownloadItem> downloads_;
 
@@ -205,6 +219,8 @@ class App {
   // Zonas pulsables dibujadas en el ultimo fotograma (indice de elemento -> rectangulo),
   // para que la pantalla tactil pueda enfocar y activar tarjetas.
   std::vector<std::pair<int, SDL_Rect>> hit_targets_;
+  std::vector<std::pair<Tab, SDL_Rect>> hit_tabs_;
+  std::vector<std::pair<Btn, SDL_Rect>> hit_footer_hints_;
 };
 
 }  // namespace delanx::ui

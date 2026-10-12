@@ -63,8 +63,7 @@ SwitchInstall parse_switch_install(const Value& node) {
 }
 
 // Primer .nro lanzable: raiz de la carpeta y despues un unico nivel de subcarpeta.
-// Sphaira solo escanea un nivel ("if the nro is in switch/folder/folder2/app.nro it will
-// NOT be found"); imitar ese limite evita dar por instalada una app que no se puede lanzar.
+// Limitar la busqueda a un nivel evita dar por instalada una app que no se puede lanzar.
 std::string find_launch_nro(const std::string& dir) {
   if (dir.empty() || !paths::is_dir(dir)) return {};
   std::vector<std::string> subdirs;
@@ -88,15 +87,26 @@ std::string find_launch_nro(const std::string& dir) {
 // Existe el .nro de lanzamiento? Se respeta switch.nro / switch.nroPath y, si no, se busca.
 bool has_launch_nro(const SwitchInstall& sw, const std::string& dir) {
   if (dir.empty()) return false;
+  if (!paths::is_dir(dir)) {
+    if (paths::exists(dir) && paths::extension(dir) == ".nro") return true;
+    return false;
+  }
   if (!sw.nro.empty()) {
     if (paths::exists(paths::join(dir, sw.nro))) return true;
-    // "switch/soh/soh.nro" o "./soh.nro": tambien vale el nombre suelto dentro de la carpeta.
     const std::string base = paths::basename(sw.nro);
     if (base != sw.nro && paths::exists(paths::join(dir, base))) return true;
+    // Busqueda insensible a mayusculas/minusculas dentro de la carpeta
+    for (const std::string& name : paths::list_dir(dir)) {
+      if (str::iequals(name, sw.nro) || str::iequals(name, base)) return true;
+    }
   }
   if (!sw.nro_path.empty()) {
     const std::string sd = paths::to_sd_path(sw.nro_path);
     if (!paths::is_dir(sd) && paths::exists(sd)) return true;
+    const std::string base = paths::basename(sw.nro_path);
+    for (const std::string& name : paths::list_dir(dir)) {
+      if (str::iequals(name, base)) return true;
+    }
   }
   return !find_launch_nro(dir).empty();
 }
@@ -203,7 +213,7 @@ AppEntry AppEntry::from_json(const json::Value& node) {
   // ---- extensiones Delanx ----
   entry.sw = parse_switch_install(node.get("switch"));
   entry.requirements = node.string("requirements");
-  entry.harbour_masters = node.boolean("harbourMasters", false);
+  entry.mrship = node.boolean("mrship", node.boolean("harbourMasters", false));
   entry.verified_entry = node.boolean("verified", false);
 
   // Entrada sin repositorio = app gestionada a mano: no se descarga ni se actualiza nunca.
@@ -320,7 +330,7 @@ json::Builder AppEntry::to_json() const {
 
   // Metadatos de catalogo: solo si aportan algo (nada de nulls ensuciando el fichero).
   if (!requirements.empty()) root.set("requirements", requirements);
-  if (harbour_masters) root.set("harbourMasters", true);
+  if (mrship) root.set("mrship", true);
   if (verified_entry) root.set("verified", true);
 
   return root;

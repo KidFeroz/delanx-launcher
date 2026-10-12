@@ -75,7 +75,7 @@ struct AppEntry {
   // ---- extensiones Delanx ----
   SwitchInstall sw;
   std::string requirements;
-  bool harbour_masters = false;
+  bool mrship = false;
   bool verified_entry = false;
 
   // ---- estado en tiempo de ejecucion (no se serializa) ----

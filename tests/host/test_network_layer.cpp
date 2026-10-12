@@ -474,10 +474,10 @@ void test_catalog_consistency() {
   check(with_filter >= 40, "casi todas las entradas fijan filtro de asset (" + std::to_string(with_filter) + ")");
   check(nro_paths >= 40, "casi todas identifican la ruta del .nro (" + std::to_string(nro_paths) + ")");
 
-  // Las entradas de Harbour Masters deben seguir presentes y ser consistentes.
+  // Las entradas de MrShip deben seguir presentes y ser consistentes.
   int harbour = 0;
   for (const auto& entry : catalog->entries) {
-    if (!entry.harbour_masters) continue;
+    if (!entry.mrship) continue;
     ++harbour;
     check(delanx::str::starts_with(entry.repository, "HarbourMasters/"),
           "el repo de Harbour Masters es de la organizacion (" + entry.repository + ")");

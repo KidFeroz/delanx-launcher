@@ -44,7 +44,7 @@ bool request_next_nro(const LaunchTarget& target, std::string* error) {
   if (!available) {
     if (error != nullptr) {
       *error = "El loader que lanzo Delanx no expone EntryType_NextLoadPath, asi que no se pueden "
-               "encadenar NROs. Lanza Delanx desde hbmenu o Sphaira (o desde un forwarder NSP basado "
+               "encadenar NROs. Lanza Delanx desde hbmenu (o desde un forwarder NSP basado "
                "en nx-hbloader).";
     }
     return false;

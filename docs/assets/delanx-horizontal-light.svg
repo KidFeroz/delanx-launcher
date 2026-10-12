@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 260" width="880" height="260">
+  <!-- Isotipo Calibrado Transparente -->
+  <g transform="translate(20, 10) scale(0.48)">
+    <path d="M 124 136 C 124 118, 138 104, 156 104 L 216 104 C 264 104, 296 136, 296 184 L 296 200 L 236 256 L 188 256 L 188 168 L 164 168 L 164 344 L 188 344 L 236 344 L 296 408 L 156 408 C 138 408, 124 394, 124 376 Z" fill="#E11D48" />
+    <circle cx="156" cy="144" r="10" fill="#FFFFFF" />
+    
+    <path d="M 356 104 C 374 104, 388 118, 388 136 L 388 376 C 388 394, 374 408, 356 408 L 296 408 L 236 344 L 284 344 L 348 276 L 348 236 L 284 168 L 236 168 L 296 104 Z" fill="#0066FF" />
+    <rect x="342" y="138" width="24" height="6" rx="3" fill="#FFFFFF" />
+    <rect x="351" y="129" width="6" height="24" rx="3" fill="#FFFFFF" />
+
+    <path d="M 236 196 L 296 256 L 236 316 L 212 292 L 248 256 L 212 220 Z" fill="#0B0E14" />
+  </g>
+
+  <!-- Wordmark Poppins Bold en Gris Obsidiana -->
+  <text x="260" y="162" font-family="'Poppins', system-ui, -apple-system, sans-serif" font-size="112" font-weight="800" letter-spacing="1" fill="#0B0E14">
+    DELANX
+  </text>
+</svg>

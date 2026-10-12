@@ -46,7 +46,7 @@ std::vector<ListItem> App::build_update_items() {
     item.library_index = static_cast<int>(index);
     item.installed = true;
     item.update = true;
-    item.harbour = app.harbour_masters;
+    item.mrship = app.mrship;
     item.verified = app.verified_entry;
     item.badge = "Actualizar";
     item.meta = (app.installed_version.empty() ? std::string("-") : app.installed_version) + "  ->  " +
@@ -58,7 +58,7 @@ std::vector<ListItem> App::build_update_items() {
 
 void App::draw_downloads_screen() {
   const int origin_x = theme_.sidebar_width;
-  const int origin_y = theme_.topbar_height;
+  const int origin_y = theme_.topbar_height + theme_.tab_bar_height;
   const int content_w = renderer_.width() - origin_x;
   const int content_h = renderer_.height() - origin_y - theme_.footer_height;
 
@@ -135,15 +135,10 @@ void App::draw_downloads_screen() {
     }
   }
 
-  // Acciones disponibles en esta pantalla.
-  const int hint_y = origin_y + content_h - theme_.px(56);
-  renderer_.fill_round_rect(origin_x + theme_.content_padding, hint_y, content_w - theme_.content_padding * 2,
-                            theme_.px(48), theme_.px(12), theme_.panel);
-  renderer_.draw_text("A: actualizar la seleccionada    X: comprobar actualizaciones    Y: actualizar todo",
-                      origin_x + theme_.content_padding + theme_.px(18), hint_y + theme_.px(8), theme_.text_dim,
-                      theme_.font_body);
-  renderer_.draw_text("Las actualizaciones solo instalan releases que Quiver haya verificado.",
-                      origin_x + theme_.content_padding + theme_.px(18), hint_y + theme_.px(28),
+  // Nota informativa en la parte inferior de la pantalla.
+  const int note_y = origin_y + content_h - theme_.px(28);
+  renderer_.draw_text("Nota: las actualizaciones automaticas solo instalan releases con checksum verificado.",
+                      origin_x + theme_.content_padding, note_y,
                       theme_.text_muted, theme_.font_small);
 }
 
@@ -246,7 +241,7 @@ void App::check_updates() {
 
 void App::draw_settings_screen() {
   const int origin_x = theme_.sidebar_width;
-  const int origin_y = theme_.topbar_height;
+  const int origin_y = theme_.topbar_height + theme_.tab_bar_height;
   const int content_w = renderer_.width() - origin_x;
 
   std::vector<SettingsRow> rows;
@@ -254,46 +249,83 @@ void App::draw_settings_screen() {
                   "Si esta en No, Delanx solo instala releases con checksum verificado"});
   rows.push_back({"Confirmar releases bloqueadas", yes_no(settings_.DelanxConfirmBlockedReleases),
                   "Quiver marca algunas releases como bloqueadas"});
-  rows.push_back({"Seccion Harbour Masters", yes_no(settings_.DelanxHarbourMastersSection),
-                  "Muestra la pestana exclusiva de ports de Harbour Masters"});
+  rows.push_back({"Seccion MrShip (Ports N64)", yes_no(settings_.DelanxMrShipSection),
+                  "Muestra la pestana de ports N64 de decompilacion"});
   rows.push_back({"Instalar en rutas nativas de Switch", yes_no(settings_.DelanxUseNativeInstallPaths),
                   "Usa /switch/<app>/ como los demas homebrew, en vez de Delanx/Apps"});
   rows.push_back({"Comprobar actualizaciones al arrancar", yes_no(settings_.DelanxAutoCheckUpdatesOnBoot),
                   "Consulta releases al abrir Delanx (consume red)"});
   rows.push_back({"Vista de rejilla", yes_no(settings_.UseGridView), "Rejilla de caratulas o lista compacta"});
   rows.push_back({"Columnas de la rejilla", str::format("%d", grid_columns_), "2 a 6 columnas"});
-  rows.push_back({"Tema", settings_.is_dark() ? "Oscuro (Sphaira)" : "Claro", "Oscuro o claro"});
+  rows.push_back({"Tema", settings_.is_dark() ? "Oscuro" : "Claro", "Oscuro o claro"});
   rows.push_back({"Token de GitHub", settings_.GitHubApiToken.empty() ? "sin configurar" : "configurado",
                   "Evita el limite de peticiones de la API de GitHub"});
   rows.push_back({"Token de GitLab", settings_.GitLabApiToken.empty() ? "sin configurar" : "configurado",
                   "Necesario solo para proyectos privados de GitLab"});
   rows.push_back({"Comprobar actualizaciones ahora", "", "Consulta las releases de la biblioteca"});
   rows.push_back({"Informacion de la consola", "", "Firmware, memoria, origen de arranque y rutas"});
+  rows.push_back({"Test de mandos y pantalla", "", "Comprobar botones, sticks y respuesta tactil"});
 
   focus_ = std::clamp(focus_, 0, static_cast<int>(rows.size()) - 1);
-  const int row_h = theme_.px(52);
-  int y = origin_y + theme_.px(30);
-  for (size_t index = 0; index < rows.size(); ++index) {
+  const int content_h = renderer_.height() - origin_y - theme_.footer_height;
+  const int row_h = theme_.px(54);
+  const int max_visible = std::max(1, (content_h - theme_.px(40)) / row_h);
+
+  if (focus_ < scroll_) scroll_ = focus_;
+  if (focus_ >= scroll_ + max_visible) scroll_ = focus_ - max_visible + 1;
+  scroll_ = std::clamp(scroll_, 0, std::max(0, static_cast<int>(rows.size()) - max_visible));
+
+  int y = origin_y + theme_.px(20);
+  const size_t end_idx = std::min(rows.size(), static_cast<size_t>(scroll_ + max_visible));
+  for (size_t index = static_cast<size_t>(scroll_); index < end_idx; ++index) {
     const bool focused = static_cast<int>(index) == focus_;
+    const int item_y = y;
     // Zona pulsable de la fila, para la pantalla tactil.
     hit_targets_.push_back({static_cast<int>(index),
-                            SDL_Rect{origin_x, y - theme_.px(6), content_w, row_h - theme_.px(6)}});
+                            SDL_Rect{origin_x, item_y - theme_.px(4), content_w - theme_.content_padding, row_h - theme_.px(6)}});
     if (focused) {
-      renderer_.fill_round_rect(origin_x + theme_.content_padding - theme_.px(8), y - theme_.px(6),
+      renderer_.fill_round_rect(origin_x + theme_.content_padding - theme_.px(8), item_y - theme_.px(4),
                                 content_w - theme_.content_padding * 2 + theme_.px(16), row_h - theme_.px(6),
                                 theme_.px(10), theme_.panel_alt);
-      renderer_.fill_round_rect(origin_x + theme_.content_padding - theme_.px(8), y - theme_.px(6),
+      renderer_.fill_round_rect(origin_x + theme_.content_padding - theme_.px(8), item_y - theme_.px(4),
                                 theme_.px(4), row_h - theme_.px(6), theme_.px(2), theme_.accent);
+      renderer_.stroke_round_rect(origin_x + theme_.content_padding - theme_.px(8), item_y - theme_.px(4),
+                                  content_w - theme_.content_padding * 2 + theme_.px(16), row_h - theme_.px(6),
+                                  theme_.px(10), theme_.focus_ring, 2);
     }
-    renderer_.draw_text(rows[index].label, origin_x + theme_.content_padding, y + theme_.px(2),
-                        focused ? theme_.text : theme_.text_dim, theme_.font_body, focused);
-    renderer_.draw_text(rows[index].hint, origin_x + theme_.content_padding, y + theme_.px(24),
-                        theme_.text_muted, theme_.font_small);
+    const int right_bound = origin_x + content_w - theme_.content_padding - theme_.px(16);
+    int value_w = 0;
     if (!rows[index].value.empty()) {
-      renderer_.draw_text_right(rows[index].value, origin_x + content_w - theme_.content_padding, y + theme_.px(6),
-                                focused ? theme_.accent : theme_.text_dim, theme_.font_body, true);
+      value_w = renderer_.text_width(rows[index].value, theme_.font_body, true, FontFace::Condensed);
+      renderer_.draw_text_right(rows[index].value, right_bound, item_y + theme_.px(8),
+                                focused ? theme_.accent : theme_.text_dim, theme_.font_body, true, FontFace::Condensed);
+    }
+
+    const int label_max_w = right_bound - value_w - theme_.px(24) - (origin_x + theme_.content_padding);
+    const std::vector<std::string> label_lines = renderer_.wrap_text(rows[index].label, theme_.font_body, label_max_w, focused, FontFace::Brand);
+    if (!label_lines.empty()) {
+      renderer_.draw_text(label_lines[0], origin_x + theme_.content_padding, item_y + theme_.px(2),
+                          focused ? theme_.text : theme_.text_dim, theme_.font_body, focused, FontFace::Brand);
+    }
+
+    const std::vector<std::string> hint_lines = renderer_.wrap_text(rows[index].hint, theme_.font_small, label_max_w, false, FontFace::Regular);
+    if (!hint_lines.empty()) {
+      renderer_.draw_text(hint_lines[0], origin_x + theme_.content_padding, item_y + theme_.px(26),
+                          theme_.text_muted, theme_.font_small, false, FontFace::Regular);
     }
     y += row_h;
+  }
+
+  // Barra de scroll vertical si hay mas opciones de las visibles
+  if (static_cast<int>(rows.size()) > max_visible) {
+    const int track_x = origin_x + content_w - theme_.px(16);
+    const int track_y = origin_y + theme_.px(20);
+    const int track_h = max_visible * row_h;
+    const int thumb_h = std::max(theme_.px(30), track_h * max_visible / static_cast<int>(rows.size()));
+    const int max_scroll = static_cast<int>(rows.size()) - max_visible;
+    const int thumb_y = track_y + (track_h - thumb_h) * scroll_ / (max_scroll > 0 ? max_scroll : 1);
+    renderer_.fill_round_rect(track_x, track_y, theme_.px(4), track_h, theme_.px(2), theme_.panel_alt);
+    renderer_.fill_round_rect(track_x, thumb_y, theme_.px(4), thumb_h, theme_.px(2), theme_.accent);
   }
 }
 
@@ -301,12 +333,13 @@ void App::activate_settings_item() {
   switch (focus_) {
     case 0:
       settings_.DelanxIncludeUnverified = !settings_.DelanxIncludeUnverified;
+      hide_unsupported_switch_ = !settings_.DelanxIncludeUnverified;
       break;
     case 1:
       settings_.DelanxConfirmBlockedReleases = !settings_.DelanxConfirmBlockedReleases;
       break;
     case 2:
-      settings_.DelanxHarbourMastersSection = !settings_.DelanxHarbourMastersSection;
+      settings_.DelanxMrShipSection = !settings_.DelanxMrShipSection;
       break;
     case 3:
       settings_.DelanxUseNativeInstallPaths = !settings_.DelanxUseNativeInstallPaths;
@@ -321,11 +354,15 @@ void App::activate_settings_item() {
       grid_columns_ = grid_columns_ >= 6 ? 2 : grid_columns_ + 1;
       settings_.DelanxGridColumns = grid_columns_;
       break;
-    case 7:
-      settings_.DelanxTheme = settings_.is_dark() ? "sphaira-light" : "sphaira-dark";
-      theme_ = settings_.is_dark() ? Theme::sphaira_dark() : Theme::sphaira_light();
+    case 7: {
+      const bool currently_dark = settings_.is_dark();
+      settings_.ThemeMode = currently_dark ? ThemeTextMode::Light : ThemeTextMode::Dark;
+      settings_.DelanxTheme = currently_dark ? "light" : "dark";
+      theme_ = settings_.is_dark() ? Theme::delanx_dark() : Theme::delanx_light();
       theme_.apply_scale(static_cast<float>(renderer_.width()) / 1280.0f);
+      toast(settings_.is_dark() ? "Tema oscuro activado" : "Tema claro activado");
       break;
+    }
     case 8: {
       std::string token;
       if (platform::text_input("Token de GitHub (vacio para borrar)", settings_.GitHubApiToken, &token, 128, true)) {
@@ -349,7 +386,7 @@ void App::activate_settings_item() {
       open_dialog("Informacion de la consola",
                   str::format("Firmware: %s\nOrigen de arranque: %s\nModo applet: %s\nMemoria: %s\nDatos: %s\n"
                               "Catalogo local: %lu entradas\nCatalogo maestro: %lu entradas (sin verificar)\n"
-                              "Harbour Masters: %lu entradas\n\n"
+                              "MrShip / Ports: %lu entradas\n\n"
                               "Delanx %s — launcher homebrew para Switch. Lee y escribe apps.json en el mismo "
                               "formato que Quiver Launcher.",
                               platform::firmware_version().c_str(), platform::boot_origin().c_str(),
@@ -357,8 +394,11 @@ void App::activate_settings_item() {
                               paths::root().c_str(),
                               static_cast<unsigned long>(local_catalog_.entries.size()),
                               static_cast<unsigned long>(master_catalog_.entries.size()),
-                              static_cast<unsigned long>(harbour_catalog_.entries.size()), DELANX_VERSION),
+                              static_cast<unsigned long>(mrship_catalog_.entries.size()), DELANX_VERSION),
                   {DialogOption{"Cerrar", nullptr}});
+      return;
+    case 12:
+      controller_test_open_ = true;
       return;
     default:
       return;
@@ -448,30 +488,80 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
   uint32_t last_draw = 0;
   const auto progress = [&](int64_t done, int64_t total) -> bool {
     const uint32_t now = SDL_GetTicks();
-    if (now - last_draw < 80 && done != total) return true;
+    if (now - last_draw < 60 && done != total) return true;
     last_draw = now;
     const float ratio = total > 0 ? static_cast<float>(done) / static_cast<float>(total) : 0.0f;
 
-    renderer_.clear(theme_.bg);
-    const int width = theme_.px(640);
-    const int height = theme_.px(200);
+    // Fondo elegante atenuado en lugar de pantalla completamente negra
+    draw_background();
+    draw_sidebar();
+    draw_topbar();
+    renderer_.fill_rect(0, 0, renderer_.width(), renderer_.height(), theme_.overlay);
+
+    const int width = theme_.px(720);
+    const int height = theme_.px(220);
     const int x = (renderer_.width() - width) / 2;
     const int y = (renderer_.height() - height) / 2;
-    renderer_.fill_round_rect(x, y, width, height, theme_.px(16), theme_.panel);
-    renderer_.draw_text("Instalando " + display_name(app), x + theme_.px(28), y + theme_.px(26), theme_.text,
+
+    renderer_.fill_round_rect(x, y, width, height, theme_.px(18), theme_.panel);
+    renderer_.stroke_round_rect(x, y, width, height, theme_.px(18), theme_.border, 1);
+
+    // Miniatura / Icono del juego en la esquina superior izquierda del dialogo
+    const int icon_box_size = theme_.px(76);
+    const int icon_x = x + theme_.px(24);
+    const int icon_y = y + theme_.px(24);
+    renderer_.fill_round_rect(icon_x, icon_y, icon_box_size, icon_box_size, theme_.px(12), theme_.panel_alt);
+    renderer_.stroke_round_rect(icon_x, icon_y, icon_box_size, icon_box_size, theme_.px(12), theme_.border, 1);
+    Texture* icon = icon_for(app);
+    if (icon) {
+      renderer_.draw_texture_fit(icon, icon_x, icon_y, icon_box_size, icon_box_size);
+    } else {
+      renderer_.draw_text_centered(str::initials(app.name), icon_x + icon_box_size / 2,
+                                   icon_y + icon_box_size / 2 - theme_.px(14), theme_.text_muted,
+                                   theme_.font_title, true);
+    }
+
+    // Titulo y nombre de archivo del asset
+    const int text_x = icon_x + icon_box_size + theme_.px(18);
+    const int text_max_w = width - (text_x - x) - theme_.px(24);
+    renderer_.draw_text("Instalando " + display_name(app), text_x, icon_y + theme_.px(6), theme_.text,
                         theme_.font_title, true);
-    renderer_.draw_text(asset.name, x + theme_.px(28), y + theme_.px(66), theme_.text_dim, theme_.font_small);
-    const int bar_x = x + theme_.px(28);
-    const int bar_y = y + theme_.px(104);
-    const int bar_w = width - theme_.px(56);
-    renderer_.fill_round_rect(bar_x, bar_y, bar_w, theme_.px(14), theme_.px(7), theme_.panel_alt);
-    renderer_.fill_round_rect(bar_x, bar_y, std::max(theme_.px(6), static_cast<int>(bar_w * ratio)),
-                              theme_.px(14), theme_.px(7), theme_.accent);
-    renderer_.draw_text(str::format("%s / %s", str::human_size(static_cast<uint64_t>(done)).c_str(),
-                                    str::human_size(static_cast<uint64_t>(total)).c_str()),
-                        bar_x, bar_y + theme_.px(24), theme_.text_dim, theme_.font_small);
-    renderer_.draw_text("B: cancelar", x + theme_.px(28), y + theme_.px(158), theme_.text_muted,
-                        theme_.font_small);
+    const std::vector<std::string> asset_lines = renderer_.wrap_text(asset.name, theme_.font_small, text_max_w);
+    if (!asset_lines.empty()) {
+      renderer_.draw_text(asset_lines[0], text_x, icon_y + theme_.px(38), theme_.text_dim, theme_.font_small);
+    }
+
+    // Barra de progreso estilizada
+    const int bar_x = icon_x;
+    const int bar_y = y + theme_.px(120);
+    const int bar_w = width - theme_.px(48);
+    const int bar_h = theme_.px(14);
+    renderer_.fill_round_rect(bar_x, bar_y, bar_w, bar_h, bar_h / 2, theme_.panel_alt);
+    if (ratio > 0.001f) {
+      const int fill_w = std::clamp(static_cast<int>(bar_w * ratio), bar_h, bar_w);
+      renderer_.fill_round_rect(bar_x, bar_y, fill_w, bar_h, bar_h / 2, theme_.accent);
+    }
+
+    // Datos de descarga: bytes a la izquierda, porcentaje
+    const std::string bytes_str = str::format("%s / %s", str::human_size(static_cast<uint64_t>(done)).c_str(),
+                                              str::human_size(static_cast<uint64_t>(total)).c_str());
+    renderer_.draw_text(bytes_str, bar_x, bar_y + theme_.px(22), theme_.text_dim, theme_.font_small);
+
+    const std::string pct_str = str::format("%d%%", static_cast<int>(ratio * 100.0f));
+    renderer_.draw_text(pct_str, bar_x + renderer_.text_width(bytes_str, theme_.font_small) + theme_.px(16),
+                        bar_y + theme_.px(22), theme_.accent, theme_.font_small, true);
+
+    // Boton de cancelar con glifo circular oficial
+    const int cancel_radius = theme_.px(11);
+    const int cancel_x = x + width - theme_.px(130);
+    const int cancel_y = bar_y + theme_.px(18);
+    renderer_.fill_circle(cancel_x + cancel_radius, cancel_y + cancel_radius, cancel_radius, theme_.card_focus);
+    renderer_.stroke_circle(cancel_x + cancel_radius, cancel_y + cancel_radius, cancel_radius, theme_.border, 1);
+    renderer_.draw_text_centered(button_glyph(Btn::B), cancel_x + cancel_radius,
+                                 cancel_y + cancel_radius - theme_.px(9), theme_.text, theme_.font_small, true);
+    renderer_.draw_text("Cancelar", cancel_x + cancel_radius * 2 + theme_.px(8),
+                        cancel_y + cancel_radius - theme_.px(8), theme_.text_dim, theme_.font_small);
+
     renderer_.end_frame();
 
     input_.update();
@@ -611,6 +701,21 @@ void App::launch_app(int library_index) {
   launching_ = true;
 }
 
+void App::launch_nro(const std::string& nro_path) {
+  if (nro_path.empty()) {
+    toast("Ruta del ejecutable no valida", true);
+    return;
+  }
+  LaunchTarget target;
+  target.nro_path = nro_path;
+  std::string error;
+  if (!request_next_nro(target, &error)) {
+    toast(error.empty() ? "No se pudo encadenar el NRO" : error, true);
+    return;
+  }
+  launching_ = true;
+}
+
 void App::uninstall_app(int library_index) {
   if (library_index < 0 || library_index >= static_cast<int>(library_.apps.size())) return;
   const AppEntry app = library_.apps[static_cast<size_t>(library_index)];
@@ -632,6 +737,154 @@ void App::uninstall_app(int library_index) {
                  save_library();
                  toast("Desinstalada: " + display_name(app));
                });
+}
+
+void App::draw_controller_test_overlay() {
+  const int overlay_w = renderer_.width();
+  const int overlay_h = renderer_.height();
+  renderer_.fill_rect(0, 0, overlay_w, overlay_h, theme_.overlay);
+
+  const int width = std::min(theme_.px(1080), overlay_w - theme_.px(40));
+  const int height = std::min(theme_.px(620), overlay_h - theme_.px(40));
+  const int x = (overlay_w - width) / 2;
+  const int y = (overlay_h - height) / 2;
+
+  renderer_.fill_round_rect(x, y, width, height, theme_.px(16), theme_.panel);
+  renderer_.stroke_round_rect(x, y, width, height, theme_.px(16), theme_.border, 1);
+
+  // Cabecera
+  renderer_.draw_text("Test de Mandos y Pantalla Tactil", x + theme_.px(28), y + theme_.px(20),
+                      theme_.text, theme_.font_title, true);
+  renderer_.draw_text("Comprueba cada boton, cruceta, sticks analogicos y pantalla tactil. Pulsa B o + para salir.",
+                      x + theme_.px(28), y + theme_.px(54), theme_.text_muted, theme_.font_small);
+
+  struct ButtonVisual {
+    Btn btn;
+    const char* label;
+    int col;
+    int row;
+  };
+  const ButtonVisual b_visuals[] = {
+    {Btn::A, "A", 0, 0},
+    {Btn::B, "B", 0, 1},
+    {Btn::X, "X", 0, 2},
+    {Btn::Y, "Y", 0, 3},
+
+    {Btn::Up, "Arriba", 1, 0},
+    {Btn::Down, "Abajo", 1, 1},
+    {Btn::Left, "Izquierda", 1, 2},
+    {Btn::Right, "Derecha", 1, 3},
+
+    {Btn::L, "L", 2, 0},
+    {Btn::R, "R", 2, 1},
+    {Btn::ZL, "ZL", 2, 2},
+    {Btn::ZR, "ZR", 2, 3},
+
+    {Btn::StickLPress, "Stick L Click", 3, 0},
+    {Btn::StickRPress, "Stick R Click", 3, 1},
+    {Btn::Minus, "Minus (-)", 3, 2},
+    {Btn::Plus, "Plus (+)", 3, 3},
+  };
+
+  const int grid_x = x + theme_.px(28);
+  const int grid_y = y + theme_.px(90);
+  const int col_w = theme_.px(160);
+  const int row_h = theme_.px(42);
+
+  for (const auto& bv : b_visuals) {
+    const bool held = input_.held(bv.btn);
+    const int bx = grid_x + bv.col * col_w;
+    const int by = grid_y + bv.row * row_h;
+    renderer_.fill_round_rect(bx, by, col_w - theme_.px(12), row_h - theme_.px(8),
+                              theme_.px(8), held ? theme_.success : theme_.panel_alt);
+    if (held) {
+      renderer_.stroke_round_rect(bx, by, col_w - theme_.px(12), row_h - theme_.px(8),
+                                  theme_.px(8), theme_.focus_ring, 2);
+    }
+    renderer_.draw_text_centered(bv.label, bx + (col_w - theme_.px(12)) / 2, by + theme_.px(8),
+                                 held ? theme_.bg : theme_.text, theme_.font_body, held);
+  }
+
+  // Sticks analogicos y panel tactil
+  const int stick_panel_y = grid_y + 4 * row_h + theme_.px(14);
+  const int stick_box_size = theme_.px(120);
+
+  int stick_lx = 0;
+  int stick_ly = 0;
+  int stick_rx = 0;
+  int stick_ry = 0;
+#if defined(__SWITCH__)
+  platform::PadSnapshot snap;
+  if (platform::pad_poll(&snap)) {
+    stick_lx = snap.stick_lx;
+    stick_ly = snap.stick_ly;
+    stick_rx = snap.stick_rx;
+    stick_ry = snap.stick_ry;
+  }
+#endif
+
+  // Stick Izquierdo
+  const int stick_l_box_x = x + theme_.px(28);
+  renderer_.fill_round_rect(stick_l_box_x, stick_panel_y, stick_box_size, stick_box_size,
+                            theme_.px(10), theme_.panel_alt);
+  renderer_.stroke_round_rect(stick_l_box_x, stick_panel_y, stick_box_size, stick_box_size,
+                              theme_.px(10), theme_.border, 1);
+  renderer_.draw_text("Stick L", stick_l_box_x + theme_.px(10), stick_panel_y + theme_.px(6),
+                      theme_.text_muted, theme_.font_small);
+
+  const int dot_l_cx = stick_l_box_x + stick_box_size / 2 + (stick_lx * (stick_box_size / 2 - 14) / 32767);
+  const int dot_l_cy = stick_panel_y + stick_box_size / 2 - (stick_ly * (stick_box_size / 2 - 14) / 32767);
+  renderer_.stroke_circle(stick_l_box_x + stick_box_size / 2, stick_panel_y + stick_box_size / 2,
+                          theme_.px(14), theme_.border, 1);
+  renderer_.fill_circle(dot_l_cx, dot_l_cy, theme_.px(8), theme_.accent);
+
+  const std::string l_coords = str::format("X: %+6d\nY: %+6d", stick_lx, stick_ly);
+  renderer_.draw_text(l_coords, stick_l_box_x + stick_box_size + theme_.px(12), stick_panel_y + theme_.px(28),
+                      theme_.text, theme_.font_small);
+
+  // Stick Derecho
+  const int stick_r_box_x = x + theme_.px(360);
+  renderer_.fill_round_rect(stick_r_box_x, stick_panel_y, stick_box_size, stick_box_size,
+                            theme_.px(10), theme_.panel_alt);
+  renderer_.stroke_round_rect(stick_r_box_x, stick_panel_y, stick_box_size, stick_box_size,
+                              theme_.px(10), theme_.border, 1);
+  renderer_.draw_text("Stick R", stick_r_box_x + theme_.px(10), stick_panel_y + theme_.px(6),
+                      theme_.text_muted, theme_.font_small);
+
+  const int dot_r_cx = stick_r_box_x + stick_box_size / 2 + (stick_rx * (stick_box_size / 2 - 14) / 32767);
+  const int dot_r_cy = stick_panel_y + stick_box_size / 2 - (stick_ry * (stick_box_size / 2 - 14) / 32767);
+  renderer_.stroke_circle(stick_r_box_x + stick_box_size / 2, stick_panel_y + stick_box_size / 2,
+                          theme_.px(14), theme_.border, 1);
+  renderer_.fill_circle(dot_r_cx, dot_r_cy, theme_.px(8), theme_.accent_alt);
+
+  const std::string r_coords = str::format("X: %+6d\nY: %+6d", stick_rx, stick_ry);
+  renderer_.draw_text(r_coords, stick_r_box_x + stick_box_size + theme_.px(12), stick_panel_y + theme_.px(28),
+                      theme_.text, theme_.font_small);
+
+  // Pantalla Tactil
+  const int touch_box_x = x + theme_.px(690);
+  const int touch_box_w = width - theme_.px(718);
+  renderer_.fill_round_rect(touch_box_x, stick_panel_y, touch_box_w, stick_box_size,
+                            theme_.px(10), theme_.panel_alt);
+  renderer_.stroke_round_rect(touch_box_x, stick_panel_y, touch_box_w, stick_box_size,
+                              theme_.px(10), theme_.border, 1);
+  renderer_.draw_text("Pantalla Tactil", touch_box_x + theme_.px(14), stick_panel_y + theme_.px(8),
+                      theme_.text_muted, theme_.font_small);
+  const bool touching = input_.held(Btn::Touch);
+  renderer_.draw_text(touching ? "ESTADO: TOCANDO" : "ESTADO: SIN TOQUE",
+                      touch_box_x + theme_.px(14), stick_panel_y + theme_.px(38),
+                      touching ? theme_.success : theme_.text_dim, theme_.font_body, touching);
+  if (touching) {
+    renderer_.draw_text(str::format("X: %d  |  Y: %d", input_.pointer_x(), input_.pointer_y()),
+                        touch_box_x + theme_.px(14), stick_panel_y + theme_.px(72),
+                        theme_.accent, theme_.font_small);
+  }
+
+  // Pie del modal
+  const int footer_modal_y = y + height - theme_.px(48);
+  renderer_.draw_text("Pulsa B o + para salir del test de mandos",
+                      x + theme_.px(28), footer_modal_y + theme_.px(10),
+                      theme_.text_muted, theme_.font_body);
 }
 
 }  // namespace delanx::ui

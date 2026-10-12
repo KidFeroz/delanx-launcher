@@ -18,8 +18,8 @@ sdmc:/
 │   └── arcade/                         # ROMsets MAME / Model 2 (Daytona USA, Virtua Fighter 2)
 │
 ├── switch/                             # Directorio estándar de Homebrew de Nintendo Switch
-│   ├── QuiverNX/                       # Directorio del Launcher autónomo
-│   │   ├── QuiverNX.nro                # Ejecutable del Launcher
+│   ├── Delanx/                       # Directorio del Launcher autónomo
+│   │   ├── Delanx.nro                # Ejecutable del Launcher
 │   │   ├── ports.json                  # Manifiesto local de juegos y metadatos con URLs de arte
 │   │   └── cache/                      # Miniaturas descargadas de Libretro / SteamGridDB (<id>.png)
 │   │
@@ -39,7 +39,7 @@ sdmc:/
 
 - **Libretro Thumbnails (47 títulos):** Aplicado a consolas retro (N64, SNES, GBA, GBC, PS1, GameCube, Saturn, Arcade). Enlaces directos a `raw.githubusercontent.com`, sin API key, sin límites de peticiones documentados y con nombres de carátulas estandarizados de No-Intro. Los enlaces se descargan directamente en formato PNG sin cabeceras de autorización.
 - **SteamGridDB (63 títulos):** Aplicado a ports de PC, juegos indie modernos, FPS clásicos de MS-DOS/Windows y fangames independientes. Permite obtener pósters verticales (600×900) y banners panorámicos (1920×620). **Nota técnica sobre autenticación:** la API v2 de SteamGridDB requiere token de autenticación (`Authorization: Bearer <token>`). Los endpoints `/api/v2/search/autocomplete/...` son llamadas de búsqueda que devuelven respuestas JSON (no son imágenes directas). La descarga de imágenes requiere consultar los grids del juego (`/grids/game/<id>`) con la clave de API configurada en `settings.json`.
-- **Caché en MicroSD:** Todo arte descargado exitosamente se guarda persistentemente en `sdmc:/switch/QuiverNX/cache/<id>.png`.
+- **Caché en MicroSD:** Todo arte descargado exitosamente se guarda persistentemente en `sdmc:/switch/Delanx/cache/<id>.png`.
 - **Fallback local RomFS:** En modo avión, sin red, o si la descarga de miniaturas falla por error de red o HTTP 404, la app recurre automáticamente a `romfs:/icons/<id>.png` empaquetado dentro del propio `.nro` (~2.5 MB para todos los títulos reescalados a 256×256).
 
 ### Flujo de Decisión en C++ (`libnx`)
@@ -49,7 +49,7 @@ sdmc:/
                   │
                   ▼
         ¿Existe en MicroSD?
-    sdmc:/switch/QuiverNX/cache/<id>.png
+    sdmc:/switch/Delanx/cache/<id>.png
               /             \
           [SÍ]               [NO]
            │                  │
@@ -217,7 +217,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Renderizado a 60 FPS, widescreen 16:9 nativo, soporte de mods Render96 y cámara libre analógica.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Super%20Mario%2064%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sm64_ghostship.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sm64_ghostship.png",
     "romfs_fallback": "romfs:/icons/sm64_ghostship.png"
   },
   {
@@ -238,7 +238,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Controles giroscópicos con Joy-Con, 60 FPS sin glitches físicos, randomizer y D-Pad para botas (directorio estándar /switch/soh/).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Ocarina%20of%20Time%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/oot_ship_of_harkinian.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/oot_ship_of_harkinian.png",
     "romfs_fallback": "romfs:/icons/oot_ship_of_harkinian.png"
   },
   {
@@ -259,7 +259,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación completa por HarbourMasters (soporte Switch en desarrollo; build oficial verificado actualmente para PC).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Majora%27s%20Mask%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/mm_2ship2harkinian.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/mm_2ship2harkinian.png",
     "romfs_fallback": "romfs:/icons/mm_2ship2harkinian.png"
   },
   {
@@ -280,7 +280,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación completa por HarbourMasters (PaperBoat; build oficial verificado actualmente para PC).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Paper%20Mario%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/paper_mario_paperboat.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/paper_mario_paperboat.png",
     "romfs_fallback": "romfs:/icons/paper_mario_paperboat.png"
   },
   {
@@ -301,7 +301,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recompilación estática por HarbourMasters (Lighthouse / BanjoRecomp; build oficial verificado actualmente para PC).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Banjo-Kazooie%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/banjo_kazooie_lighthouse.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/banjo_kazooie_lighthouse.png",
     "romfs_fallback": "romfs:/icons/banjo_kazooie_lighthouse.png"
   },
   {
@@ -322,7 +322,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación de Diddy Kong Racing con tasa de cuadros desbloqueada a 60 FPS y selector de personaje.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Diddy%20Kong%20Racing%20%28USA%29%20%28En%2CFr%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/dkr_golden_balloon.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/dkr_golden_balloon.png",
     "romfs_fallback": "romfs:/icons/dkr_golden_balloon.png"
   },
   {
@@ -345,7 +345,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Usa libultraship runtime. Soporta contenido de 64DD Expansion Kit nativo en Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/F-Zero%20X%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/fzero_x_nx_diffuser.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/fzero_x_nx_diffuser.png",
     "romfs_fallback": "romfs:/icons/fzero_x_nx_diffuser.png"
   },
   {
@@ -366,7 +366,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Control de doble stick analógico moderno, 60 FPS, widescreen y giroscopio.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Perfect%20Dark%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/perfect_dark_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/perfect_dark_nx.png",
     "romfs_fallback": "romfs:/icons/perfect_dark_nx.png"
   },
   {
@@ -387,7 +387,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Port oficial de recompilación de Star Fox 64 por HarbourMasters (Starship) para Nintendo Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Star%20Fox%2064%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/starfox_64_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/starfox_64_nx.png",
     "romfs_fallback": "romfs:/icons/starfox_64_nx.png"
   },
   {
@@ -408,7 +408,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Port nativo de MK64 para Switch desarrollado bajo HarbourMasters (SpaghettiKart / Spaghettify).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Mario%20Kart%2064%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/mario_kart_64_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/mario_kart_64_nx.png",
     "romfs_fallback": "romfs:/icons/mario_kart_64_nx.png"
   },
   {
@@ -430,7 +430,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reconstrucción exacta del motor con iluminación cromática y soporte táctil.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Doom%2064%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/doom_64_ex_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/doom_64_ex_nx.png",
     "romfs_fallback": "romfs:/icons/doom_64_ex_nx.png"
   },
   {
@@ -451,7 +451,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recompilación estática de SSB64 (proyecto zestydevy/smash64r para PC; pendiente publicación de release NRO para Switch).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Super%20Smash%20Bros.%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/smash_64_recomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/smash_64_recomp.png",
     "romfs_fallback": "romfs:/icons/smash_64_recomp.png"
   },
   {
@@ -472,7 +472,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Proyecto SS Anne de HarbourMasters; en desarrollo, pendiente de release oficial para Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Pokemon%20Stadium%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/pokemon_stadium_ss_anne.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/pokemon_stadium_ss_anne.png",
     "romfs_fallback": "romfs:/icons/pokemon_stadium_ss_anne.png"
   },
   {
@@ -493,7 +493,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recompilación estática comunitaria en progreso; pendiente release de binario .nro empaquetado para Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Bomberman%2064%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/bomberman_64_recomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/bomberman_64_recomp.png",
     "romfs_fallback": "romfs:/icons/bomberman_64_recomp.png"
   },
   {
@@ -514,7 +514,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Proyecto de ingeniería inversa en desarrollo; pendiente de release empaquetado para Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Castlevania%20-%20Legacy%20of%20Darkness%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/castlevania_lod_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/castlevania_lod_nx.png",
     "romfs_fallback": "romfs:/icons/castlevania_lod_nx.png"
   },
   {
@@ -535,7 +535,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recompilación estática en progreso basada en N64Recomp; pendiente release de binario .nro para Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/Quest%2064%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/quest_64_recomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/quest_64_recomp.png",
     "romfs_fallback": "romfs:/icons/quest_64_recomp.png"
   },
   {
@@ -556,7 +556,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación al 100% con controles modernos de doble stick y 60 FPS estables.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_64/master/Named_Boxarts/GoldenEye%20007%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/goldeneye_007_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/goldeneye_007_nx.png",
     "romfs_fallback": "romfs:/icons/goldeneye_007_nx.png"
   },
   {
@@ -577,7 +577,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recompilación nativa de Jak and Daxter mediante OpenGOAL (binario gk.nro instalado como jak1.nro en /switch/jak1/).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation_2/master/Named_Boxarts/Jak%20and%20Daxter%20-%20The%20Precursor%20Legacy%20%28USA%29%20%28En%2CFr%2CDe%2CEs%2CIt%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/jak_and_daxter_opengoal.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/jak_and_daxter_opengoal.png",
     "romfs_fallback": "romfs:/icons/jak_and_daxter_opengoal.png"
   },
   {
@@ -602,7 +602,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "100% jugable, multijugador local en minijuegos, resolución completa y tiempos de carga instantáneos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Simpsons%3A%20Hit%20%26%20Run",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/simpsons_hit_and_run.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/simpsons_hit_and_run.png",
     "romfs_fallback": "romfs:/icons/simpsons_hit_and_run.png"
   },
   {
@@ -624,7 +624,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación nativa de The Legend of Zelda: The Wind Waker para Nintendo Switch (ejecutable switchwaker.nro).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20The%20Wind%20Waker%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/zelda_wind_waker_switchwaker.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/zelda_wind_waker_switchwaker.png",
     "romfs_fallback": "romfs:/icons/zelda_wind_waker_switchwaker.png"
   },
   {
@@ -645,7 +645,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Optimizado para 720p 30 FPS en frecuencias stock de Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Twilight%20Princess%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/zelda_twilight_princess_dusklight.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/zelda_twilight_princess_dusklight.png",
     "romfs_fallback": "romfs:/icons/zelda_twilight_princess_dusklight.png"
   },
   {
@@ -666,7 +666,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación nativa de Super Smash Bros. Melee corriendo a 60 FPS fijos sin emulación (binario melee.nro / melee-nx.nro).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Super%20Smash%20Bros.%20Melee%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/smash_melee_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/smash_melee_nx.png",
     "romfs_fallback": "romfs:/icons/smash_melee_nx.png"
   },
   {
@@ -687,7 +687,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporte de paquetes de texturas personalizados y resolución HD.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Super%20Mario%20Strikers%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/super_mario_strikers_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/super_mario_strikers_nx.png",
     "romfs_fallback": "romfs:/icons/super_mario_strikers_nx.png"
   },
   {
@@ -708,7 +708,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación AstroCore de SMG; proyecto en desarrollo para PC, pendiente release oficial de puerto Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Wii/master/Named_Boxarts/Super%20Mario%20Galaxy%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/super_mario_galaxy_astrocore.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/super_mario_galaxy_astrocore.png",
     "romfs_fallback": "romfs:/icons/super_mario_galaxy_astrocore.png"
   },
   {
@@ -729,7 +729,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reloj de tiempo real integrado directamente con el reloj del sistema de Switch.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Animal%20Crossing%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/animal_crossing_acgc_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/animal_crossing_acgc_nx.png",
     "romfs_fallback": "romfs:/icons/animal_crossing_acgc_nx.png"
   },
   {
@@ -752,7 +752,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Port nativo con assets regionales (nfsmw-nx-usa.nro / nfsmw-nx-pal-en.nro); requiere datos de la versión de PC/PS2.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Need%20For%20Speed%3A%20Most%20Wanted%202005",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/nfs_most_wanted_2005.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/nfs_most_wanted_2005.png",
     "romfs_fallback": "romfs:/icons/nfs_most_wanted_2005.png"
   },
   {
@@ -773,7 +773,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Corre a 60 FPS, widescreen 16:9 real y distancia de dibujado multiplicada.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Driver%202%20%28USA%29%20%28Disc%201%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/driver_2_redriver2.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/driver_2_redriver2.png",
     "romfs_fallback": "romfs:/icons/driver_2_redriver2.png"
   },
   {
@@ -794,7 +794,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Resolución 1080p nativa a 60 FPS con banda sonora completa en OGG/FLAC.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Wipeout%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/wipeout_rewrite.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/wipeout_rewrite.png",
     "romfs_fallback": "romfs:/icons/wipeout_rewrite.png"
   },
   {
@@ -816,7 +816,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Port nativo C++ de Silent Hill 1 con corrección de perspectiva geométrica y widescreen (ejecutable SilentHillPC.nro).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Silent%20Hill%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/silent_hill_1_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/silent_hill_1_nx.png",
     "romfs_fallback": "romfs:/icons/silent_hill_1_nx.png"
   },
   {
@@ -837,7 +837,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Puerto nativo con framerate fluido y pantalla completa.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/Jackie%20Chan%20Stuntmaster%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/jackie_chan_rechan.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/jackie_chan_rechan.png",
     "romfs_fallback": "romfs:/icons/jackie_chan_rechan.png"
   },
   {
@@ -859,7 +859,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Iluminación dinámica en tiempo real, efectos de agua, 60 FPS y opción en primera persona.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Tomb%20Raider%20I%20%26%20II",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/tomb_raider_openlara.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/tomb_raider_openlara.png",
     "romfs_fallback": "romfs:/icons/tomb_raider_openlara.png"
   },
   {
@@ -880,7 +880,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Renderizado panorámico, interfaz táctil y paletas de color configurables.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy/master/Named_Boxarts/Pokemon%20-%20Red%20Version%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/pokemon_gen1_recomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/pokemon_gen1_recomp.png",
     "romfs_fallback": "romfs:/icons/pokemon_gen1_recomp.png"
   },
   {
@@ -901,7 +901,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Sincronización con reloj real y soporte panorámico nativo.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Color/master/Named_Boxarts/Pokemon%20-%20Crystal%20Version%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/pokemon_gen2_recomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/pokemon_gen2_recomp.png",
     "romfs_fallback": "romfs:/icons/pokemon_gen2_recomp.png"
   },
   {
@@ -922,7 +922,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Gráficos HD redraw, cámara libre continua y música orquestada.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Color/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Link%27s%20Awakening%20DX%20%28USA%2C%20Europe%29%20%28SGB%20Enhanced%29%20%28GB%20Compatible%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/zelda_links_awakening_dx_hd.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/zelda_links_awakening_dx_hd.png",
     "romfs_fallback": "romfs:/icons/zelda_links_awakening_dx_hd.png"
   },
   {
@@ -944,7 +944,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Unifica ambos títulos en un único menú con soporte de vinculación de contraseñas.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Color/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20Oracle%20of%20Seasons%20%28USA%2C%20Australia%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/zelda_oracles_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/zelda_oracles_nx.png",
     "romfs_fallback": "romfs:/icons/zelda_oracles_nx.png"
   },
   {
@@ -965,7 +965,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Port nativo de The Minish Cap con soporte panorámico 16:9 y filtros de escalado (ejecutables tmc_switch.nro / TMC-Switch-USA).",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20The%20Minish%20Cap%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/zelda_minish_cap_tmc.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/zelda_minish_cap_tmc.png",
     "romfs_fallback": "romfs:/icons/zelda_minish_cap_tmc.png"
   },
   {
@@ -986,7 +986,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Ejecución nativa con tasa de cuadros desbloqueada a 60 FPS.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Sonic%20Advance%202%20%28USA%29%20%28En%2CJa%2CFr%2CDe%2CEs%2CIt%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_advance_2_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_advance_2_nx.png",
     "romfs_fallback": "romfs:/icons/sonic_advance_2_nx.png"
   },
   {
@@ -1008,7 +1008,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporte panorámico 16:9 que renderiza áreas ocultas sin scroll pop-in, audio MSU-1 y atajos de objetos.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Legend%20of%20Zelda%2C%20The%20-%20A%20Link%20to%20the%20Past%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/zelda_alttp_zelda3.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/zelda_alttp_zelda3.png",
     "romfs_fallback": "romfs:/icons/zelda_alttp_zelda3.png"
   },
   {
@@ -1029,7 +1029,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Widescreen real, audio sin compresión y mapeo moderno de apuntado para los Joy-Con.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Metroid%20%28Japan%2C%20USA%29%20%28En%2CJa%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/super_metroid_sm_decomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/super_metroid_sm_decomp.png",
     "romfs_fallback": "romfs:/icons/super_metroid_sm_decomp.png"
   },
   {
@@ -1050,7 +1050,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reescritura en C con soporte para pantallas panorámicas y física idéntica al original.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20World%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/super_mario_world_smw_decomp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/super_mario_world_smw_decomp.png",
     "romfs_fallback": "romfs:/icons/super_mario_world_smw_decomp.png"
   },
   {
@@ -1071,7 +1071,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recompilación nativa del hardware Model 2 a 60 FPS estables con audio estéreo mejorado.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Saturn/master/Named_Boxarts/Daytona%20USA%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/daytona_usa_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/daytona_usa_nx.png",
     "romfs_fallback": "romfs:/icons/daytona_usa_nx.png"
   },
   {
@@ -1092,7 +1092,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Gráficos poligonales nítidos a 60 FPS sin los artefactos de emuladores pesados.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Saturn/master/Named_Boxarts/Virtua%20Fighter%202%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/virtua_fighter_2_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/virtua_fighter_2_nx.png",
     "romfs_fallback": "romfs:/icons/virtua_fighter_2_nx.png"
   },
   {
@@ -1113,7 +1113,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Mapeo optimizado para controles Dual-Stick emulando las palancas gemelas arcade.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/FBNeo_-_Arcade_Games/master/Named_Titles/von.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/virtual_on_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/virtual_on_nx.png",
     "romfs_fallback": "romfs:/icons/virtual_on_nx.png"
   },
   {
@@ -1135,7 +1135,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Renderizado sin pérdidas, audio original y combos a 60 FPS nativos.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Killer%20Instinct%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/killer_instinct_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/killer_instinct_nx.png",
     "romfs_fallback": "romfs:/icons/killer_instinct_nx.png"
   },
   {
@@ -1156,7 +1156,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Control de derrape preciso con sticks analógicos y 60 FPS.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Saturn/master/Named_Boxarts/Sega%20Rally%20Championship%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sega_rally_port0r.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sega_rally_port0r.png",
     "romfs_fallback": "romfs:/icons/sega_rally_port0r.png"
   },
   {
@@ -1177,7 +1177,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Puerto nativo de la entrega de lucha poligonal de Sonic Team.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/FBNeo_-_Arcade_Games/master/Named_Titles/sfight.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_the_fighters_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_the_fighters_nx.png",
     "romfs_fallback": "romfs:/icons/sonic_the_fighters_nx.png"
   },
   {
@@ -1200,7 +1200,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor id Tech 4 nativo a 60 FPS con apuntado por giroscopio y soporte para linterna en arma.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Doom%203%20%26%20RoE",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/doom_3_dhewm3.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/doom_3_dhewm3.png",
     "romfs_fallback": "romfs:/icons/doom_3_dhewm3.png"
   },
   {
@@ -1221,7 +1221,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Giroscopio de Joy-Con implementado, música en OGG estéreo y resolución 1080p.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Quake%20II",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/quake_2_nxquake2.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/quake_2_nxquake2.png",
     "romfs_fallback": "romfs:/icons/quake_2_nxquake2.png"
   },
   {
@@ -1242,7 +1242,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Multijugador local con bots o partidas online en servidores de la comunidad.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Quake%20III%20Arena",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/quake_3_arena_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/quake_3_arena_nx.png",
     "romfs_fallback": "romfs:/icons/quake_3_arena_nx.png"
   },
   {
@@ -1263,7 +1263,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporta renderizado Polymer, paquetes de texturas en alta resolución y mods HRP.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Duke%20Nukem%203D",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/duke_nukem_3d_eduke32.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/duke_nukem_3d_eduke32.png",
     "romfs_fallback": "romfs:/icons/duke_nukem_3d_eduke32.png"
   },
   {
@@ -1285,7 +1285,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reconstrucción perfecta del código fuente original de Monolith a 60 FPS estables.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Blood",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/blood_nblood_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/blood_nblood_nx.png",
     "romfs_fallback": "romfs:/icons/blood_nblood_nx.png"
   },
   {
@@ -1306,7 +1306,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor Build nativo con controles modernos y giroscopio.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Shadow%20Warrior",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/shadow_warrior_voidsw.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/shadow_warrior_voidsw.png",
     "romfs_fallback": "romfs:/icons/shadow_warrior_voidsw.png"
   },
   {
@@ -1328,7 +1328,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Puerto exacto del motor Build con corrección de bugs y soporte analógico.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Powerslave%20/%20Exhumed",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/powerslave_pcexhumed.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/powerslave_pcexhumed.png",
     "romfs_fallback": "romfs:/icons/powerslave_pcexhumed.png"
   },
   {
@@ -1349,7 +1349,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporta también las expansiones Suckin' Grits on Route 66.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Redneck%20Rampage",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/redneck_rampage_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/redneck_rampage_nx.png",
     "romfs_fallback": "romfs:/icons/redneck_rampage_nx.png"
   },
   {
@@ -1370,7 +1370,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Rendimiento óptimo a 60 FPS sin los límites de memoria de la versión comercial.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Ion%20Fury",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/ion_fury_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/ion_fury_nx.png",
     "romfs_fallback": "romfs:/icons/ion_fury_nx.png"
   },
   {
@@ -1392,7 +1392,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporte panorámico nativo, automapa en pantalla y ranuras de guardado ilimitadas.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Wolfenstein%203D%20%26%20Spear%20of%20Destiny",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/wolfenstein_3d_ecwolf.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/wolfenstein_3d_ecwolf.png",
     "romfs_fallback": "romfs:/icons/wolfenstein_3d_ecwolf.png"
   },
   {
@@ -1414,7 +1414,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Aceleración por hardware completa, 60 FPS estables y giroscopio.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Return%20to%20Castle%20Wolfenstein",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/rtc_wolfenstein_iortcw.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/rtc_wolfenstein_iortcw.png",
     "romfs_fallback": "romfs:/icons/rtc_wolfenstein_iortcw.png"
   },
   {
@@ -1436,7 +1436,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Mapeo completo de 6 grados de libertad en sticks analógicos y giroscopio.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Descent%201%20%26%202",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/descent_dxx_rebirth.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/descent_dxx_rebirth.png",
     "romfs_fallback": "romfs:/icons/descent_dxx_rebirth.png"
   },
   {
@@ -1457,7 +1457,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporta versión shareware y versión completa registrada con música MIDI emulada.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Rise%20of%20the%20Triad",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/rise_of_the_triad_rott.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/rise_of_the_triad_rott.png",
     "romfs_fallback": "romfs:/icons/rise_of_the_triad_rott.png"
   },
   {
@@ -1480,7 +1480,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Serious Engine port para Switch por fgsfdsfgs; incluye First y Second Encounter a 60 FPS nativos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Serious%20Sam%3A%20The%20First%20%26%20Second%20Encounter",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/serious_sam_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/serious_sam_nx.png",
     "romfs_fallback": "romfs:/icons/serious_sam_nx.png"
   },
   {
@@ -1502,7 +1502,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Campañas completas de Marine, Alien y Depredador a resolución nativa.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Alien%20vs%20Predator%20Classic",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/alien_vs_predator_avp.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/alien_vs_predator_avp.png",
     "romfs_fallback": "romfs:/icons/alien_vs_predator_avp.png"
   },
   {
@@ -1523,7 +1523,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Controles tipo twin-stick shooter con los Joy-Con.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Postal%201",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/postal_1_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/postal_1_nx.png",
     "romfs_fallback": "romfs:/icons/postal_1_nx.png"
   },
   {
@@ -1545,7 +1545,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor GoldSrc independiente; soporta mods comunitarios como Counter-Strike 1.6.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Half-Life%201%2C%20Opposing%20Force%2C%20Blue%20Shift",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/half_life_1_xash3d.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/half_life_1_xash3d.png",
     "romfs_fallback": "romfs:/icons/half_life_1_xash3d.png"
   },
   {
@@ -1567,7 +1567,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor Source con físicas Havok nativas aceleradas por GPU.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Half-Life%202%20%26%20Portal",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/half_life_2_portal_hl2_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/half_life_2_portal_hl2_nx.png",
     "romfs_fallback": "romfs:/icons/half_life_2_portal_hl2_nx.png"
   },
   {
@@ -1590,7 +1590,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Bullet Time a 60 FPS estables con apuntado fino por giroscopio.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Max%20Payne%201",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/max_payne_1_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/max_payne_1_nx.png",
     "romfs_fallback": "romfs:/icons/max_payne_1_nx.png"
   },
   {
@@ -1612,7 +1612,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reemplazo moderno del motor Jedi con renderizado 3D real y resolución panorámica.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Star%20Wars%3A%20Dark%20Forces",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/star_wars_dark_forces_tfe.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/star_wars_dark_forces_tfe.png",
     "romfs_fallback": "romfs:/icons/star_wars_dark_forces_tfe.png"
   },
   {
@@ -1634,7 +1634,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Combates con sable de luz a 60 FPS con soporte completo de mods de la comunidad.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Star%20Wars%20Jedi%20Knight%3A%20Jedi%20Outcast%20%26%20Jedi%20Academy",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/star_wars_jedi_knight_openjk.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/star_wars_jedi_knight_openjk.png",
     "romfs_fallback": "romfs:/icons/star_wars_jedi_knight_openjk.png"
   },
   {
@@ -1657,7 +1657,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporte táctil nativo completo y compatibilidad de partidas guardadas con PC.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Fallout%201",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/fallout_1_ce.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/fallout_1_ce.png",
     "romfs_fallback": "romfs:/icons/fallout_1_ce.png"
   },
   {
@@ -1680,7 +1680,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Misma arquitectura Community Edition que Fallout 1, optimizado para Joy-Con.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Fallout%202",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/fallout_2_ce.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/fallout_2_ce.png",
     "romfs_fallback": "romfs:/icons/fallout_2_ce.png"
   },
   {
@@ -1701,7 +1701,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Multijugador local/online, soporte táctil, traducción al español y 60 FPS fluidos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Diablo%201%20%26%20Hellfire",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/diablo_1_devilutionx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/diablo_1_devilutionx.png",
     "romfs_fallback": "romfs:/icons/diablo_1_devilutionx.png"
   },
   {
@@ -1722,7 +1722,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recreación del motor en Unity con controles analógicos modernos y distancia visual épica.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Elder%20Scrolls%20II%3A%20Daggerfall",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/tes_daggerfall_unity.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/tes_daggerfall_unity.png",
     "romfs_fallback": "romfs:/icons/tes_daggerfall_unity.png"
   },
   {
@@ -1744,7 +1744,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor C++ libre que reemplaza el motor de Bethesda. Soporta mods y expansiones Bloodmoon/Tribunal.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/The%20Elder%20Scrolls%20III%3A%20Morrowind",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/tes_morrowind_openmw.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/tes_morrowind_openmw.png",
     "romfs_fallback": "romfs:/icons/tes_morrowind_openmw.png"
   },
   {
@@ -1767,7 +1767,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporte táctil preciso y cursor analógico virtual; añade multijugador online.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/RollerCoaster%20Tycoon%201%20%26%202",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/rct2_openrct2.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/rct2_openrct2.png",
     "romfs_fallback": "romfs:/icons/rct2_openrct2.png"
   },
   {
@@ -1788,7 +1788,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Funciona con assets abiertos incluidos o con los clásicos de DOS/Windows.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Transport%20Tycoon%20Deluxe",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/transport_tycoon_openttd.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/transport_tycoon_openttd.png",
     "romfs_fallback": "romfs:/icons/transport_tycoon_openttd.png"
   },
   {
@@ -1810,7 +1810,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporte panorámico para resoluciones de Switch, controles táctiles y atajos de construcción.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Caesar%20III",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/caesar_3_julius_augustus.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/caesar_3_julius_augustus.png",
     "romfs_fallback": "romfs:/icons/caesar_3_julius_augustus.png"
   },
   {
@@ -1831,7 +1831,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reimplementación moderna en C++/Lua con pantalla en alta resolución y soporte de ratón/táctil.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Theme%20Hospital",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/theme_hospital_corsixth.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/theme_hospital_corsixth.png",
     "romfs_fallback": "romfs:/icons/theme_hospital_corsixth.png"
   },
   {
@@ -1852,7 +1852,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor multiplataforma limpio; soporte para pantalla táctil y ratón USB.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Command%20%26%20Conquer%3A%20Tiberian%20Dawn%20%26%20Red%20Alert",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/command_and_conquer_vanilla.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/command_and_conquer_vanilla.png",
     "romfs_fallback": "romfs:/icons/command_and_conquer_vanilla.png"
   },
   {
@@ -1874,7 +1874,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Recreación exacta del primer RTS moderno con interfaz adaptada.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Dune%20II%3A%20Battle%20for%20Arrakis",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/dune_2_opendune.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/dune_2_opendune.png",
     "romfs_fallback": "romfs:/icons/dune_2_opendune.png"
   },
   {
@@ -1896,7 +1896,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor C++ reescrito con mejoras de calidad de vida épicas, resoluciones HD y controles Joy-Con.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Heroes%20of%20Might%20and%20Magic%20II",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/heroes_of_might_magic_2_fheroes2.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/heroes_of_might_magic_2_fheroes2.png",
     "romfs_fallback": "romfs:/icons/heroes_of_might_magic_2_fheroes2.png"
   },
   {
@@ -1919,7 +1919,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporta pantallas panorámicas, la expansión Horn of the Abyss y mods de comunidad.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Heroes%20of%20Might%20and%20Magic%20III",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/heroes_of_might_magic_3_vcmi.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/heroes_of_might_magic_3_vcmi.png",
     "romfs_fallback": "romfs:/icons/heroes_of_might_magic_3_vcmi.png"
   },
   {
@@ -1941,7 +1941,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación inversa del sucesor espiritual de Transport Tycoon.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Chris%20Sawyer%27s%20Locomotion",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/chris_sawyers_locomotion_openloco.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/chris_sawyers_locomotion_openloco.png",
     "romfs_fallback": "romfs:/icons/chris_sawyers_locomotion_openloco.png"
   },
   {
@@ -1964,7 +1964,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor moderno multiplataforma con físicas pulidas, 60 FPS y shaders modernos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Re-Volt",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/revolt_rvgl.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/revolt_rvgl.png",
     "romfs_fallback": "romfs:/icons/revolt_rvgl.png"
   },
   {
@@ -1986,7 +1986,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor C++ reescrito que elimina los bugs del ejecutable antiguo de Windows y escala perfecto a 720p/1080p.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Oddworld%3A%20Abe%27s%20Oddysee%20%26%20Exoddus",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/oddworld_relive.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/oddworld_relive.png",
     "romfs_fallback": "romfs:/icons/oddworld_relive.png"
   },
   {
@@ -2010,7 +2010,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Ingeniería inversa de RenderWare. 60 FPS, widescreen y tiempos de carga nulos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%20III",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/gta_3_re3.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/gta_3_re3.png",
     "romfs_fallback": "romfs:/icons/gta_3_re3.png"
   },
   {
@@ -2033,7 +2033,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Misma tecnología re3, con soporte para todas las estaciones de radio y mapeo moderno.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%3A%20Vice%20City",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/gta_vc_revc.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/gta_vc_revc.png",
     "romfs_fallback": "romfs:/icons/gta_vc_revc.png"
   },
   {
@@ -2055,7 +2055,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Traducción ARM64 directa a Horizon OS con mejor rendimiento que la Trilogy oficial.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Grand%20Theft%20Auto%3A%20San%20Andreas",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/gta_sa_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/gta_sa_nx.png",
     "romfs_fallback": "romfs:/icons/gta_sa_nx.png"
   },
   {
@@ -2076,7 +2076,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "60 FPS a 16:9 con Spin Dash y Tails/Knuckles jugables.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%20%28USA%2C%20Europe%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_1_rsdk.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_1_rsdk.png",
     "romfs_fallback": "romfs:/icons/sonic_1_rsdk.png"
   },
   {
@@ -2097,7 +2097,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Incluye la zona oculta Hidden Palace Zone restaurada.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%202%20%28World%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_2_rsdk.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_2_rsdk.png",
     "romfs_fallback": "romfs:/icons/sonic_2_rsdk.png"
   },
   {
@@ -2118,7 +2118,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Elección entre bandas sonoras japonesa y americana, 60 FPS panorámico.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_CD/master/Named_Boxarts/Sonic%20CD%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_cd_rsdk.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_cd_rsdk.png",
     "romfs_fallback": "romfs:/icons/sonic_cd_rsdk.png"
   },
   {
@@ -2139,7 +2139,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Permite cargar mods de GameBanana directamente en Switch sin alterar el juego base.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Sonic%20Mania",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_mania_rsdk.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_mania_rsdk.png",
     "romfs_fallback": "romfs:/icons/sonic_mania_rsdk.png"
   },
   {
@@ -2160,7 +2160,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Panorámico, animaciones fluidas, menús modernos y soporte masivo de mods.",
     "thumbnail_provider": "Libretro Thumbnails",
     "thumbnail_url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%203%20%28USA%29.png",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/sonic_3_air.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/sonic_3_air.png",
     "romfs_fallback": "romfs:/icons/sonic_3_air.png"
   },
   {
@@ -2181,7 +2181,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Sonic Robo Blast 2; motor Doom modificado. Pendiente release de paquete NRO actualizado compatible con firmware reciente.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Sonic%20Robo%20Blast%202",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/srb2_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/srb2_nx.png",
     "romfs_fallback": "romfs:/icons/srb2_nx.png"
   },
   {
@@ -2202,7 +2202,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Secuela masiva de SRB2Kart con cientos de pistas y juego multijugador local.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Dr.%20Robotnik%27s%20Ring%20Racers",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/dr_robotnik_ring_racers.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/dr_robotnik_ring_racers.png",
     "romfs_fallback": "romfs:/icons/dr_robotnik_ring_racers.png"
   },
   {
@@ -2223,7 +2223,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Intérprete perfecto de los vectores poligonales en pantalla completa.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Another%20World%20/%20Out%20of%20This%20World",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/another_world_raw.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/another_world_raw.png",
     "romfs_fallback": "romfs:/icons/another_world_raw.png"
   },
   {
@@ -2244,7 +2244,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporta pistas de audio mejoradas y cinemáticas originales a pantalla completa.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Flashback%3A%20The%20Quest%20for%20Identity",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/flashback_reminiscence.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/flashback_reminiscence.png",
     "romfs_fallback": "romfs:/icons/flashback_reminiscence.png"
   },
   {
@@ -2266,7 +2266,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Reproducción fluida de cinemáticas y guardado automático por puntos de control.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Heart%20of%20Darkness",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/heart_of_darkness_hode.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/heart_of_darkness_hode.png",
     "romfs_fallback": "romfs:/icons/heart_of_darkness_hode.png"
   },
   {
@@ -2287,7 +2287,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Aventura clásica estilo Flashback ambientada en la era jurásica.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Bermuda%20Syndrome",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/bermuda_syndrome_bs.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/bermuda_syndrome_bs.png",
     "romfs_fallback": "romfs:/icons/bermuda_syndrome_bs.png"
   },
   {
@@ -2308,7 +2308,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Controles modernos con stick analógico para el movimiento en tercera persona.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Fade%20to%20Black",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/fade_to_black_f2b.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/fade_to_black_f2b.png",
     "romfs_fallback": "romfs:/icons/fade_to_black_f2b.png"
   },
   {
@@ -2329,7 +2329,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Motor C++ que unifica ambas aventuras de Twinsen con soporte para mandos modernos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Little%20Big%20Adventure%201%20%26%202",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/little_big_adventure_twine.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/little_big_adventure_twine.png",
     "romfs_fallback": "romfs:/icons/little_big_adventure_twine.png"
   },
   {
@@ -2352,7 +2352,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Pantalla completa panorámica, 60 FPS estables y soporte para todos los episodios.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Jazz%20Jackrabbit",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/jazz_jackrabbit_openjazz.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/jazz_jackrabbit_openjazz.png",
     "romfs_fallback": "romfs:/icons/jazz_jackrabbit_openjazz.png"
   },
   {
@@ -2373,7 +2373,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Resolución nativa HD y atajos para las armas secundarias en botones L/R.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Captain%20Claw",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/captain_claw_openclaw.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/captain_claw_openclaw.png",
     "romfs_fallback": "romfs:/icons/captain_claw_openclaw.png"
   },
   {
@@ -2394,7 +2394,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Apuntado de 360 grados asignado al stick analógico derecho o pantalla táctil.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Abuse",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/abuse_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/abuse_nx.png",
     "romfs_fallback": "romfs:/icons/abuse_nx.png"
   },
   {
@@ -2415,7 +2415,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Filtros gráficos, música HQ opcional y guardado rápido.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Commander%20Keen%20Episodios%201-6",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/commander_keen_cgenius.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/commander_keen_cgenius.png",
     "romfs_fallback": "romfs:/icons/commander_keen_cgenius.png"
   },
   {
@@ -2436,7 +2436,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Soporta modo vertical (TATE) girando la consola Nintendo Switch.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Tyrian%202000",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/tyrian_2000_opentyrian.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/tyrian_2000_opentyrian.png",
     "romfs_fallback": "romfs:/icons/tyrian_2000_opentyrian.png"
   },
   {
@@ -2457,7 +2457,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Controles de nado fluidos con stick analógico y 60 FPS estables.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Aquaria",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/aquaria_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/aquaria_nx.png",
     "romfs_fallback": "romfs:/icons/aquaria_nx.png"
   },
   {
@@ -2478,7 +2478,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Juego 3D completo desarrollado por el equipo original de Celeste, port nativo C# / C++.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Celeste%2064%3A%20Fragments%20of%20the%20Mountain",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/celeste_64_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/celeste_64_nx.png",
     "romfs_fallback": "romfs:/icons/celeste_64_nx.png"
   },
   {
@@ -2499,7 +2499,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Permite alternar entre música original, remasterizada o de CS+.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Cave%20Story",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/cave_story_nxengine.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/cave_story_nxengine.png",
     "romfs_fallback": "romfs:/icons/cave_story_nxengine.png"
   },
   {
@@ -2521,7 +2521,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "El mejor remake de Metroid II corriendo de forma nativa a 60 FPS.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/Another%20Metroid%202%20Remake",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/am2r_switch.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/am2r_switch.png",
     "romfs_fallback": "romfs:/icons/am2r_switch.png"
   },
   {
@@ -2543,7 +2543,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Descompilación inversa C++ con vibración háptica HD Rumble en los flippers.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/3D%20Pinball%20for%20Windows%20-%20Space%20Cadet",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/space_cadet_pinball_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/space_cadet_pinball_nx.png",
     "romfs_fallback": "romfs:/icons/space_cadet_pinball_nx.png"
   },
   {
@@ -2564,7 +2564,7 @@ A continuación se presenta el bloque JSON integral que contiene todos los metad
     "notes": "Código fuente oficial liberado en C++. Cero input lag y 60 FPS fijos.",
     "thumbnail_provider": "SteamGridDB",
     "thumbnail_url": "https://www.steamgriddb.com/api/v2/search/autocomplete/VVVVVV",
-    "cache_path": "sdmc:/switch/QuiverNX/cache/vvvvvv_nx.png",
+    "cache_path": "sdmc:/switch/Delanx/cache/vvvvvv_nx.png",
     "romfs_fallback": "romfs:/icons/vvvvvv_nx.png"
   }
 ]

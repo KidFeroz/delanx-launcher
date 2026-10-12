@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Degradado Espectro Continuo Completo -->
+    <linearGradient id="ultraSpectrum1x1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E676" />    <!-- Verde Esmeralda -->
+      <stop offset="20%" stop-color="#00E5FF" />   <!-- Cyan Neón -->
+      <stop offset="40%" stop-color="#2979FF" />   <!-- Azul Eléctrico -->
+      <stop offset="60%" stop-color="#651FFF" />   <!-- Índigo / Violeta -->
+      <stop offset="75%" stop-color="#FF1744" />   <!-- Rojo / Coral Joy-Con -->
+      <stop offset="90%" stop-color="#FF6D00" />   <!-- Naranja -->
+      <stop offset="100%" stop-color="#FFAB00" />  <!-- Amarillo / Ámbar -->
+    </linearGradient>
+
+    <filter id="shadow1x1" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+
+    <filter id="glowCenter" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Contenedor Base Dark Obsidian -->
+  <rect width="512" height="512" rx="112" fill="#0B0E14" />
+  
+  <!-- Borde Neón Sutil con degradado -->
+  <rect x="6" y="6" width="500" height="500" rx="106" fill="none" stroke="url(#ultraSpectrum1x1)" stroke-width="2.5" opacity="0.4" />
+
+  <!-- ISOTIPO CENTRAL CON INCLINACIÓN DINÁMICA -->
+  <g transform="translate(256, 256) skewX(-8)" filter="url(#shadow1x1)">
+    <g transform="translate(-256, -256)">
+      
+      <!-- Bloque Izquierdo (D) con Degradado Espectro Completo -->
+      <path d="M 124 136 C 124 118, 138 104, 156 104 L 216 104 C 264 104, 296 136, 296 184 L 296 200 L 236 256 L 188 256 L 188 168 L 164 168 L 164 344 L 188 344 L 236 344 L 296 408 L 156 408 C 138 408, 124 394, 124 376 Z" 
+            fill="url(#ultraSpectrum1x1)" />
+      
+      <!-- Detalle Joy-Con izquierdo -->
+      <circle cx="156" cy="144" r="10" fill="#0B0E14" />
+
+      <!-- Bloque Derecho (X / NX) con Degradado Espectro Completo -->
+      <path d="M 356 104 C 374 104, 388 118, 388 136 L 388 376 C 388 394, 374 408, 356 408 L 296 408 L 236 344 L 284 344 L 348 276 L 348 236 L 284 168 L 236 168 L 296 104 Z" 
+            fill="url(#ultraSpectrum1x1)" />
+
+      <!-- Detalle Joy-Con derecho (+) -->
+      <rect x="342" y="138" width="24" height="6" rx="3" fill="#0B0E14" />
+      <rect x="351" y="129" width="6" height="24" rx="3" fill="#0B0E14" />
+
+      <!-- Núcleo Central de Lanzamiento (Chevron Blanco) -->
+      <path d="M 236 196 L 296 256 L 236 316 L 212 292 L 248 256 L 212 220 Z" 
+            fill="#FFFFFF" 
+            filter="url(#glowCenter)" />
+    </g>
+  </g>
+</svg>

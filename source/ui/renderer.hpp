@@ -13,6 +13,8 @@
 
 namespace delanx::ui {
 
+enum class FontFace { Regular = 0, Brand, Condensed };
+
 class Texture {
  public:
   Texture() = default;
@@ -56,22 +58,28 @@ class Renderer {
   void fill_round_rect(int x, int y, int w, int h, int radius, const Color& color);
   void stroke_round_rect(int x, int y, int w, int h, int radius, const Color& color, int thickness = 2);
   void fill_circle(int cx, int cy, int radius, const Color& color);
+  void stroke_circle(int cx, int cy, int radius, const Color& color, int thickness = 1);
   void vertical_gradient(int x, int y, int w, int h, const Color& top, const Color& bottom, int steps = 24);
+  void horizontal_gradient(int x, int y, int w, int h, const Color& left, const Color& right, int steps = 24);
 
-  void draw_text(const std::string& text, int x, int y, const Color& color, int size, bool bold = false);
+  void draw_text(const std::string& text, int x, int y, const Color& color, int size, bool bold = false,
+                 FontFace face = FontFace::Regular);
   void draw_text_centered(const std::string& text, int center_x, int y, const Color& color, int size,
-                          bool bold = false);
+                          bool bold = false, FontFace face = FontFace::Regular);
   void draw_text_right(const std::string& text, int right_x, int y, const Color& color, int size,
-                       bool bold = false);
-  int text_width(const std::string& text, int size, bool bold = false);
-  int font_height(int size, bool bold = false);
-  std::vector<std::string> wrap_text(const std::string& text, int size, int max_width, bool bold = false);
+                       bool bold = false, FontFace face = FontFace::Regular);
+  int text_width(const std::string& text, int size, bool bold = false, FontFace face = FontFace::Regular);
+  int font_height(int size, bool bold = false, FontFace face = FontFace::Regular);
+  std::vector<std::string> wrap_text(const std::string& text, int size, int max_width, bool bold = false,
+                                     FontFace face = FontFace::Regular);
   // Devuelve la altura consumida. max_lines = 0 significa sin limite.
   int draw_text_wrapped(const std::string& text, int x, int y, const Color& color, int size, int max_width,
-                        int max_lines = 0, bool bold = false);
+                        int max_lines = 0, bool bold = false, FontFace face = FontFace::Regular);
 
   Texture* texture(const std::string& path);
   void draw_texture(Texture* texture, int x, int y, int w, int h, uint8_t alpha = 255);
+  void draw_texture_fit(Texture* texture, int x, int y, int w, int h, uint8_t alpha = 255);
+  void draw_texture_cover(Texture* texture, int x, int y, int w, int h, uint8_t alpha = 255);
   void draw_nro_icon(Texture* texture, int x, int y, int size, uint8_t alpha = 255);
 
   void push_clip(int x, int y, int w, int h);
@@ -82,12 +90,13 @@ class Renderer {
     std::string text;
     int size = 0;
     bool bold = false;
+    uint8_t face = 0;
     uint32_t color = 0;
     bool operator<(const TextKey& other) const;
   };
 
-  TTF_Font* font(int size, bool bold);
-  SDL_Texture* cached_text(const std::string& text, int size, bool bold, const Color& color, int* out_w,
+  TTF_Font* font(int size, bool bold, FontFace face = FontFace::Regular);
+  SDL_Texture* cached_text(const std::string& text, int size, bool bold, FontFace face, const Color& color, int* out_w,
                            int* out_h);
   void flush_text_cache();
 
@@ -97,8 +106,12 @@ class Renderer {
   int height_ = 720;
   TTF_Font* font_regular_ = nullptr;
   TTF_Font* font_bold_ = nullptr;
+  TTF_Font* font_brand_ = nullptr;
+  TTF_Font* font_condensed_ = nullptr;
   int font_regular_size_ = 0;
   int font_bold_size_ = 0;
+  int font_brand_size_ = 0;
+  int font_condensed_size_ = 0;
   std::map<TextKey, std::unique_ptr<Texture>> text_cache_;
   std::map<std::string, std::unique_ptr<Texture>> texture_cache_;
   std::vector<SDL_Rect> clip_stack_;

@@ -115,14 +115,14 @@ void Renderer::sync_output_size() {
 void Renderer::shutdown() {
   flush_text_cache();
   texture_cache_.clear();
-  if (font_regular_) {
-    TTF_CloseFont(font_regular_);
-    font_regular_ = nullptr;
-  }
-  if (font_bold_) {
-    TTF_CloseFont(font_bold_);
-    font_bold_ = nullptr;
-  }
+  if (font_regular_) TTF_CloseFont(font_regular_);
+  if (font_bold_) TTF_CloseFont(font_bold_);
+  if (font_brand_) TTF_CloseFont(font_brand_);
+  if (font_condensed_) TTF_CloseFont(font_condensed_);
+  font_regular_ = nullptr;
+  font_bold_ = nullptr;
+  font_brand_ = nullptr;
+  font_condensed_ = nullptr;
   if (renderer_) {
     SDL_DestroyRenderer(renderer_);
     renderer_ = nullptr;
@@ -136,28 +136,51 @@ void Renderer::shutdown() {
   SDL_Quit();
 }
 
-TTF_Font* Renderer::font(int size, bool bold) {
+TTF_Font* Renderer::font(int size, bool bold, FontFace face) {
   size = std::max(size, 8);
-  TTF_Font*& slot = bold ? font_bold_ : font_regular_;
-  int& slot_size = bold ? font_bold_size_ : font_regular_size_;
+  TTF_Font** slot_ptr = nullptr;
+  int* slot_size_ptr = nullptr;
+  const char* candidates[4] = {nullptr};
+
+  if (face == FontFace::Brand) {
+    slot_ptr = &font_brand_;
+    slot_size_ptr = &font_brand_size_;
+    candidates[0] = "romfs:/fonts/CalSans-Regular.ttf";
+    candidates[1] = "sdmc:/switch/Delanx/fonts/CalSans-Regular.ttf";
+    candidates[2] = "romfs:/fonts/Inter.ttf";
+  } else if (face == FontFace::Condensed) {
+    slot_ptr = &font_condensed_;
+    slot_size_ptr = &font_condensed_size_;
+    candidates[0] = "romfs:/fonts/BarlowCondensed-SemiBold.ttf";
+    candidates[1] = "sdmc:/switch/Delanx/fonts/BarlowCondensed-SemiBold.ttf";
+    candidates[2] = "romfs:/fonts/Inter.ttf";
+  } else {
+    slot_ptr = bold ? &font_bold_ : &font_regular_;
+    slot_size_ptr = bold ? &font_bold_size_ : &font_regular_size_;
+    if (bold) {
+      candidates[0] = "romfs:/fonts/Inter-SemiBold.ttf";
+      candidates[1] = "sdmc:/switch/Delanx/fonts/Inter-SemiBold.ttf";
+      candidates[2] = "romfs:/fonts/Inter.ttf";
+    } else {
+      candidates[0] = "romfs:/fonts/Inter.ttf";
+      candidates[1] = "sdmc:/switch/Delanx/fonts/Inter.ttf";
+    }
+  }
+
+  TTF_Font*& slot = *slot_ptr;
+  int& slot_size = *slot_size_ptr;
   if (slot && slot_size == size) return slot;
   if (slot) {
     TTF_CloseFont(slot);
     slot = nullptr;
   }
-  // Se prueban varias rutas: si falta la fuente del romfs se cae a una copia en la SD.
-  const char* candidates_regular[] = {"romfs:/fonts/Inter.ttf", "sdmc:/switch/Delanx/fonts/Inter.ttf", nullptr};
-  const char* candidates_bold[] = {"romfs:/fonts/Inter-SemiBold.ttf", "sdmc:/switch/Delanx/fonts/Inter-SemiBold.ttf",
-                                   nullptr};
-  const char** candidates = bold ? candidates_bold : candidates_regular;
   for (int i = 0; candidates[i]; ++i) {
     slot = TTF_OpenFont(candidates[i], size);
     if (slot) break;
   }
   if (!slot && bold) {
-    // Negrita sintetica: se reabre la fuente regular y se le pide el estilo en negrita.
-    for (int i = 0; candidates_regular[i]; ++i) {
-      slot = TTF_OpenFont(candidates_regular[i], size);
+    for (int i = 0; candidates[i]; ++i) {
+      slot = TTF_OpenFont(candidates[i], size);
       if (slot) {
         TTF_SetFontStyle(slot, TTF_STYLE_BOLD);
         break;
@@ -173,14 +196,15 @@ bool Renderer::TextKey::operator<(const TextKey& other) const {
   if (text != other.text) return text < other.text;
   if (size != other.size) return size < other.size;
   if (bold != other.bold) return bold < other.bold;
+  if (face != other.face) return face < other.face;
   return color < other.color;
 }
 
 void Renderer::flush_text_cache() { text_cache_.clear(); }
 
-SDL_Texture* Renderer::cached_text(const std::string& text, int size, bool bold, const Color& color, int* out_w,
-                                   int* out_h) {
-  TextKey key{text, size, bold, pack(color)};
+SDL_Texture* Renderer::cached_text(const std::string& text, int size, bool bold, FontFace face, const Color& color,
+                                   int* out_w, int* out_h) {
+  TextKey key{text, size, bold, static_cast<uint8_t>(face), pack(color)};
   auto it = text_cache_.find(key);
   if (it != text_cache_.end()) {
     *out_w = it->second->width();
@@ -189,7 +213,7 @@ SDL_Texture* Renderer::cached_text(const std::string& text, int size, bool bold,
   }
   if (text_cache_.size() > 512) flush_text_cache();
 
-  TTF_Font* handle = font(size, bold);
+  TTF_Font* handle = font(size, bold, face);
   if (!handle) {
     *out_w = 0;
     *out_h = 0;
@@ -302,6 +326,36 @@ void Renderer::fill_circle(int cx, int cy, int radius, const Color& color) {
   }
 }
 
+void Renderer::stroke_circle(int cx, int cy, int radius, const Color& color, int thickness) {
+  if (radius <= 0) return;
+  SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+  for (int t = 0; t < thickness; ++t) {
+    const int r = radius - t;
+    if (r <= 0) break;
+    int x = r;
+    int y = 0;
+    int err = 0;
+    while (x >= y) {
+      SDL_RenderDrawPoint(renderer_, cx + x, cy + y);
+      SDL_RenderDrawPoint(renderer_, cx + y, cy + x);
+      SDL_RenderDrawPoint(renderer_, cx - y, cy + x);
+      SDL_RenderDrawPoint(renderer_, cx - x, cy + y);
+      SDL_RenderDrawPoint(renderer_, cx - x, cy - y);
+      SDL_RenderDrawPoint(renderer_, cx - y, cy - x);
+      SDL_RenderDrawPoint(renderer_, cx + y, cy - x);
+      SDL_RenderDrawPoint(renderer_, cx + x, cy - y);
+      if (err <= 0) {
+        y += 1;
+        err += 2 * y + 1;
+      }
+      if (err > 0) {
+        x -= 1;
+        err -= 2 * x + 1;
+      }
+    }
+  }
+}
+
 void Renderer::vertical_gradient(int x, int y, int w, int h, const Color& top, const Color& bottom, int steps) {
   if (w <= 0 || h <= 0) return;
   steps = std::max(steps, 1);
@@ -312,43 +366,55 @@ void Renderer::vertical_gradient(int x, int y, int w, int h, const Color& top, c
   }
 }
 
-void Renderer::draw_text(const std::string& text, int x, int y, const Color& color, int size, bool bold) {
+void Renderer::horizontal_gradient(int x, int y, int w, int h, const Color& left, const Color& right, int steps) {
+  if (w <= 0 || h <= 0) return;
+  steps = std::max(steps, 1);
+  const int band = std::max(w / steps, 1);
+  for (int offset = 0; offset < w; offset += band) {
+    const float t = static_cast<float>(offset) / static_cast<float>(w);
+    fill_rect(x + offset, y, std::min(band, w - offset), h, left.mix(right, t));
+  }
+}
+
+void Renderer::draw_text(const std::string& text, int x, int y, const Color& color, int size, bool bold,
+                         FontFace face) {
   if (text.empty()) return;
   int w = 0;
   int h = 0;
-  SDL_Texture* texture = cached_text(text, size, bold, color, &w, &h);
+  SDL_Texture* texture = cached_text(text, size, bold, face, color, &w, &h);
   if (!texture) return;
   SDL_Rect dst{x, y, w, h};
   SDL_RenderCopy(renderer_, texture, nullptr, &dst);
 }
 
 void Renderer::draw_text_centered(const std::string& text, int center_x, int y, const Color& color, int size,
-                                  bool bold) {
-  const int w = text_width(text, size, bold);
-  draw_text(text, center_x - w / 2, y, color, size, bold);
+                                  bool bold, FontFace face) {
+  const int w = text_width(text, size, bold, face);
+  draw_text(text, center_x - w / 2, y, color, size, bold, face);
 }
 
 void Renderer::draw_text_right(const std::string& text, int right_x, int y, const Color& color, int size,
-                               bool bold) {
-  const int w = text_width(text, size, bold);
-  draw_text(text, right_x - w, y, color, size, bold);
+                               bool bold, FontFace face) {
+  const int w = text_width(text, size, bold, face);
+  draw_text(text, right_x - w, y, color, size, bold, face);
 }
 
-int Renderer::text_width(const std::string& text, int size, bool bold) {
+int Renderer::text_width(const std::string& text, int size, bool bold, FontFace face) {
   if (text.empty()) return 0;
   int w = 0;
   int h = 0;
-  cached_text(text, size, bold, Color::rgb(255, 255, 255), &w, &h);
+  cached_text(text, size, bold, face, Color::rgb(255, 255, 255), &w, &h);
   return w;
 }
 
-int Renderer::font_height(int size, bool bold) {
-  TTF_Font* handle = font(size, bold);
+int Renderer::font_height(int size, bool bold, FontFace face) {
+  TTF_Font* handle = font(size, bold, face);
   if (!handle) return size;
   return TTF_FontHeight(handle);
 }
 
-std::vector<std::string> Renderer::wrap_text(const std::string& text, int size, int max_width, bool bold) {
+std::vector<std::string> Renderer::wrap_text(const std::string& text, int size, int max_width, bool bold,
+                                             FontFace face) {
   std::vector<std::string> lines;
   if (max_width <= 0) return lines;
   std::string current;
@@ -360,7 +426,7 @@ std::vector<std::string> Renderer::wrap_text(const std::string& text, int size, 
     const bool newline = (space != std::string::npos && text[space] == '\n');
     if (!word.empty()) {
       const std::string candidate = current.empty() ? word : current + " " + word;
-      if (text_width(candidate, size, bold) > max_width && !current.empty()) {
+      if (text_width(candidate, size, bold, face) > max_width && !current.empty()) {
         lines.push_back(current);
         current = word;
       } else {
@@ -379,13 +445,13 @@ std::vector<std::string> Renderer::wrap_text(const std::string& text, int size, 
 }
 
 int Renderer::draw_text_wrapped(const std::string& text, int x, int y, const Color& color, int size,
-                               int max_width, int max_lines, bool bold) {
-  const std::vector<std::string> lines = wrap_text(text, size, max_width, bold);
-  const int line_height = font_height(size, bold) + 2;
+                                int max_width, int max_lines, bool bold, FontFace face) {
+  const std::vector<std::string> lines = wrap_text(text, size, max_width, bold, face);
+  const int line_height = font_height(size, bold, face) + 2;
   int drawn = 0;
   for (const auto& line : lines) {
     if (max_lines > 0 && drawn >= max_lines) break;
-    draw_text(line, x, y + drawn * line_height, color, size, bold);
+    draw_text(line, x, y + drawn * line_height, color, size, bold, face);
     ++drawn;
   }
   return drawn * line_height;
@@ -406,6 +472,48 @@ void Renderer::draw_texture(Texture* texture, int x, int y, int w, int h, uint8_
   SDL_SetTextureAlphaMod(texture->raw(), alpha);
   SDL_Rect dst{x, y, w, h};
   SDL_RenderCopy(renderer_, texture->raw(), nullptr, &dst);
+  SDL_SetTextureAlphaMod(texture->raw(), 255);
+}
+
+void Renderer::draw_texture_fit(Texture* texture, int x, int y, int w, int h, uint8_t alpha) {
+  if (!texture || !texture->valid() || w <= 0 || h <= 0) return;
+  const float img_w = static_cast<float>(texture->width());
+  const float img_h = static_cast<float>(std::max(texture->height(), 1));
+  const float ratio = img_w / img_h;
+  const float box_ratio = static_cast<float>(w) / static_cast<float>(h);
+  int draw_w = w;
+  int draw_h = h;
+  if (ratio > box_ratio) {
+    draw_w = w;
+    draw_h = std::max(1, static_cast<int>(static_cast<float>(w) / ratio));
+  } else {
+    draw_h = h;
+    draw_w = std::max(1, static_cast<int>(static_cast<float>(h) * ratio));
+  }
+  const int dst_x = x + (w - draw_w) / 2;
+  const int dst_y = y + (h - draw_h) / 2;
+  draw_texture(texture, dst_x, dst_y, draw_w, draw_h, alpha);
+}
+
+void Renderer::draw_texture_cover(Texture* texture, int x, int y, int w, int h, uint8_t alpha) {
+  if (!texture || !texture->valid() || w <= 0 || h <= 0) return;
+  const float img_w = static_cast<float>(texture->width());
+  const float img_h = static_cast<float>(std::max(texture->height(), 1));
+  const float ratio = img_w / img_h;
+  const float box_ratio = static_cast<float>(w) / static_cast<float>(h);
+  SDL_Rect src{0, 0, texture->width(), texture->height()};
+  if (ratio > box_ratio) {
+    const int crop_w = std::max(1, static_cast<int>(img_h * box_ratio));
+    src.x = (texture->width() - crop_w) / 2;
+    src.w = crop_w;
+  } else {
+    const int crop_h = std::max(1, static_cast<int>(img_w / box_ratio));
+    src.y = (texture->height() - crop_h) / 2;
+    src.h = crop_h;
+  }
+  SDL_SetTextureAlphaMod(texture->raw(), alpha);
+  SDL_Rect dst{x, y, w, h};
+  SDL_RenderCopy(renderer_, texture->raw(), &src, &dst);
   SDL_SetTextureAlphaMod(texture->raw(), 255);
 }
 

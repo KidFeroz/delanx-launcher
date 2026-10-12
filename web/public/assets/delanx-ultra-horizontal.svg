@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 340" width="100%" height="100%">
+  <defs>
+    <!-- Degradado Espectro Continuo estilo Ultra/Retro-Moderno -->
+    <linearGradient id="ultraSpectrum" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00E676" />    <!-- Verde Esmeralda -->
+      <stop offset="18%" stop-color="#00E5FF" />   <!-- Cyan Neón -->
+      <stop offset="36%" stop-color="#2979FF" />   <!-- Azul Eléctrico -->
+      <stop offset="54%" stop-color="#651FFF" />   <!-- Índigo / Violeta Profundo -->
+      <stop offset="72%" stop-color="#FF1744" />   <!-- Rojo / Coral Joy-Con -->
+      <stop offset="88%" stop-color="#FF6D00" />   <!-- Naranja Vibrante -->
+      <stop offset="100%" stop-color="#FFAB00" />  <!-- Amarillo / Ámbar -->
+    </linearGradient>
+
+    <!-- Resplandor sutil para fondos oscuros -->
+    <filter id="softGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.8" />
+    </filter>
+  </defs>
+
+  <!-- Fondo Dark Obsidian -->
+  <rect width="1100" height="340" rx="28" fill="#0B0E14" />
+
+  <!-- PRE-TÍTULO "powered by" / "homebrew launcher" -->
+  <g transform="translate(550, 68)" text-anchor="middle">
+    <text font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" 
+          font-size="28" 
+          font-style="italic" 
+          font-weight="800" 
+          letter-spacing="2" 
+          fill="#FFFFFF">
+      powered by
+    </text>
+  </g>
+
+  <!-- CONTENEDOR PRINCIPAL: ISOTIPO + WORDMARK DINÁMICO -->
+  <g transform="translate(110, 85)" filter="url(#softGlow)">
+    
+    <!-- ISOTIPO VECTORIAL EMBLEMÁTICO (Inclinado -10° en armonía con el texto) -->
+    <g transform="translate(10, 48) skewX(-10) scale(0.36)">
+      <!-- Bloque Izquierdo (D) -->
+      <path d="M 124 136 C 124 118, 138 104, 156 104 L 216 104 C 264 104, 296 136, 296 184 L 296 200 L 236 256 L 188 256 L 188 168 L 164 168 L 164 344 L 188 344 L 236 344 L 296 408 L 156 408 C 138 408, 124 394, 124 376 Z" 
+            fill="url(#ultraSpectrum)" />
+      <circle cx="156" cy="144" r="12" fill="#0B0E14" />
+      
+      <!-- Bloque Derecho (X) -->
+      <path d="M 356 104 C 374 104, 388 118, 388 136 L 388 376 C 388 394, 374 408, 356 408 L 296 408 L 236 344 L 284 344 L 348 276 L 348 236 L 284 168 L 236 168 L 296 104 Z" 
+            fill="url(#ultraSpectrum)" />
+      
+      <!-- Detalle Joy-Con derecho -->
+      <rect x="342" y="138" width="24" height="6" rx="3" fill="#0B0E14" />
+      <rect x="351" y="129" width="6" height="24" rx="3" fill="#0B0E14" />
+
+      <!-- Núcleo Chevron Play Arrow (Vacío / Negativo) -->
+      <path d="M 236 196 L 296 256 L 236 316 L 212 292 L 248 256 L 212 220 Z" fill="#FFFFFF" />
+    </g>
+
+    <!-- WORDMARK: "delanx" EN TIPOGRAFÍA ULTRA-HEAVY ITÁLICA CON DEGRADADO HORIZONTAL COMPLETO -->
+    <g transform="translate(195, 125)">
+      <text font-family="'Plus Jakarta Sans', 'Arial Black', Impact, sans-serif" 
+            font-size="124" 
+            font-weight="900" 
+            font-style="italic" 
+            letter-spacing="-3" 
+            fill="url(#ultraSpectrum)">
+        delanx
+      </text>
+    </g>
+
+    <!-- TAGLINE INFERIOR TÉCNICA -->
+    <g transform="translate(200, 168)">
+      <text font-family="'JetBrains Mono', monospace" 
+            font-size="13" 
+            font-weight="700" 
+            letter-spacing="5" 
+            fill="#64748B" 
+            text-transform="uppercase">
+        PORT &amp; DECOMPILATION MANAGER · SWITCH
+      </text>
+    </g>
+
+  </g>
+</svg>

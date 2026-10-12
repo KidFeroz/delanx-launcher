@@ -37,4 +37,9 @@ static inline int statvfs(const char* path, struct statvfs* out) {
   return -1;
 }
 
+namespace delanx::platform {
+inline void log(const char* /*fmt*/, ...) {}
+}
+
 #endif  // _WIN32 && !__SWITCH__
+

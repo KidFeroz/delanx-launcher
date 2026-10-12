@@ -34,11 +34,11 @@ class Input {
   int nav_x();  // -1, 0, 1
   int nav_y();
 
-  // Segundo stick / tactil: mueve un cursor en pantalla.
-  bool pointer_visible() const { return pointer_visible_; }
+  // Segundo stick / tactil: mueve un cursor en pantalla (con auto-ocultacion por inactividad).
+  bool pointer_visible() const;
   int pointer_x() const { return pointer_x_; }
   int pointer_y() const { return pointer_y_; }
-  void set_pointer_visible(bool visible) { pointer_visible_ = visible; }
+  void set_pointer_visible(bool visible);
   void set_screen_size(int width, int height);
   // El puerto SDL2 de Switch cambia el tamano de la ventana al dockear/desdockear: la
   // aplicacion debe reaplicar escala y columnas cuando esto ocurra.
@@ -78,6 +78,7 @@ class Input {
   int pointer_y_ = 360;
   float pointer_vx_ = 0.0f;
   float pointer_vy_ = 0.0f;
+  uint32_t pointer_last_moved_ms_ = 0;
   uint32_t last_update_ms_ = 0;
 };
 

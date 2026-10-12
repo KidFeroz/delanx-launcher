@@ -28,7 +28,13 @@ desktop.ini
 __pycache__/
 *.pyc
 
-# archivos temporales de analisis y verificacion
-_tmp_*
-_verify_*
+# web (Tamagui & Vite)
+web/node_modules/
+web/dist/
+.tamagui/
+
+# referencias y notas temporales
+docs/scratchpad/
+docs/Iso.md
+
 

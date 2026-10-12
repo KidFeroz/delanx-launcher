@@ -4,7 +4,7 @@
 // --with-default-ssl-backend=libnx, es decir el handshake lo hace el servicio `ssl` de
 // Horizon con el CertStore del sistema. Por eso aqui NO se configura CA bundle ni se
 // inicializa `ssl` a mano: basta socketInitializeDefault() (libnx) para el driver bsd.
-// Ver INFORME-QuiverNX-Homebrew-Launcher.md §3.1.
+// Ver docs/RESEARCH-switch-homebrew.md §3.1.
 
 #include "services/http.hpp"
 

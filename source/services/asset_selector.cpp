@@ -45,7 +45,7 @@ std::string describe_missing_asset(const Release& release, const std::string& fi
   if (!filter.empty()) {
     return str::format(
         "La release %s no publica ningun asset que cumpla el filtro \"%s\": los ports de "
-        "Harbour Masters dejaron de incluir builds de Switch a partir de cierta version. "
+        "MrShip dejaron de incluir builds de Switch a partir de cierta version. "
         "Puedes probar otra version anterior o instalar una build nocturna a mano.",
         version.c_str(), filter.c_str());
   }
@@ -56,7 +56,7 @@ std::string describe_missing_asset(const Release& release, const std::string& fi
         version.c_str());
   }
   return str::format(
-      "La release %s no incluye ningun fichero para Switch: los ports de Harbour Masters "
+      "La release %s no incluye ningun fichero para Switch: los ports de MrShip "
       "dejaron de incluir builds de Switch a partir de cierta version. Puedes probar una "
       "version anterior o instalar una build nocturna a mano.",
       version.c_str());

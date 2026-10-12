@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Delanx — verifica TODO el proyecto con una sola orden.
 #
-#   D:\devkitPro\msys2\msys64\usr\bin\bash.exe -lc "bash /e/Vibecoding/QuiverNX/tools/verify_all.sh"
+#   D:\devkitPro\msys2\msys64\usr\bin\bash.exe -lc "bash ./tools/verify_all.sh"
 #
 # Hace, en orden:
 #   1. build limpio del NRO (y cuenta los warnings de nuestro codigo),
@@ -61,7 +61,7 @@ make -j"$JOBS" >"$LOG_DIR/delanx-build.log" 2>&1
 build_status=$?
 # grep -c devuelve 1 cuando la cuenta es 0, asi que no se encadena con ||.
 errors=$(grep -c 'error:' "$LOG_DIR/delanx-build.log" 2>/dev/null)
-warnings=$(grep 'warning:' "$LOG_DIR/delanx-build.log" 2>/dev/null | grep -c 'QuiverNX/source')
+warnings=$(grep 'warning:' "$LOG_DIR/delanx-build.log" 2>/dev/null | grep -E -c 'source/|tests/')
 errors=${errors:-0}
 warnings=${warnings:-0}
 size=$(stat -c '%s' Delanx.nro 2>/dev/null || echo 0)

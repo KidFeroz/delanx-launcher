@@ -29,7 +29,11 @@ Además crea y borra ficheros de prueba dentro de `sdmc:/switch/Delanx/Temp/self
 | Instalación | `find_launchable_nro` (raíz y un nivel), `write_install_metadata` (`version.txt`, `installed-build.txt`) |
 | Ficheros del usuario | que `.otr`/ROMs sobrevivan a una reinstalación |
 | Plataforma | `appletGetAppletType`, batería, firmware, red, `boot_origin`, `heap_usage_human` |
+| Mandos y Táctil | `pad_poll` (HID libnx), `touch_poll` (pantalla táctil) y **Test interactivo en vivo** (botones A/B/X/Y, cruceta, gatillos, clicks L/R, sticks analógicos con detección de signo/dirección, toques multitáctiles con coordenadas X/Y y contador de pulsaciones) |
 | Lanzador | `can_chain_nro()` (dice si el loader expone los búferes de `envSetNextLoad`) |
+
+Al terminar los tests automáticos, pulsa **A** para entrar al **test interactivo en vivo** de mandos y pantalla táctil (o **+** para salir).
+Para salir del test interactivo mantén presionado **+** durante 1.5 segundos o pulsa **+** y **-** a la vez.
 
 Cualquier `[FAIL]` indica un problema real en la consola; el informe incluye el detalle de cada
 comprobación para poder corregirlo.
