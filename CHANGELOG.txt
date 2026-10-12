@@ -1,0 +1,162 @@
+================================================================================
+                      DELANX — REGISTRO DE CAMBIOS / CHANGELOG
+================================================================================
+
+--------------------------------------------------------------------------------
+[ESPAÑOL]
+--------------------------------------------------------------------------------
+
+1. SEPARACIÓN ESTRICTA ENTRE HOMEBREW Y DECOMPS
+- Aislamiento en tarjeta SD: Se introdujo una clasificación estricta (is_decomp_app 
+  y scan_switch_homebrew). Cualquier juego, port o descompilación (Harbour Masters, 
+  Starship, SOH, 2Ship, SM64, Zelda3, SMW, Doom, Quake, etc.) se gestiona 
+  exclusivamente en las secciones de Decomps.
+- Pestaña Homebrew limpia: La sección Homebrew lista de forma aislada las herramientas 
+  y utilidades generales del sistema (Homebrew App Store, DBI, NX-Shell, JKSV, FTPD, 
+  Daybreak, etc.). Ningún juego o descompilado aparece mezclado en esta vista.
+- Biblioteca condicionada a instalación real: La pestaña Biblioteca muestra 
+  única y exclusivamente los decomps que están efectivamente descargados e 
+  instalados en la SD. Las entradas no instaladas permanecen en el Catálogo o en 
+  MrShip sin saturar la biblioteca.
+
+2. DETECCIÓN AUTÓNOMA Y ACTUALIZACIÓN DE HOMEBREW (INSPECTOR NRO)
+- Inspector nativo NRO0 y ASET: Se implementó un motor de lectura directa de 
+  cabeceras NRO en C++ (nro_inspector) para extraer al vuelo el título NACP, autor, 
+  versión y el icono incrustado (JPEG o PNG) de cada archivo .nro encontrado en /switch.
+- Actualizaciones comunitarias vía GitHub: Reconocimiento autónomo de repositorios 
+  oficiales de la comunidad para verificar releases y permitir actualizar las 
+  aplicaciones homebrew directamente en la tarjeta SD.
+- Ficha de detalles de Homebrew: Al presionar (A) o (+) en una app homebrew se abre 
+  una ventana modal con información del paquete (título, autor, versión, ruta del .nro 
+  y repositorio), con opciones para lanzar (A) o buscar actualizaciones (X).
+
+3. DESINSTALACIÓN Y ELIMINACIÓN CON DIÁLOGO DE CONFIRMACIÓN
+- Desinstalación segura de Decomps: Al pulsar (Y) en la vista de detalle de un decomp 
+  instalado, se muestra un diálogo de confirmación indicando el directorio afectado. 
+  La desinstalación borra los binarios y ficheros del paquete, preservando intactos 
+  los archivos aportados por el usuario (partidas guardadas, ROMs base y archivos .otr/.o2r). 
+  La app se retira de la biblioteca y vuelve a figurar como disponible en el Catálogo.
+- Eliminación de Homebrew: Al pulsar (Y) en la ficha de detalle de un homebrew, se solicita 
+  confirmación con la ruta completa del archivo en la SD. Si la app posee su propia 
+  subcarpeta en /switch/<app>/ se remueve de forma íntegra; si es un archivo .nro suelto, 
+  se elimina de forma individual sin alterar el resto de la tarjeta.
+
+4. IDIOMA Y LOCALIZACIÓN EN AJUSTES (i18n)
+- Selector de idioma en Ajustes: Nueva opción "Idioma / Language" en la pantalla de 
+  Ajustes para alternar entre Español e Inglés en tiempo real.
+- Persistencia en configuración: La preferencia elegida se guarda en settings.json y 
+  se restaura automáticamente al iniciar la aplicación.
+- Diccionario centralizado: Todas las pestañas, modales, confirmaciones, botones, 
+  filtros y notificaciones (toasts) están completamente localizados en ambos idiomas.
+
+5. BOTONES E INDICADORES DE ACCIÓN DE ALTO CONTRASTE
+- Pastillas de acción prominentes: Rediseño visual del pie de página en los modales 
+  de detalle con cápsulas destacadas y distintivos circulares en color:
+  * [A] Verde: Lanzar
+  * [A] Cian: Instalar
+  * [X] Ámbar: Actualizar
+  * [Y] Rojo: Desinstalar / Eliminar
+  * [B] Neutro: Cerrar
+- Soporte táctil directo (1-Tap): Cada cápsula de acción está vinculada al motor de 
+  eventos táctiles, permitiendo activar cualquier acción con un solo toque en pantalla.
+
+6. ÍCONO DE RESPALDO OFICIAL (FALLBACK ISOTIPO)
+- Isotipo de la app como fallback: El isotipo oficial del proyecto (delanx-icon.png) 
+  se estableció como ícono predeterminado para carátulas o miniaturas que aún no 
+  hayan sido descargadas, que no posean imagen remota o que no estén disponibles.
+
+7. COMPATIBILIDAD CON PORTS DE HARBOUR MASTERS Y AUTO-ADOPCIÓN
+- 2 Ship 2 Harkinian indexado: Incorporado el port de Nintendo Switch por 
+  YoshiCrystal9 (Majora's Mask) dentro del catálogo verificado de Harbour Masters.
+- Reconocimiento de puertos existentes: Al arrancar, Delanx escanea la tarjeta SD y 
+  auto-adopta carpetas ya existentes de Ship of Harkinian, Starship y 2 Ship 2 Harkinian, 
+  vinculándolas inmediatamente a la biblioteca para su ejecución directa.
+
+8. MEJORAS VISUALES Y CORRECCIÓN DE DESBORDAMIENTOS
+- Corrección de Text Overflow: Implementado recorte de renderizado (push_clip / pop_clip) 
+  y salto de línea automático (wrap_text) en modales para evitar que títulos o rutas 
+  largas se encimen sobre el pie de página o los botones.
+- Barra de progreso con efecto Shimmer: Animación de brillo y barrido continuo durante 
+  la descarga e instalación de paquetes y comprobaciones de red.
+- Documentación de código abierto: Inclusión formal de créditos y agradecimientos 
+  en README a proyectos y librerías base de la comunidad (devkitPro, libnx, 
+  hb-appstore, Harbour Masters, SDL2, libcurl, mbedtls, jansson, libarchive).
+
+
+================================================================================
+[ENGLISH]
+================================================================================
+
+1. STRICT SEPARATION BETWEEN HOMEBREW AND DECOMPS
+- SD card isolation: Implemented a robust classification engine (is_decomp_app 
+  and scan_switch_homebrew). Any game decompilation or port (Harbour Masters, 
+  Starship, SOH, 2Ship, SM64, Zelda3, SMW, Doom, Quake, etc.) is strictly isolated 
+  into the Decomp categories.
+- Clean Homebrew tab: The Homebrew tab exclusively displays general system tools and 
+  utilities (Homebrew App Store, DBI, NX-Shell, JKSV, FTPD, Daybreak, etc.). No games 
+  or ports are mixed into this section.
+- Library requires installed status: The Library tab now strictly shows titles that 
+  are actually downloaded and installed on the SD card. Uninstalled titles remain 
+  in the Catalog or MrShip sections without cluttering the library.
+
+2. AUTONOMOUS HOMEBREW DETECTION & UPDATE ENGINE (NRO INSPECTOR)
+- Native NRO0 and ASET inspector: Direct C++ binary parser (nro_inspector) that reads 
+  NRO headers on the fly, extracting NACP title, author, version, and the embedded 
+  icon (JPEG/PNG) from any .nro file under /switch.
+- Community GitHub release checking: Autonomous matching against official community 
+  repositories to query releases and deliver updates directly to the SD card.
+- Homebrew detail sheet: Pressing (A) or (+) on a homebrew entry opens a modal with 
+  full package details (title, author, version, .nro path, repository) with quick 
+  actions to Launch (A) or Check for Updates (X).
+
+3. UNINSTALLATION & DELETION WITH CONFIRMATION DIALOGS
+- Safe Decomp uninstallation: Pressing (Y) in the decomp detail view triggers a 
+  confirmation dialog showing the installation path. The uninstaller removes 
+  binaries and package files while safely preserving all user-supplied files (save games, 
+  base ROMs, and .otr/.o2r archives). The title returns to the Catalog as available.
+- Homebrew deletion: Pressing (Y) in the homebrew detail view asks for confirmation 
+  displaying the target path on the SD card. If the app resides in its own dedicated 
+  folder (/switch/<app>/), it is cleanly deleted; single .nro files are removed 
+  individually without affecting the rest of the directory.
+
+4. LANGUAGE SELECTOR & LOCALIZATION IN SETTINGS (i18n)
+- Language toggle in Settings: Added a new "Idioma / Language" option in the Settings 
+  screen to switch dynamically between Spanish and English.
+- Configuration persistence: The selected language preference is stored in settings.json 
+  and automatically restored on startup.
+- Centralized dictionary: All UI tabs, modals, confirmation dialogues, action buttons, 
+  filters, and toast messages are fully localized in both languages.
+
+5. HIGH-CONTRAST ACTION PILLS & ENHANCED BUTTONS
+- Prominent action indicators: Redesigned the footer in detail views with high-contrast 
+  capsules and color-coded glyph badges:
+  * [A] Green: Launch
+  * [A] Cyan: Install
+  * [X] Amber: Update
+  * [Y] Red: Uninstall / Delete
+  * [B] Neutral: Close
+- Direct 1-tap touch support: Every action pill is registered in the touch hit-map, 
+  allowing full touch interaction with a single tap on the screen.
+
+6. OFFICIAL ISOTYPE FALLBACK ICON
+- App isotype fallback: The official project isotype (delanx-icon.png) is set as 
+  the default cover/icon fallback whenever remote artwork cannot be fetched, is missing, 
+  or is not yet ready.
+
+7. HARBOUR MASTERS PORT COMPATIBILITY & AUTO-ADOPTION
+- 2 Ship 2 Harkinian indexed: The Nintendo Switch port by YoshiCrystal9 (Majora's Mask) 
+  has been added to the verified Harbour Masters catalog.
+- Auto-adoption of existing ports: On launch, Delanx scans the SD card and automatically 
+  adopts existing folders for Ship of Harkinian, Starship, and 2 Ship 2 Harkinian, 
+  linking them immediately into the Library for instant launching.
+
+8. VISUAL POLISH & TEXT OVERFLOW SAFEGUARDS
+- Text overflow protection: Added render clipping (push_clip / pop_clip) and automatic 
+  line wrapping (wrap_text) in modals to ensure long titles or file paths never overflow 
+  into the footer or collide with action buttons.
+- Animated shimmer progress bars: Added a continuous light sweep / shimmer animation 
+  during downloads, extractions, and background operations.
+- Open source credits & documentation: Added comprehensive acknowledgments in README.md 
+  crediting essential community tools and upstream libraries (devkitPro, libnx, 
+  hb-appstore, Harbour Masters, SDL2, libcurl, mbedtls, jansson, libarchive).
+================================================================================

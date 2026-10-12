@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdio>
 
+#include "core/i18n.hpp"
 #include "core/paths.hpp"
 #include "core/strings.hpp"
 #include "core/time.hpp"
@@ -983,6 +984,7 @@ Texture *App::icon_for(const AppEntry &app) {
   if (!app.catalog_entry_id.empty()) {
     romfs_candidates.push_back("romfs:/icons/" + app.catalog_entry_id + ".png");
   }
+  romfs_candidates.push_back("romfs:/icons/delanx-icon.png");
   romfs_candidates.push_back("romfs:/icons/default.png");
 
   for (const auto &romfs_path : romfs_candidates) {
@@ -1008,6 +1010,7 @@ std::string App::display_name(const AppEntry &app) const {
 void App::load_library_and_settings() {
   settings_ = Settings::load(paths::settings_file());
   settings_.ensure_initialized();
+  i18n::set_language_code(settings_.DelanxLanguage);
   auto library = Library::load(paths::library_file());
   if (library) {
     library_ = std::move(*library);

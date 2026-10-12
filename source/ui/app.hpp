@@ -140,6 +140,7 @@ class App {
   void launch_app(int library_index);
   void launch_nro(const std::string& nro_path);
   void uninstall_app(int library_index);
+  void uninstall_homebrew(const HomebrewAppInfo& hb);
   // Registra la entrada exacta de la tarjeta en la biblioteca; devuelve su indice o -1.
   int add_catalog_entry_to_library(const ListItem& item);
   // Abre la ficha de la tarjeta (instalada) o lanza la instalacion (no instalada).

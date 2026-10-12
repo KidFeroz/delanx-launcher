@@ -1,6 +1,7 @@
 // Delanx — pantallas de sistema: actualizaciones, ajustes, instalacion y lanzamiento.
 #include <algorithm>
 
+#include "core/i18n.hpp"
 #include "core/paths.hpp"
 #include "core/strings.hpp"
 #include "platform/switch_platform.hpp"
@@ -229,7 +230,7 @@ void App::check_updates() {
                             checked),
                 {DialogOption{"Abrir ajustes", [this]() {
                    tab_ = Tab::Settings;
-                   focus_ = 8;  // fila del token de GitHub
+                   focus_ = 9;  // fila del token de GitHub
                  }},
                  DialogOption{"Cerrar", nullptr}});
     return;
@@ -258,6 +259,8 @@ void App::draw_settings_screen() {
   rows.push_back({"Vista de rejilla", yes_no(settings_.UseGridView), "Rejilla de caratulas o lista compacta"});
   rows.push_back({"Columnas de la rejilla", str::format("%d", grid_columns_), "2 a 6 columnas"});
   rows.push_back({"Tema", settings_.is_dark() ? "Oscuro" : "Claro", "Oscuro o claro"});
+  rows.push_back({"Idioma / Language", (settings_.DelanxLanguage == "en") ? "English" : "Español",
+                  "Idioma de los textos e interfaz"});
   rows.push_back({"Token de GitHub", settings_.GitHubApiToken.empty() ? "sin configurar" : "configurado",
                   "Evita el limite de peticiones de la API de GitHub"});
   rows.push_back({"Token de GitLab", settings_.GitLabApiToken.empty() ? "sin configurar" : "configurado",
@@ -364,6 +367,19 @@ void App::activate_settings_item() {
       break;
     }
     case 8: {
+      if (settings_.DelanxLanguage == "en") {
+        settings_.DelanxLanguage = "es";
+        i18n::set_language_code("es");
+        toast("Idioma: Español");
+      } else {
+        settings_.DelanxLanguage = "en";
+        i18n::set_language_code("en");
+        toast("Language: English");
+      }
+      save_settings();
+      break;
+    }
+    case 9: {
       std::string token;
       if (platform::text_input("Token de GitHub (vacio para borrar)", settings_.GitHubApiToken, &token, 128, true)) {
         settings_.GitHubApiToken = str::trim(token);
@@ -371,7 +387,7 @@ void App::activate_settings_item() {
       }
       break;
     }
-    case 9: {
+    case 10: {
       std::string token;
       if (platform::text_input("Token de GitLab (vacio para borrar)", settings_.GitLabApiToken, &token, 128, true)) {
         settings_.GitLabApiToken = str::trim(token);
@@ -379,10 +395,10 @@ void App::activate_settings_item() {
       }
       break;
     }
-    case 10:
+    case 11:
       check_updates();
       return;
-    case 11:
+    case 12:
       open_dialog("Informacion de la consola",
                   str::format("Firmware: %s\nOrigen de arranque: %s\nModo applet: %s\nMemoria: %s\nDatos: %s\n"
                               "Catalogo local: %lu entradas\nCatalogo maestro: %lu entradas (sin verificar)\n"
@@ -397,7 +413,7 @@ void App::activate_settings_item() {
                               static_cast<unsigned long>(mrship_catalog_.entries.size()), DELANX_VERSION),
                   {DialogOption{"Cerrar", nullptr}});
       return;
-    case 12:
+    case 13:
       controller_test_open_ = true;
       return;
     default:
@@ -729,24 +745,49 @@ void App::launch_nro(const std::string& nro_path) {
 void App::uninstall_app(int library_index) {
   if (library_index < 0 || library_index >= static_cast<int>(library_.apps.size())) return;
   const AppEntry app = library_.apps[static_cast<size_t>(library_index)];
-  show_confirm("Desinstalar " + display_name(app),
-               "Se borrara " + app.install_dir() +
-                   ". Los ficheros que hayas aportado tu (ROMs, .otr/.o2r, partidas) no se tocan.",
-               "Desinstalar", [this, app]() {
-                 std::string error;
-                 if (!::delanx::uninstall_app(app, false, &error)) {
-                   toast(error.empty() ? "No se pudo desinstalar" : error, true);
-                   return;
-                 }
-                 for (size_t index = 0; index < library_.apps.size(); ++index) {
-                   if (library_.apps[index].identity_key() == app.identity_key()) {
-                     library_.apps[index].refresh_install_state();
-                     break;
-                   }
-                 }
-                 save_library();
-                 toast("Desinstalada: " + display_name(app));
-               });
+  const std::string title = std::string(i18n::t("confirm.uninstall_app_title")) + display_name(app);
+  const std::string body = std::string(i18n::t("confirm.uninstall_app_body_1")) + app.install_dir() +
+                           std::string(i18n::t("confirm.uninstall_app_body_2"));
+  show_confirm(title, body, i18n::t("btn.uninstall"), [this, app]() {
+    std::string error;
+    if (!::delanx::uninstall_app(app, false, &error)) {
+      toast(error.empty() ? i18n::t("toast.uninstall_failed") : error, true);
+      return;
+    }
+    for (size_t index = 0; index < library_.apps.size(); ++index) {
+      if (library_.apps[index].identity_key() == app.identity_key()) {
+        library_.apps.erase(library_.apps.begin() + index);
+        break;
+      }
+    }
+    save_library();
+    details_open_ = false;
+    details_is_homebrew_ = false;
+    toast(std::string(i18n::t("toast.uninstall_ok")) + display_name(app));
+  });
+}
+
+void App::uninstall_homebrew(const HomebrewAppInfo& hb) {
+  const std::string title = std::string(i18n::t("confirm.uninstall_hb_title")) + hb.name;
+  const std::string body = std::string(i18n::t("confirm.uninstall_hb_body")) + hb.nro_path;
+  show_confirm(title, body, i18n::t("btn.delete"), [this, hb]() {
+    bool ok = false;
+    const std::string switch_root = paths::to_sd_path("/switch");
+    if (!hb.folder_path.empty() && hb.folder_path != switch_root &&
+        str::starts_with(hb.folder_path, switch_root) && paths::is_dir(hb.folder_path)) {
+      ok = paths::remove_dir_recursive(hb.folder_path);
+    } else if (paths::exists(hb.nro_path)) {
+      ok = paths::remove_file(hb.nro_path);
+    }
+    if (!ok) {
+      toast(i18n::t("toast.delete_hb_failed"), true);
+      return;
+    }
+    details_open_ = false;
+    details_is_homebrew_ = false;
+    refresh_homebrew();
+    toast(std::string(i18n::t("toast.delete_hb_ok")) + hb.name);
+  });
 }
 
 void App::draw_controller_test_overlay() {

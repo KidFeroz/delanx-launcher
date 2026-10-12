@@ -467,6 +467,9 @@ void App::draw_list_screen(const std::string& title, const std::string& subtitle
       }
 
       if (!artwork) {
+        artwork = renderer_.texture("romfs:/icons/delanx-icon.png");
+      }
+      if (!artwork) {
         artwork = renderer_.texture("romfs:/icons/default.png");
       }
 
@@ -796,6 +799,19 @@ void App::on_secondary() {
 }
 
 void App::on_tertiary() {
+  if (details_open_) {
+    if (details_is_homebrew_) {
+      uninstall_homebrew(active_homebrew_);
+      return;
+    }
+    if (details_index_ >= 0 && details_index_ < static_cast<int>(library_.apps.size())) {
+      AppEntry& app = library_.apps[static_cast<size_t>(details_index_)];
+      if (app.installed) {
+        uninstall_app(details_index_);
+      }
+    }
+    return;
+  }
   switch (tab_) {
     case Tab::Library:
       library_filter_ = (library_filter_ + 1) % 3;
@@ -950,6 +966,12 @@ void App::draw_details_overlay() {
     renderer_.stroke_round_rect(x + theme_.px(28), y + theme_.px(28), art_w, art_h, theme_.px(14),
                                 theme_.border, 1);
     Texture* artwork = !active_homebrew_.icon_path.empty() ? renderer_.texture(active_homebrew_.icon_path) : nullptr;
+    if (!artwork) {
+      artwork = renderer_.texture("romfs:/icons/delanx-icon.png");
+    }
+    if (!artwork) {
+      artwork = renderer_.texture("romfs:/icons/default.png");
+    }
     if (artwork) {
       renderer_.draw_texture_fit(artwork, x + theme_.px(28), y + theme_.px(28), art_w, art_h);
     } else {
@@ -1027,38 +1049,69 @@ void App::draw_details_overlay() {
 
     renderer_.pop_clip();
 
-    // Pie de acciones
-    const int footer_y = y + height - theme_.px(54);
-    renderer_.fill_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+    // Pie de acciones con botones estilizados de alto contraste y soporte tactil
+    const int footer_y = y + height - theme_.px(58);
+    const int footer_h = theme_.px(46);
+    renderer_.fill_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), footer_h, theme_.px(12),
                               theme_.panel_alt);
-    renderer_.stroke_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+    renderer_.stroke_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), footer_h, theme_.px(12),
                                 theme_.border, 1);
 
-    struct ModalHint {
+    struct ModalAction {
       Btn btn;
       std::string label;
+      Color bg;
+      Color border;
+      Color text_color;
+      Color badge_bg;
+      Color badge_fg;
     };
-    std::vector<ModalHint> modal_hints;
-    modal_hints.push_back({Btn::A, "Lanzar"});
+    std::vector<ModalAction> actions;
+    actions.push_back({Btn::A, "Lanzar", theme_.success.with_alpha(45),
+                       theme_.success, theme_.text, theme_.success, theme_.bg});
     if (!active_homebrew_.github_repo.empty()) {
-      modal_hints.push_back({Btn::X, "Actualizar"});
+      actions.push_back({Btn::X, "Actualizar", theme_.accent.with_alpha(40),
+                         theme_.accent, theme_.text, theme_.accent, theme_.bg});
     }
-    modal_hints.push_back({Btn::B, "Cerrar"});
+    actions.push_back({Btn::Y, "Eliminar", theme_.danger.with_alpha(40),
+                       theme_.danger, theme_.danger, theme_.danger, Color::rgb(255, 255, 255)});
+    actions.push_back({Btn::B, "Cerrar", theme_.panel_alt,
+                       theme_.border, theme_.text_dim, theme_.card_focus, theme_.text});
 
-    int total_hints_w = 0;
-    for (const auto& h : modal_hints) {
-      total_hints_w += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+    const int pill_h = theme_.px(34);
+    const int pill_pad_x = theme_.px(14);
+    int total_actions_w = 0;
+    std::vector<int> pill_widths;
+    for (const auto& a : actions) {
+      const int w = theme_.px(30) + renderer_.text_width(a.label, theme_.font_body, true, FontFace::Brand) + pill_pad_x * 2;
+      pill_widths.push_back(w);
+      total_actions_w += w + theme_.px(12);
     }
-    int hint_x = x + (width - total_hints_w) / 2;
-    for (const auto& h : modal_hints) {
-      const int radius = theme_.px(11);
-      renderer_.fill_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.card_focus);
-      renderer_.stroke_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.border, 1);
-      renderer_.draw_text_centered(button_glyph(h.btn), hint_x + radius, footer_y + theme_.px(11), theme_.text,
-                                   theme_.font_small, true);
-      renderer_.draw_text(h.label, hint_x + radius * 2 + theme_.px(8), footer_y + theme_.px(10), theme_.text,
-                          theme_.font_small);
-      hint_x += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+    if (!actions.empty()) total_actions_w -= theme_.px(12);
+
+    int act_x = x + (width - total_actions_w) / 2;
+    const int act_y = footer_y + (footer_h - pill_h) / 2;
+
+    for (size_t i = 0; i < actions.size(); ++i) {
+      const auto& a = actions[i];
+      const int pill_w = pill_widths[i];
+
+      hit_footer_hints_.push_back({a.btn, SDL_Rect{act_x, act_y, pill_w, pill_h}});
+
+      renderer_.fill_round_rect(act_x, act_y, pill_w, pill_h, theme_.px(8), a.bg);
+      renderer_.stroke_round_rect(act_x, act_y, pill_w, pill_h, theme_.px(8), a.border, 1);
+
+      const int badge_r = theme_.px(10);
+      const int badge_cx = act_x + pill_pad_x + badge_r;
+      const int badge_cy = act_y + pill_h / 2;
+      renderer_.fill_circle(badge_cx, badge_cy, badge_r, a.badge_bg);
+      renderer_.draw_text_centered(button_glyph(a.btn), badge_cx, badge_cy - theme_.px(9), a.badge_fg,
+                                   theme_.font_small, true, FontFace::Condensed);
+
+      renderer_.draw_text(a.label, badge_cx + badge_r + theme_.px(8), act_y + theme_.px(6), a.text_color,
+                          theme_.font_body, true, FontFace::Brand);
+
+      act_x += pill_w + theme_.px(12);
     }
     return;
   }
@@ -1086,6 +1139,12 @@ void App::draw_details_overlay() {
   renderer_.stroke_round_rect(x + theme_.px(28), y + theme_.px(28), art_w, art_h, theme_.px(14),
                               theme_.border, 1);
   Texture* artwork = icon_for(app);
+  if (!artwork) {
+    artwork = renderer_.texture("romfs:/icons/delanx-icon.png");
+  }
+  if (!artwork) {
+    artwork = renderer_.texture("romfs:/icons/default.png");
+  }
   if (artwork) {
     renderer_.draw_texture_fit(artwork, x + theme_.px(28), y + theme_.px(28), art_w, art_h);
   } else {
@@ -1199,36 +1258,72 @@ void App::draw_details_overlay() {
 
   renderer_.pop_clip();
 
-  // Acciones disponibles centradas en el pie del modal
-  const int footer_y = y + height - theme_.px(54);
-  renderer_.fill_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+  // Pie de acciones con botones estilizados de alto contraste y soporte tactil
+  const int footer_y = y + height - theme_.px(58);
+  const int footer_h = theme_.px(46);
+  renderer_.fill_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), footer_h, theme_.px(12),
                             theme_.panel_alt);
-  renderer_.stroke_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), theme_.px(40), theme_.px(10),
+  renderer_.stroke_round_rect(x + theme_.px(20), footer_y, width - theme_.px(40), footer_h, theme_.px(12),
                               theme_.border, 1);
 
-  struct ModalHint {
+  struct ModalAction {
     Btn btn;
     std::string label;
+    Color bg;
+    Color border;
+    Color text_color;
+    Color badge_bg;
+    Color badge_fg;
   };
-  std::vector<ModalHint> modal_hints;
-  modal_hints.push_back({Btn::A, app.installed ? "Lanzar" : "Instalar"});
-  modal_hints.push_back({Btn::X, app.installed ? "Actualizar" : "Reinstalar"});
-  modal_hints.push_back({Btn::B, "Cerrar"});
-
-  int total_hints_w = 0;
-  for (const auto& h : modal_hints) {
-    total_hints_w += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+  std::vector<ModalAction> actions;
+  if (app.installed) {
+    actions.push_back({Btn::A, "Lanzar", theme_.success.with_alpha(45),
+                       theme_.success, theme_.text, theme_.success, theme_.bg});
+    actions.push_back({Btn::X, "Actualizar", theme_.accent.with_alpha(40),
+                       theme_.accent, theme_.text, theme_.accent, theme_.bg});
+    actions.push_back({Btn::Y, "Desinstalar", theme_.danger.with_alpha(40),
+                       theme_.danger, theme_.danger, theme_.danger, Color::rgb(255, 255, 255)});
+  } else {
+    actions.push_back({Btn::A, "Instalar", theme_.accent.with_alpha(55),
+                       theme_.accent, theme_.text, theme_.accent, theme_.bg});
   }
-  int hint_x = x + (width - total_hints_w) / 2;
-  for (const auto& h : modal_hints) {
-    const int radius = theme_.px(11);
-    renderer_.fill_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.card_focus);
-    renderer_.stroke_circle(hint_x + radius, footer_y + theme_.px(20), radius, theme_.border, 1);
-    renderer_.draw_text_centered(button_glyph(h.btn), hint_x + radius, footer_y + theme_.px(11), theme_.text,
-                                 theme_.font_small, true);
-    renderer_.draw_text(h.label, hint_x + radius * 2 + theme_.px(8), footer_y + theme_.px(10), theme_.text,
-                        theme_.font_small);
-    hint_x += theme_.px(28) + renderer_.text_width(h.label, theme_.font_small) + theme_.px(32);
+  actions.push_back({Btn::B, "Cerrar", theme_.panel_alt,
+                     theme_.border, theme_.text_dim, theme_.card_focus, theme_.text});
+
+  const int pill_h = theme_.px(34);
+  const int pill_pad_x = theme_.px(14);
+  int total_actions_w = 0;
+  std::vector<int> pill_widths;
+  for (const auto& a : actions) {
+    const int w = theme_.px(30) + renderer_.text_width(a.label, theme_.font_body, true, FontFace::Brand) + pill_pad_x * 2;
+    pill_widths.push_back(w);
+    total_actions_w += w + theme_.px(12);
+  }
+  if (!actions.empty()) total_actions_w -= theme_.px(12);
+
+  int act_x = x + (width - total_actions_w) / 2;
+  const int act_y = footer_y + (footer_h - pill_h) / 2;
+
+  for (size_t i = 0; i < actions.size(); ++i) {
+    const auto& a = actions[i];
+    const int pill_w = pill_widths[i];
+
+    hit_footer_hints_.push_back({a.btn, SDL_Rect{act_x, act_y, pill_w, pill_h}});
+
+    renderer_.fill_round_rect(act_x, act_y, pill_w, pill_h, theme_.px(8), a.bg);
+    renderer_.stroke_round_rect(act_x, act_y, pill_w, pill_h, theme_.px(8), a.border, 1);
+
+    const int badge_r = theme_.px(10);
+    const int badge_cx = act_x + pill_pad_x + badge_r;
+    const int badge_cy = act_y + pill_h / 2;
+    renderer_.fill_circle(badge_cx, badge_cy, badge_r, a.badge_bg);
+    renderer_.draw_text_centered(button_glyph(a.btn), badge_cx, badge_cy - theme_.px(9), a.badge_fg,
+                                 theme_.font_small, true, FontFace::Condensed);
+
+    renderer_.draw_text(a.label, badge_cx + badge_r + theme_.px(8), act_y + theme_.px(6), a.text_color,
+                        theme_.font_body, true, FontFace::Brand);
+
+    act_x += pill_w + theme_.px(12);
   }
 }
 
