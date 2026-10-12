@@ -40,13 +40,16 @@ const KnownHomebrew kKnownHomebrewRegistry[] = {
     {"status-monitor", "masagrator/Status-Monitor-Overlay"},
     {"nx-ovlloader", "WerWolv/nx-ovlloader"},
     {"checkpoint", "BernardoGiordano/Checkpoint"},
+    {"moonlight", "XITRIX/Moonlight-Switch"},
+    {"moonlight-switch", "XITRIX/Moonlight-Switch"},
 };
 
 // Firmas e identificadores de proyectos de descompilacion / ports nativos.
 // Cualquier app que coincida se clasifica como DECOMP (Biblioteca/Catalogo/MrShip)
 // y queda terminantemente fuera de la seccion Homebrew.
 const char* const kKnownDecompSignatures[] = {
-    "soh", "2ship", "starship", "ghostship", "spaghettify", "sm64", "zelda3", "smw",
+    "soh", "2ship", "starship", "ghostship", "spaghettify", "spaghettikart", "sm64", "zelda3", "smw",
+    "macready", "golf", "shipwright", "keiichi", "alfa", "2harkinian", "harkinian",
     "openlara", "revolt", "fheroes2", "julius", "eduke32", "xash3d", "fallout",
     "daggerfall", "gta3", "gtasa", "openjazz", "vanilla-conquer", "redalert", "doom64ex",
     "nx-diffuser", "perfect_dark", "dusklight", "switchwaker", "tmc", "oracles",
@@ -87,7 +90,32 @@ uint64_t read_u64(const uint8_t* buf) {
 
 }  // namespace
 
+bool is_homebrew_app(const std::string& name_or_folder, const std::string& repo) {
+  const std::string lower = str::lower(name_or_folder);
+  const std::string lower_repo = str::lower(repo);
+
+  static const char* const kHomebrewKeys[] = {
+      "appstore", "hb-appstore", "goldleaf", "moonlight", "dbi", "ftpd",
+      "nx-shell", "jksv", "edizon", "daybreak", "missioncontrol", "sys-clk",
+      "breeze", "aio-switch-updater", "nxdumptool", "simplemodmanager",
+      "linkalho", "switch-time", "emuiibo", "status-monitor", "nx-ovlloader",
+      "checkpoint", "tinfoil", "themezer", "nxmp", "ppsspp", "retroarch",
+      "nxlink", "haze", "tinwoo", "atmo-updater"
+  };
+
+  for (const char* k : kHomebrewKeys) {
+    if (lower == k || str::icontains(lower, k) ||
+        (!lower_repo.empty() && str::icontains(lower_repo, k))) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool is_decomp_app(const std::string& name_or_folder, const std::string& nro_file) {
+  if (is_homebrew_app(name_or_folder, "")) return false;
+  if (!nro_file.empty() && is_homebrew_app(paths::basename(nro_file), "")) return false;
+
   const std::string lower_name = str::lower(name_or_folder);
   const std::string lower_nro = str::lower(paths::basename(nro_file));
 

@@ -82,6 +82,40 @@
   en README a proyectos y librerías base de la comunidad (devkitPro, libnx, 
   hb-appstore, Harbour Masters, SDL2, libcurl, mbedtls, jansson, libarchive).
 
+9. PRECISIÓN DE ACTUALIZACIONES Y REINSTALACIÓN
+- Diálogos inteligentes de versión: Se verifica minuciosamente si la versión instalada 
+  coincide con el último release disponible. Si la aplicación ya está al día, el diálogo 
+  lo informa con total claridad y ofrece la opción de reinstalar ("¿Deseas reinstalar la aplicación?"). 
+  Si existe una versión más reciente, se ofrece actualizar directamente.
+- Notificaciones de descarga en esquina no bloqueantes: La ventana emergente modal fue 
+  sustituida por una tarjeta de notificación compacta y elegante en la esquina superior 
+  derecha (con icono de la app, barra de progreso animada con shimmer, tamaño en bytes y porcentaje). 
+  El usuario puede continuar navegando por la interfaz y explorando pestañas mientras 
+  se descarga el paquete.
+- Protección contra saturación y concurrencia: Se implementó un bloqueo preventivo con 
+  aviso toast si se intenta iniciar otra descarga mientras una está en curso.
+
+10. DETECCIÓN MULTI-TOKEN DE DECOMPS Y RUTAS PERSONALIZADAS
+- Eliminación absoluta de Homebrew en Biblioteca: Herramientas generales como Goldleaf, 
+  Moonlight o Homebrew App Store quedan definitivamente excluidas de la Biblioteca.
+- Reflexión de rutas reales instaladas: La biblioteca y la ficha de detalles reflejan con 
+  exactitud la ruta real en la SD donde reside el decompilado.
+- Reconocimiento difuso por múltiples firmas (tokens): El detector inspecciona nombres de 
+  carpetas y binarios .nro (incluyendo variaciones de la comunidad como Starship, 
+  MacReady-Golf-Switch, 2Ship-Keiichi-Alfa-NX, etc.) reconociendo combinaciones de palabras 
+  clave, archivos de datos clave (.otr, .o2r, .z64) y títulos.
+- Organizador de carpetas a rutas canónicas: Si un decompilado está instalado en una 
+  carpeta con nombre no estándar, la vista de detalles y el menú de ajustes ofrecen al 
+  usuario la opción de normalizar y ordenar el directorio al nombre estándar canónico 
+  (p. ej. soh, 2ship, Starship) previa confirmación.
+
+11. LOCALIZACIÓN INTEGRAL EN INGLÉS Y ESPAÑOL (SIN MONOLITOS)
+- Menú de ajustes completamente internacionalizado: Todas las filas de ajustes, 
+  descripciones, pistas de ayuda y valores (Sí/No, Configurado/No configurado, 
+  Oscuro/Claro, Español/Inglés) están respaldadas por identificadores en el diccionario i18n.
+- Todas las etiquetas, badges y diálogos del sistema traducidos con paridad exacta 
+  entre inglés y español.
+
 
 ================================================================================
 [ENGLISH]
@@ -159,4 +193,34 @@
 - Open source credits & documentation: Added comprehensive acknowledgments in README.md 
   crediting essential community tools and upstream libraries (devkitPro, libnx, 
   hb-appstore, Harbour Masters, SDL2, libcurl, mbedtls, jansson, libarchive).
+
+9. ACCURATE UPDATE & REINSTALL DIALOGS
+- Smart version checks: Thoroughly verifies if the installed version matches the latest 
+  remote release. If the app is already up to date, the dialog explicitly indicates this 
+  and asks if the user wants to reinstall ("Do you want to reinstall the application?"). 
+  If an update is detected, it offers to update directly.
+- Non-blocking corner notification card: Replaced the blocking modal with a sleek top-right 
+  notification card (with app icon, animated shimmer progress bar, downloaded bytes and 
+  percentage). Users can continue browsing the catalog and switching tabs while downloads 
+  run in the background.
+- Concurrent download protection: Implemented preventive locking with toast warnings to 
+  avoid overloading console I/O when an install is in progress.
+
+10. MULTI-TOKEN FUZZY DECOMP DETECTION & REAL SD PATHS
+- Strict removal of Homebrew from Library: General homebrew utilities (Goldleaf, Moonlight, 
+  Homebrew App Store) are strictly prevented from appearing in the Library tab.
+- Accurate installed path reflection: The Library and Details sheets display the exact 
+  SD card directory where the decomp resides.
+- Multi-token signature recognition: The scanner matches folder names, .nro files, and 
+  key data archives (.otr, .o2r, .z64) against robust token signatures (handling variations 
+  like Starship, MacReady-Golf-Switch, 2Ship-Keiichi-Alfa-NX, etc.).
+- Folder organizer to canonical paths: If a decomp is detected in a non-standard directory, 
+  the Details view and Settings allow organizing and moving it to its canonical directory 
+  (e.g. soh, 2ship, Starship) upon explicit user confirmation.
+
+11. EXTENSIVE LOCALIZATION IN SPANISH AND ENGLISH (NO MONOLITHS)
+- Fully internationalized Settings menu: All settings rows, hints, toggles, badges, and 
+  values (Yes/No, Configured/Not configured, Dark/Light, Spanish/English) are backed by 
+  i18n dictionary strings.
+- Complete parity across all system badges, buttons, dialogs, and notifications.
 ================================================================================

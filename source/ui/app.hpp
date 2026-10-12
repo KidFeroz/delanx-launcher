@@ -141,6 +141,7 @@ class App {
   void launch_nro(const std::string& nro_path);
   void uninstall_app(int library_index);
   void uninstall_homebrew(const HomebrewAppInfo& hb);
+  void organize_all_decomps();
   // Registra la entrada exacta de la tarjeta en la biblioteca; devuelve su indice o -1.
   int add_catalog_entry_to_library(const ListItem& item);
   // Abre la ficha de la tarjeta (instalada) o lanza la instalacion (no instalada).
@@ -225,6 +226,7 @@ class App {
   bool busy_ = false;
   std::string busy_label_;
   uint32_t busy_started_ms_ = 0;
+  bool installing_active_ = false;
 
   bool launching_ = false;
   std::string launch_error_;

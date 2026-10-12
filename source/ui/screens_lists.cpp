@@ -8,6 +8,7 @@
 #include "platform/text_input.hpp"
 #include "services/artwork.hpp"
 #include "services/http.hpp"
+#include "services/decomp_scanner.hpp"
 #include "services/nro_inspector.hpp"
 #include "ui/app.hpp"
 
@@ -126,6 +127,10 @@ std::vector<ListItem> App::build_library_items() {
   std::vector<ListItem> items;
   for (size_t index = 0; index < library_.apps.size(); ++index) {
     const AppEntry& app = library_.apps[index];
+    if (is_homebrew_app(app.name, app.repository) ||
+        is_homebrew_app(app.folder_name, app.repository)) {
+      continue;  // El homebrew general vive estrictamente en la pestana Homebrew
+    }
     if (!app.installed) continue;  // Solo los decompilados/ports instalados en la consola
     if (library_filter_ == 1 && !app.update_available) continue;
     if (library_filter_ == 2 && !app.mrship) continue;
@@ -140,16 +145,16 @@ std::vector<ListItem> App::build_library_items() {
     item.verified = app.verified_entry;
     item.library_index = static_cast<int>(index);
     if (app.update_available) {
-      item.badge = "Actualiza";
+      item.badge = i18n::t("badge.update");
     } else if (app.installed) {
-      item.badge = "Instalado";
+      item.badge = i18n::t("badge.installed");
     } else if (app.manually_managed()) {
-      item.badge = "Manual";
+      item.badge = i18n::t("badge.manual");
     }
     item.meta = app.installed_version.empty() ? app.latest_version : app.installed_version;
     const size_t missing = app.missing_user_files().size();
     if (missing > 0) {
-      item.meta += str::format(" | faltan %lu ficheros", static_cast<unsigned long>(missing));
+      item.meta += str::format(" | %lu ficheros pendientes", static_cast<unsigned long>(missing));
     }
     items.push_back(item);
   }
@@ -1217,33 +1222,44 @@ void App::draw_details_overlay() {
   renderer_.draw_text(versions, info_x, info_y, theme_.text_dim, theme_.font_small);
   info_y += theme_.px(26);
 
-  const std::string install_target = app.sw.home_dir.empty() ? app.sw.target_dir : app.sw.home_dir;
-  if (!install_target.empty()) {
-    renderer_.draw_text("Instala en: " + install_target, info_x, info_y, theme_.text_muted, theme_.font_small);
+  const std::string real_dir = app.install_dir();
+  if (app.installed && !real_dir.empty()) {
+    renderer_.draw_text(std::string(i18n::t("details.installed_at")) + real_dir, info_x, info_y, theme_.text_muted, theme_.font_small);
     info_y += theme_.px(22);
+    std::string suggested;
+    if (has_non_standard_folder(app, &suggested)) {
+      renderer_.draw_text("Ruta no estándar (sugerida: /switch/" + suggested + ")", info_x, info_y, theme_.warning, theme_.font_small);
+      info_y += theme_.px(22);
+    }
+  } else {
+    const std::string install_target = app.sw.home_dir.empty() ? app.sw.target_dir : app.sw.home_dir;
+    if (!install_target.empty()) {
+      renderer_.draw_text(std::string(i18n::t("details.installed_at")) + install_target, info_x, info_y, theme_.text_muted, theme_.font_small);
+      info_y += theme_.px(22);
+    }
   }
   if (!app.sw.home_dir.empty() && !app.sw.target_dir.empty() &&
       !str::iequals(app.sw.home_dir, app.sw.target_dir)) {
-    renderer_.draw_text("Extrae en: " + app.sw.target_dir, info_x, info_y, theme_.text_muted, theme_.font_small);
+    renderer_.draw_text(std::string(i18n::t("details.extracts_at")) + app.sw.target_dir, info_x, info_y, theme_.text_muted, theme_.font_small);
     info_y += theme_.px(22);
   }
   if (!app.sw.nro.empty()) {
-    renderer_.draw_text("Ejecutable: " + app.sw.nro, info_x, info_y, theme_.text_muted, theme_.font_small);
+    renderer_.draw_text(std::string(i18n::t("details.executable")) + app.sw.nro, info_x, info_y, theme_.text_muted, theme_.font_small);
     info_y += theme_.px(22);
   }
 
   if (!app.requirements.empty()) {
     info_y += theme_.px(6);
-    info_y += renderer_.draw_text_wrapped("Requisitos: " + app.requirements, info_x, info_y, theme_.warning,
+    info_y += renderer_.draw_text_wrapped(std::string(i18n::t("details.requirements")) + ": " + app.requirements, info_x, info_y, theme_.warning,
                                          theme_.font_small, info_w, 2);
   }
 
   // Ficheros que debe aportar el usuario
   info_y += theme_.px(10);
-  renderer_.draw_text("Ficheros del usuario", info_x, info_y, theme_.text, theme_.font_body, true);
+  renderer_.draw_text(i18n::t("details.user_files"), info_x, info_y, theme_.text, theme_.font_body, true);
   info_y += theme_.px(26);
   if (app.sw.required_user_files.empty()) {
-    renderer_.draw_text("Esta app no necesita ficheros adicionales.", info_x, info_y, theme_.text_muted,
+    renderer_.draw_text(i18n::t("details.no_user_files"), info_x, info_y, theme_.text_muted,
                         theme_.font_small);
   } else {
     for (const auto& file : app.sw.required_user_files) {
@@ -1277,17 +1293,17 @@ void App::draw_details_overlay() {
   };
   std::vector<ModalAction> actions;
   if (app.installed) {
-    actions.push_back({Btn::A, "Lanzar", theme_.success.with_alpha(45),
+    actions.push_back({Btn::A, i18n::t("btn.launch"), theme_.success.with_alpha(45),
                        theme_.success, theme_.text, theme_.success, theme_.bg});
-    actions.push_back({Btn::X, "Actualizar", theme_.accent.with_alpha(40),
+    actions.push_back({Btn::X, i18n::t("btn.update"), theme_.accent.with_alpha(40),
                        theme_.accent, theme_.text, theme_.accent, theme_.bg});
-    actions.push_back({Btn::Y, "Desinstalar", theme_.danger.with_alpha(40),
+    actions.push_back({Btn::Y, i18n::t("btn.uninstall"), theme_.danger.with_alpha(40),
                        theme_.danger, theme_.danger, theme_.danger, Color::rgb(255, 255, 255)});
   } else {
-    actions.push_back({Btn::A, "Instalar", theme_.accent.with_alpha(55),
+    actions.push_back({Btn::A, i18n::t("btn.install"), theme_.accent.with_alpha(55),
                        theme_.accent, theme_.text, theme_.accent, theme_.bg});
   }
-  actions.push_back({Btn::B, "Cerrar", theme_.panel_alt,
+  actions.push_back({Btn::B, i18n::t("btn.close"), theme_.panel_alt,
                      theme_.border, theme_.text_dim, theme_.card_focus, theme_.text});
 
   const int pill_h = theme_.px(34);

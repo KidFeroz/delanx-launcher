@@ -22,6 +22,8 @@
 #include "model/settings.hpp"
 #include "services/asset_selector.hpp"
 #include "services/launch_args.hpp"
+#include "services/nro_inspector.hpp"
+#include "services/decomp_scanner.hpp"
 
 namespace {
 
@@ -544,6 +546,64 @@ void test_master_catalog_if_present() {
   check(marked_verified == 0, "ninguna entrada del catalogo maestro viene pre-verificada");
 }
 
+// ------------------------------------------------------------------ 10. separacion y deteccion
+void test_decomp_and_homebrew_detection() {
+  section("10. Separacion estricta Homebrew vs Decomps y carpetas no estandar");
+
+  // Homebrew general reconocido
+  check(delanx::is_homebrew_app("Goldleaf"), "Goldleaf es homebrew");
+  check(delanx::is_homebrew_app("Moonlight"), "Moonlight es homebrew");
+  check(delanx::is_homebrew_app("Moonlight-Switch"), "Moonlight-Switch es homebrew");
+  check(delanx::is_homebrew_app("hb-appstore"), "hb-appstore es homebrew");
+  check(delanx::is_homebrew_app("appstore"), "appstore es homebrew");
+  check(delanx::is_homebrew_app("dbi"), "dbi es homebrew");
+  check(delanx::is_homebrew_app("ftpd"), "ftpd es homebrew");
+  check(delanx::is_homebrew_app("NX-Shell"), "NX-Shell es homebrew");
+  check(delanx::is_homebrew_app("JKSV"), "JKSV es homebrew");
+
+  // Decomps NO son homebrew
+  check(!delanx::is_homebrew_app("Starship"), "Starship no es homebrew general");
+  check(!delanx::is_homebrew_app("Ship of Harkinian"), "Ship of Harkinian no es homebrew general");
+  check(!delanx::is_homebrew_app("2 Ship 2 Harkinian"), "2 Ship 2 Harkinian no es homebrew general");
+  check(!delanx::is_homebrew_app("SpaghettiKart"), "SpaghettiKart no es homebrew general");
+  check(!delanx::is_homebrew_app("sm64"), "sm64 no es homebrew general");
+
+  // Deteccion de decomps
+  check(delanx::is_decomp_app("Starship", "Starship.nro"), "Starship detectado como decomp");
+  check(delanx::is_decomp_app("MacReady-Golf-Switch", "soh.nro"), "MacReady-Golf-Switch detectado como decomp");
+  check(delanx::is_decomp_app("2Ship-Keiichi-Alfa-NX", "2ship.nro"), "2Ship-Keiichi-Alfa-NX detectado como decomp");
+  check(delanx::is_decomp_app("soh", "soh.nro"), "soh detectado como decomp");
+  check(delanx::is_decomp_app("2ship", "2ship.nro"), "2ship detectado como decomp");
+
+  // Homebrew nunca es decomp
+  check(!delanx::is_decomp_app("Goldleaf", "Goldleaf.nro"), "Goldleaf NO es decomp");
+  check(!delanx::is_decomp_app("Moonlight-Switch", "Moonlight-Switch.nro"), "Moonlight-Switch NO es decomp");
+  check(!delanx::is_decomp_app("hb-appstore", "appstore.nro"), "hb-appstore NO es decomp");
+
+  // Deteccion de carpetas no estandar
+  delanx::AppEntry custom_soh;
+  custom_soh.name = "Ship of Harkinian (Ocarina of Time)";
+  custom_soh.installed = true;
+  custom_soh.install_path = "/switch/MacReady-Golf-Switch";
+  std::string suggested_soh;
+  check(delanx::has_non_standard_folder(custom_soh, &suggested_soh), "MacReady-Golf-Switch detectada como no estandar");
+  check_eq(suggested_soh, "soh", "Ruta sugerida para MacReady-Golf-Switch es 'soh'");
+
+  delanx::AppEntry standard_soh;
+  standard_soh.name = "Ship of Harkinian (Ocarina of Time)";
+  standard_soh.installed = true;
+  standard_soh.install_path = "/switch/soh";
+  check(!delanx::has_non_standard_folder(standard_soh), "/switch/soh es ruta estandar");
+
+  delanx::AppEntry custom_2ship;
+  custom_2ship.name = "2 Ship 2 Harkinian";
+  custom_2ship.installed = true;
+  custom_2ship.install_path = "/switch/2Ship-Keiichi-Alfa-NX";
+  std::string suggested_2ship;
+  check(delanx::has_non_standard_folder(custom_2ship, &suggested_2ship), "2Ship-Keiichi-Alfa-NX detectada como no estandar");
+  check_eq(suggested_2ship, "2ship", "Ruta sugerida para 2Ship-Keiichi-Alfa-NX es '2ship'");
+}
+
 }  // namespace
 
 int main() {
@@ -559,6 +619,7 @@ int main() {
   test_update_logic();
   test_launch_argv();
   test_master_catalog_if_present();
+  test_decomp_and_homebrew_detection();
 
   std::printf("\n----------------------------------------\n");
   std::printf("Comprobaciones: %d   Fallos: %d\n", g_checks, g_failures);

@@ -17,6 +17,8 @@
 #include "services/gitlab.hpp"
 #include "services/http.hpp"
 #include "services/installer.hpp"
+#include "services/decomp_scanner.hpp"
+#include "services/nro_inspector.hpp"
 #include "services/launcher.hpp"
 #include "services/release_check.hpp"
 
@@ -33,9 +35,13 @@ constexpr int kExitCodeLaunchChain = 2;
 int adopt_installed(Library &library, const Catalog &catalog) {
   int added = 0;
   for (const CatalogEntry &source : catalog.entries) {
+    if (is_homebrew_app(source.name, source.repository))
+      continue;
     AppEntry entry = source.to_app_entry();
     if (entry.folder_name.empty())
       entry.folder_name = entry.name;
+    if (is_homebrew_app(entry.folder_name, entry.repository))
+      continue;
     const std::string dir = str::lower(entry.install_dir());
     // Raices compartidas (SD o /switch) darian falsos positivos con cualquier
     // .nro.
@@ -96,8 +102,12 @@ bool App::init() {
   load_library_and_settings();
   load_local_catalogs();
   {
-    // HarbourMasters primero: es la fuente mas precisa para los ports N64.
-    const int adopted = adopt_installed(library_, mrship_catalog_) +
+    // 1. Escaneo difuso de la SD: detecta carpetas reales de decomps
+    // (Starship, MacReady-Golf-Switch, 2Ship-Keiichi-Alfa-NX, etc.) y adopta sus rutas
+    std::vector<Catalog> all_cats = {mrship_catalog_, local_catalog_};
+    if (!master_catalog_.entries.empty()) all_cats.push_back(master_catalog_);
+    const int adopted = scan_and_adopt_decomps(library_, all_cats) +
+                        adopt_installed(library_, mrship_catalog_) +
                         adopt_installed(library_, local_catalog_) +
                         adopt_installed(library_, master_catalog_);
     if (adopted > 0)
@@ -1019,6 +1029,15 @@ void App::load_library_and_settings() {
     // local.
     library_ = Library{};
   }
+  // Depuracion estricta: asegurar que ninguna utilidad homebrew
+  // (Goldleaf, Moonlight, hb-appstore, DBI, etc.) permanezca en la biblioteca de decomps.
+  library_.apps.erase(
+      std::remove_if(library_.apps.begin(), library_.apps.end(),
+                     [](const AppEntry& app) {
+                       return is_homebrew_app(app.name, app.repository) ||
+                              is_homebrew_app(app.folder_name, app.repository);
+                     }),
+      library_.apps.end());
   for (auto &app : library_.apps)
     app.refresh_install_state();
 }

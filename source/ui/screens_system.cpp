@@ -9,6 +9,7 @@
 #include "services/asset_selector.hpp"
 #include "services/github.hpp"
 #include "services/gitlab.hpp"
+#include "services/decomp_scanner.hpp"
 #include "services/installer.hpp"
 #include "services/launcher.hpp"
 #include "services/release_check.hpp"
@@ -240,34 +241,80 @@ void App::check_updates() {
 
 // ------------------------------------------------------------------ ajustes
 
+void App::organize_all_decomps() {
+  std::vector<std::pair<size_t, std::string>> to_organize;
+  for (size_t i = 0; i < library_.apps.size(); ++i) {
+    std::string suggested;
+    if (has_non_standard_folder(library_.apps[i], &suggested)) {
+      to_organize.push_back({i, suggested});
+    }
+  }
+
+  if (to_organize.empty()) {
+    toast(i18n::t("toast.organize_ok"));
+    return;
+  }
+
+  std::string summary = std::string(i18n::t("confirm.organize_folder_title")) + ":\n\n";
+  for (const auto& item : to_organize) {
+    const AppEntry& a = library_.apps[item.first];
+    summary += "• " + paths::basename(a.install_dir()) + "  ->  " + item.second + "\n";
+  }
+
+  show_confirm(i18n::t("confirm.organize_folder_title"), summary, i18n::t("btn.organize_folder"),
+               [this, to_organize]() {
+                 int count = 0;
+                 for (const auto& item : to_organize) {
+                   if (item.first < library_.apps.size()) {
+                     std::string err;
+                     if (organize_decomp_folder(library_.apps[item.first], item.second, &err)) {
+                       ++count;
+                     }
+                   }
+                 }
+                 save_library();
+                 toast(str::format("%d %s", count, i18n::t("toast.organize_ok")));
+               });
+}
+
 void App::draw_settings_screen() {
   const int origin_x = theme_.sidebar_width;
   const int origin_y = theme_.topbar_height + theme_.tab_bar_height;
   const int content_w = renderer_.width() - origin_x;
 
+  auto yes_no_str = [](bool v) { return v ? i18n::t("val.yes") : i18n::t("val.no"); };
+
   std::vector<SettingsRow> rows;
-  rows.push_back({"Permitir releases sin verificar", yes_no(settings_.DelanxIncludeUnverified),
-                  "Si esta en No, Delanx solo instala releases con checksum verificado"});
-  rows.push_back({"Confirmar releases bloqueadas", yes_no(settings_.DelanxConfirmBlockedReleases),
-                  "Quiver marca algunas releases como bloqueadas"});
-  rows.push_back({"Seccion MrShip (Ports N64)", yes_no(settings_.DelanxMrShipSection),
-                  "Muestra la pestana de ports N64 de decompilacion"});
-  rows.push_back({"Instalar en rutas nativas de Switch", yes_no(settings_.DelanxUseNativeInstallPaths),
-                  "Usa /switch/<app>/ como los demas homebrew, en vez de Delanx/Apps"});
-  rows.push_back({"Comprobar actualizaciones al arrancar", yes_no(settings_.DelanxAutoCheckUpdatesOnBoot),
-                  "Consulta releases al abrir Delanx (consume red)"});
-  rows.push_back({"Vista de rejilla", yes_no(settings_.UseGridView), "Rejilla de caratulas o lista compacta"});
-  rows.push_back({"Columnas de la rejilla", str::format("%d", grid_columns_), "2 a 6 columnas"});
-  rows.push_back({"Tema", settings_.is_dark() ? "Oscuro" : "Claro", "Oscuro o claro"});
-  rows.push_back({"Idioma / Language", (settings_.DelanxLanguage == "en") ? "English" : "Español",
-                  "Idioma de los textos e interfaz"});
-  rows.push_back({"Token de GitHub", settings_.GitHubApiToken.empty() ? "sin configurar" : "configurado",
-                  "Evita el limite de peticiones de la API de GitHub"});
-  rows.push_back({"Token de GitLab", settings_.GitLabApiToken.empty() ? "sin configurar" : "configurado",
-                  "Necesario solo para proyectos privados de GitLab"});
-  rows.push_back({"Comprobar actualizaciones ahora", "", "Consulta las releases de la biblioteca"});
-  rows.push_back({"Informacion de la consola", "", "Firmware, memoria, origen de arranque y rutas"});
-  rows.push_back({"Test de mandos y pantalla", "", "Comprobar botones, sticks y respuesta tactil"});
+  rows.push_back({i18n::t("settings.unverified"), yes_no_str(settings_.DelanxIncludeUnverified),
+                  i18n::t("settings.unverified_hint")});
+  rows.push_back({i18n::t("settings.confirm_blocked"), yes_no_str(settings_.DelanxConfirmBlockedReleases),
+                  i18n::t("settings.confirm_blocked_hint")});
+  rows.push_back({i18n::t("settings.mrship"), yes_no_str(settings_.DelanxMrShipSection),
+                  i18n::t("settings.mrship_hint")});
+  rows.push_back({i18n::t("settings.native_paths"), yes_no_str(settings_.DelanxUseNativeInstallPaths),
+                  i18n::t("settings.native_paths_hint")});
+  rows.push_back({i18n::t("settings.autocheck"), yes_no_str(settings_.DelanxAutoCheckUpdatesOnBoot),
+                  i18n::t("settings.autocheck_hint")});
+  rows.push_back({i18n::t("settings.grid_view"), yes_no_str(settings_.UseGridView),
+                  i18n::t("settings.grid_view_hint")});
+  rows.push_back({i18n::t("settings.grid_columns"), str::format("%d", grid_columns_),
+                  i18n::t("settings.grid_columns_hint")});
+  rows.push_back({i18n::t("settings.theme"), settings_.is_dark() ? i18n::t("val.dark") : i18n::t("val.light"),
+                  i18n::t("settings.theme_hint")});
+  rows.push_back({i18n::t("settings.language"), (settings_.DelanxLanguage == "en") ? i18n::t("val.lang_en") : i18n::t("val.lang_es"),
+                  i18n::t("settings.language_hint")});
+  rows.push_back({i18n::t("settings.organize_folders"), "",
+                  i18n::t("settings.organize_folders_hint")});
+  rows.push_back({i18n::t("settings.github_token"), settings_.GitHubApiToken.empty() ? i18n::t("val.not_configured") : i18n::t("val.configured"),
+                  i18n::t("settings.github_token_hint")});
+  rows.push_back({i18n::t("settings.gitlab_token"), settings_.GitLabApiToken.empty() ? i18n::t("val.not_configured") : i18n::t("val.configured"),
+                  i18n::t("settings.gitlab_token_hint")});
+  rows.push_back({i18n::t("settings.check_updates_now"), "",
+                  i18n::t("settings.check_updates_now_hint")});
+  rows.push_back({i18n::t("settings.system_info"), "",
+                  i18n::t("settings.system_info_hint")});
+  rows.push_back({i18n::t("settings.input_test"), "",
+                  i18n::t("settings.input_test_hint")});
 
   focus_ = std::clamp(focus_, 0, static_cast<int>(rows.size()) - 1);
   const int content_h = renderer_.height() - origin_y - theme_.footer_height;
@@ -379,7 +426,10 @@ void App::activate_settings_item() {
       save_settings();
       break;
     }
-    case 9: {
+    case 9:
+      organize_all_decomps();
+      return;
+    case 10: {
       std::string token;
       if (platform::text_input("Token de GitHub (vacio para borrar)", settings_.GitHubApiToken, &token, 128, true)) {
         settings_.GitHubApiToken = str::trim(token);
@@ -387,7 +437,7 @@ void App::activate_settings_item() {
       }
       break;
     }
-    case 10: {
+    case 11: {
       std::string token;
       if (platform::text_input("Token de GitLab (vacio para borrar)", settings_.GitLabApiToken, &token, 128, true)) {
         settings_.GitLabApiToken = str::trim(token);
@@ -395,10 +445,10 @@ void App::activate_settings_item() {
       }
       break;
     }
-    case 11:
+    case 12:
       check_updates();
       return;
-    case 12:
+    case 13:
       open_dialog("Informacion de la consola",
                   str::format("Firmware: %s\nOrigen de arranque: %s\nModo applet: %s\nMemoria: %s\nDatos: %s\n"
                               "Catalogo local: %lu entradas\nCatalogo maestro: %lu entradas (sin verificar)\n"
@@ -413,7 +463,7 @@ void App::activate_settings_item() {
                               static_cast<unsigned long>(mrship_catalog_.entries.size()), DELANX_VERSION),
                   {DialogOption{"Cerrar", nullptr}});
       return;
-    case 13:
+    case 14:
       controller_test_open_ = true;
       return;
     default:
@@ -492,6 +542,12 @@ bool App::fetch_candidate_release(const AppEntry& app, Release* release, Release
 
 bool App::run_install(const AppEntry& app, const Release& release, const ReleaseAsset& asset,
                       const std::string& expected_sha256) {
+  if (installing_active_) {
+    toast(i18n::t("notify.busy_warning"), true);
+    return false;
+  }
+  installing_active_ = true;
+
   InstallRequest request;
   request.app = app;
   request.release = release;
@@ -508,94 +564,92 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
     last_draw = now;
     const float ratio = total > 0 ? static_cast<float>(done) / static_cast<float>(total) : 0.0f;
 
-    // Fondo elegante atenuado en lugar de pantalla completamente negra
+    // Dibujo normal no bloqueante de la pantalla de fondo
     draw_background();
+    if (tab_ == Tab::Library) {
+      draw_list_screen(i18n::t("tab.library"), "", build_library_items(), i18n::t("empty.library"));
+    } else if (tab_ == Tab::Catalog) {
+      draw_list_screen(catalog_source_title(), catalog_source_origin(), build_catalog_items(), catalog_empty_text());
+    } else if (tab_ == Tab::MrShip) {
+      draw_list_screen("Harbour Masters", "Ports N64", build_mrship_items(), i18n::t("empty.mrship"));
+    } else if (tab_ == Tab::Homebrew) {
+      draw_list_screen(i18n::t("tab.homebrew"), "/switch", build_homebrew_items(), i18n::t("empty.homebrew"));
+    } else if (tab_ == Tab::Downloads) {
+      draw_downloads_screen();
+    } else if (tab_ == Tab::Settings) {
+      draw_settings_screen();
+    }
     draw_sidebar();
     draw_topbar();
-    renderer_.fill_rect(0, 0, renderer_.width(), renderer_.height(), theme_.overlay);
+    draw_footer();
 
-    const int width = theme_.px(720);
-    const int height = theme_.px(220);
-    const int x = (renderer_.width() - width) / 2;
-    const int y = (renderer_.height() - height) / 2;
+    // Notificacion emergente elegante en la esquina superior derecha
+    const int card_w = theme_.px(440);
+    const int card_h = theme_.px(94);
+    const int card_x = renderer_.width() - card_w - theme_.px(24);
+    const int card_y = theme_.topbar_height + theme_.px(14);
 
-    renderer_.fill_round_rect(x, y, width, height, theme_.px(18), theme_.panel);
-    renderer_.stroke_round_rect(x, y, width, height, theme_.px(18), theme_.border, 1);
+    renderer_.fill_round_rect(card_x, card_y, card_w, card_h, theme_.px(14), theme_.panel);
+    renderer_.stroke_round_rect(card_x, card_y, card_w, card_h, theme_.px(14), theme_.accent, 2);
 
-    // Miniatura / Icono del juego en la esquina superior izquierda del dialogo
-    const int icon_box_size = theme_.px(76);
-    const int icon_x = x + theme_.px(24);
-    const int icon_y = y + theme_.px(24);
-    renderer_.fill_round_rect(icon_x, icon_y, icon_box_size, icon_box_size, theme_.px(12), theme_.panel_alt);
-    renderer_.stroke_round_rect(icon_x, icon_y, icon_box_size, icon_box_size, theme_.px(12), theme_.border, 1);
+    const int icon_size = theme_.px(60);
+    const int icon_x = card_x + theme_.px(14);
+    const int icon_y = card_y + theme_.px(17);
+    renderer_.fill_round_rect(icon_x, icon_y, icon_size, icon_size, theme_.px(10), theme_.panel_alt);
     Texture* icon = icon_for(app);
+    if (!icon) icon = renderer_.texture("romfs:/icons/delanx-icon.png");
     if (icon) {
-      renderer_.draw_texture_fit(icon, icon_x, icon_y, icon_box_size, icon_box_size);
+      renderer_.draw_texture_fit(icon, icon_x, icon_y, icon_size, icon_size);
     } else {
-      renderer_.draw_text_centered(str::initials(app.name), icon_x + icon_box_size / 2,
-                                   icon_y + icon_box_size / 2 - theme_.px(14), theme_.text_muted,
+      renderer_.draw_text_centered(str::initials(app.name), icon_x + icon_size / 2,
+                                   icon_y + icon_size / 2 - theme_.px(12), theme_.text_muted,
                                    theme_.font_title, true);
     }
 
-    // Titulo y nombre de archivo del asset
-    const int text_x = icon_x + icon_box_size + theme_.px(18);
-    const int text_max_w = width - (text_x - x) - theme_.px(24);
-    renderer_.draw_text("Instalando " + display_name(app), text_x, icon_y + theme_.px(6), theme_.text,
-                        theme_.font_title, true);
-    const std::vector<std::string> asset_lines = renderer_.wrap_text(asset.name, theme_.font_small, text_max_w);
-    if (!asset_lines.empty()) {
-      renderer_.draw_text(asset_lines[0], text_x, icon_y + theme_.px(38), theme_.text_dim, theme_.font_small);
+    const int text_x = icon_x + icon_size + theme_.px(14);
+    const int text_max_w = card_w - (text_x - card_x) - theme_.px(14);
+    const std::string action_title = std::string(i18n::t("notify.installing")) + ": " + display_name(app);
+    const std::vector<std::string> title_lines = renderer_.wrap_text(action_title, theme_.font_body, text_max_w, true, FontFace::Brand);
+    if (!title_lines.empty()) {
+      renderer_.draw_text(title_lines[0], text_x, card_y + theme_.px(14), theme_.text, theme_.font_body, true, FontFace::Brand);
     }
 
-    // Barra de progreso estilizada y animada
-    const int bar_x = icon_x;
-    const int bar_y = y + theme_.px(120);
-    const int bar_w = width - theme_.px(48);
-    const int bar_h = theme_.px(14);
+    const int bar_x = text_x;
+    const int bar_y = card_y + theme_.px(42);
+    const int bar_w = text_max_w;
+    const int bar_h = theme_.px(10);
     renderer_.fill_round_rect(bar_x, bar_y, bar_w, bar_h, bar_h / 2, theme_.panel_alt);
     if (ratio > 0.001f) {
       const int fill_w = std::clamp(static_cast<int>(bar_w * ratio), bar_h, bar_w);
       renderer_.fill_round_rect(bar_x, bar_y, fill_w, bar_h, bar_h / 2, theme_.accent);
 
-      // Efecto shimmer animado que recorre la barra durante la descarga
       renderer_.push_clip(bar_x, bar_y, fill_w, bar_h);
       const uint32_t ticks = SDL_GetTicks();
-      const int shimmer_w = theme_.px(60);
+      const int shimmer_w = theme_.px(40);
       const int shimmer_range = fill_w + shimmer_w * 2;
       const int shimmer_pos = bar_x - shimmer_w + static_cast<int>((ticks / 3) % std::max(shimmer_range, 1));
       renderer_.fill_round_rect(shimmer_pos, bar_y, shimmer_w, bar_h, bar_h / 2,
-                                Color::rgb(255, 255, 255, 75));
+                                Color::rgb(255, 255, 255, 90));
       renderer_.pop_clip();
     }
 
-    // Datos de descarga: bytes a la izquierda, porcentaje
     const std::string bytes_str = str::format("%s / %s", str::human_size(static_cast<uint64_t>(done)).c_str(),
                                               str::human_size(static_cast<uint64_t>(total)).c_str());
-    renderer_.draw_text(bytes_str, bar_x, bar_y + theme_.px(22), theme_.text_dim, theme_.font_small);
-
+    renderer_.draw_text(bytes_str, bar_x, card_y + theme_.px(60), theme_.text_muted, theme_.font_small);
     const std::string pct_str = str::format("%d%%", static_cast<int>(ratio * 100.0f));
-    renderer_.draw_text(pct_str, bar_x + renderer_.text_width(bytes_str, theme_.font_small) + theme_.px(16),
-                        bar_y + theme_.px(22), theme_.accent, theme_.font_small, true);
-
-    // Boton de cancelar con glifo circular oficial
-    const int cancel_radius = theme_.px(11);
-    const int cancel_x = x + width - theme_.px(130);
-    const int cancel_y = bar_y + theme_.px(18);
-    renderer_.fill_circle(cancel_x + cancel_radius, cancel_y + cancel_radius, cancel_radius, theme_.card_focus);
-    renderer_.stroke_circle(cancel_x + cancel_radius, cancel_y + cancel_radius, cancel_radius, theme_.border, 1);
-    renderer_.draw_text_centered(button_glyph(Btn::B), cancel_x + cancel_radius,
-                                 cancel_y + cancel_radius - theme_.px(9), theme_.text, theme_.font_small, true);
-    renderer_.draw_text("Cancelar", cancel_x + cancel_radius * 2 + theme_.px(8),
-                        cancel_y + cancel_radius - theme_.px(8), theme_.text_dim, theme_.font_small);
+    renderer_.draw_text_right(pct_str, card_x + card_w - theme_.px(16), card_y + theme_.px(60),
+                              theme_.accent, theme_.font_small, true);
 
     renderer_.end_frame();
 
     input_.update();
+    handle_input();
     if (input_.pressed(Btn::B)) return false;
     return true;
   };
 
   const InstallReport report = install_release(request, progress);
+  installing_active_ = false;
 
   DownloadItem item;
   item.app_name = display_name(app);
@@ -605,7 +659,7 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
   downloads_.insert(downloads_.begin(), item);
 
   if (report.status == InstallStatus::Ok) {
-    toast(str::format("%s %s instalado", display_name(app).c_str(), release.tag.c_str()));
+    toast(str::format("%s %s %s", display_name(app).c_str(), release.tag.c_str(), i18n::t("badge.installed")));
     for (AppEntry& entry : library_.apps) {
       if (entry.identity_key() == app.identity_key()) {
         entry.refresh_install_state();
@@ -617,15 +671,19 @@ bool App::run_install(const AppEntry& app, const Release& release, const Release
     save_library();
     return true;
   }
-  toast(report.message.empty() ? "La instalacion ha fallado" : report.message, true);
+  toast(report.message.empty() ? i18n::t("info.install_failed") : report.message, true);
   return false;
 }
 
 void App::install_app(int library_index, bool force_unverified) {
+  if (installing_active_) {
+    toast(i18n::t("notify.busy_warning"), true);
+    return;
+  }
   if (library_index < 0 || library_index >= static_cast<int>(library_.apps.size())) return;
   const AppEntry app = library_.apps[static_cast<size_t>(library_index)];
 
-  begin_busy("Buscando release de " + display_name(app));
+  begin_busy(std::string(i18n::t("info.checking")) + ": " + display_name(app));
   Release release;
   ReleaseAsset asset;
   std::string error;
@@ -638,9 +696,9 @@ void App::install_app(int library_index, bool force_unverified) {
                           "token personal (sin permisos especiales) y pegarlo en Ajustes para subir el limite.",
                   {DialogOption{"Abrir ajustes", [this]() {
                      tab_ = Tab::Settings;
-                     focus_ = 8;  // fila del token de GitHub
+                     focus_ = 10;  // fila del token de GitHub
                    }},
-                   DialogOption{"Cerrar", nullptr}});
+                   DialogOption{i18n::t("btn.close"), nullptr}});
       return;
     }
     toast(error, true);
@@ -654,6 +712,33 @@ void App::install_app(int library_index, bool force_unverified) {
   const std::string expected = release.checksum_for(asset.name);
   const std::string asset_info = str::format("%s (%s)", asset.name.c_str(),
                                              str::human_size(static_cast<uint64_t>(asset.size)).c_str());
+
+  if (app.installed) {
+    const bool has_update = app.update_available_for(release.tag);
+    if (!has_update) {
+      const std::string body = str::format(i18n::t("dialog.up_to_date_body"),
+                                           display_name(app).c_str(),
+                                           app.installed_version.empty() ? release.tag.c_str() : app.installed_version.c_str());
+      open_dialog(i18n::t("dialog.up_to_date_title"), body,
+                  {DialogOption{i18n::t("btn.reinstall"), [this, library_index, release, asset, expected]() {
+                     run_install(library_.apps[static_cast<size_t>(library_index)], release, asset, expected);
+                   }},
+                   DialogOption{i18n::t("btn.cancel"), nullptr}});
+      return;
+    } else {
+      const std::string body = str::format(i18n::t("dialog.update_available_body"),
+                                           display_name(app).c_str(),
+                                           app.installed_version.empty() ? "-" : app.installed_version.c_str(),
+                                           release.tag.c_str(),
+                                           asset.name.c_str());
+      open_dialog(i18n::t("dialog.update_available_title"), body,
+                  {DialogOption{i18n::t("btn.update"), [this, library_index, release, asset, expected]() {
+                     run_install(library_.apps[static_cast<size_t>(library_index)], release, asset, expected);
+                   }},
+                   DialogOption{i18n::t("btn.cancel"), nullptr}});
+      return;
+    }
+  }
 
   if (release.check == Release::Check::Blocked && settings_.DelanxConfirmBlockedReleases) {
     show_confirm("Release bloqueada por Quiver",
@@ -939,6 +1024,10 @@ void App::draw_controller_test_overlay() {
 }
 
 void App::check_homebrew_update(const HomebrewAppInfo& hb) {
+  if (installing_active_) {
+    toast(i18n::t("notify.busy_warning"), true);
+    return;
+  }
   if (hb.github_repo.empty()) {
     toast("Esta app no tiene repositorio GitHub asociado para comprobar actualizaciones");
     return;
@@ -962,28 +1051,36 @@ void App::check_homebrew_update(const HomebrewAppInfo& hb) {
   if (!ok) {
     open_dialog("Comprobación de actualización",
                 "No se pudo consultar el repositorio " + hb.github_repo + ": " + error,
-                {DialogOption{"Entendido", nullptr}});
+                {DialogOption{i18n::t("btn.understood"), nullptr}});
     return;
   }
 
   const bool has_update = temp_app.update_available_for(release.tag);
   if (!has_update && !hb.version.empty()) {
-    toast(hb.name + " está al día (" + hb.version + ")");
+    const std::string body = str::format(i18n::t("dialog.up_to_date_body"),
+                                         hb.name.c_str(), hb.version.c_str());
+    open_dialog(i18n::t("dialog.up_to_date_title"), body,
+                {DialogOption{i18n::t("btn.reinstall"), [this, temp_app, release, asset, hb]() {
+                   run_install(temp_app, release, asset, "");
+                   refresh_homebrew();
+                   toast(hb.name + ": " + i18n::t("notify.completed"));
+                 }},
+                 DialogOption{i18n::t("btn.cancel"), nullptr}});
     return;
   }
 
-  open_dialog("Actualización encontrada",
-              str::format("Se encontró una versión más reciente para %s:\n\nInstalada: %s\nDisponible: %s (%s)\n\n¿Deseas descargar e instalar la actualización ahora?",
-                          hb.name.c_str(),
-                          hb.version.empty() ? "-" : hb.version.c_str(),
-                          release.tag.c_str(),
-                          asset.name.c_str()),
-              {DialogOption{"Actualizar ahora", [this, temp_app, release, asset]() {
+  const std::string body = str::format(i18n::t("dialog.update_available_body"),
+                                       hb.name.c_str(),
+                                       hb.version.empty() ? "-" : hb.version.c_str(),
+                                       release.tag.c_str(),
+                                       asset.name.c_str());
+  open_dialog(i18n::t("dialog.update_available_title"), body,
+              {DialogOption{i18n::t("btn.update"), [this, temp_app, release, asset, hb]() {
                  run_install(temp_app, release, asset, "");
                  refresh_homebrew();
-                 toast("Homebrew actualizado");
+                 toast(hb.name + ": " + i18n::t("notify.completed"));
                }},
-               DialogOption{"Cancelar", nullptr}});
+               DialogOption{i18n::t("btn.cancel"), nullptr}});
 }
 
 }  // namespace delanx::ui
