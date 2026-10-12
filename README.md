@@ -8,13 +8,21 @@
 
 # Delanx — Homebrew Port & Decompilation Manager para Nintendo Switch
 
-[![Release](https://img.shields.io/badge/release-v0.1.0--experimental-blue.svg)](https://github.com/KidFeroz/Delanx/releases)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Language](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=c%2B%2B)](https://en.cppreference.com/w/cpp/20)
-[![Platform](https://img.shields.io/badge/Platform-Nintendo%20Switch%20(Horizon%20OS)-E60012?logo=nintendoswitch)](https://github.com/switchbrew/libnx)
-[![Toolchain](https://img.shields.io/badge/Toolchain-devkitA64%20%2F%20libnx-E65C00)](https://devkitpro.org)
-[![Author](https://img.shields.io/badge/Author-KidFeroz-informational.svg?logo=github)](https://github.com/KidFeroz)
-[![Vibecoded with AI](https://img.shields.io/badge/developed%20with-AI%20%2F%20Vibecoding-8A2BE2.svg)](#-declaración-de-desarrollo-asistido-por-ia-vibecoding)
+<p align="center">
+  <a href="https://github.com/KidFeroz/Delanx/releases"><img src="https://img.shields.io/badge/release-v0.1.0--experimental-blue.svg" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
+  <a href="https://en.cppreference.com/w/cpp/20"><img src="https://img.shields.io/badge/C%2B%2B-20-00599C?logo=c%2B%2B" alt="Language"></a>
+  <a href="https://github.com/switchbrew/libnx"><img src="https://img.shields.io/badge/Platform-Nintendo%20Switch%20(Horizon%20OS)-E60012?logo=nintendoswitch" alt="Platform"></a>
+  <a href="https://devkitpro.org"><img src="https://img.shields.io/badge/Toolchain-devkitA64%20%2F%20libnx-E65C00" alt="Toolchain"></a>
+  <a href="https://github.com/KidFeroz"><img src="https://img.shields.io/badge/Author-KidFeroz-informational.svg?logo=github" alt="Author"></a>
+  <a href="#-de-entusiasta-a-entusiasta-vibecoding-y-comunidad"><img src="https://img.shields.io/badge/developed%20with-AI%20%2F%20Vibecoding-8A2BE2.svg" alt="Vibecoded with AI"></a>
+</p>
+
+<p align="center">
+  <a href="#-español"><b>🇪🇸 Español</b></a> &nbsp;|&nbsp; <a href="#-english"><b>🇬🇧 English</b></a>
+</p>
+
+<a name="-español"></a>
 
 **Delanx** es un gestor y cargador (*launcher*) nativo implementado en **C++20** para Nintendo Switch (Horizon OS). Su propósito es organizar, verificar la presencia de archivos requeridos y ejecutar adaptaciones de código (*source ports*), decompilaciones (*decomps*) y recompilaciones (*recomps*) dentro del ecosistema homebrew.
 
@@ -248,3 +256,241 @@ Agradecemos profundamente a los siguientes proyectos y desarrolladores del ecosi
 * **[SteamGridDB](https://www.steamgriddb.com/) & [libretro-thumbnails](https://github.com/libretro/libretro-thumbnails):** Por los repositorios de carátulas e iconografía de la comunidad de preservación.
 * **Tipografías:** Barlow Condensed, Cal Sans e Inter (licenciadas bajo SIL Open Font License).
 * **A toda la comunidad de decompilación y preservación:** A todos los equipos de ingeniería inversa y homebrew que hacen posible disfrutar de estas obras maestras de forma nativa en Nintendo Switch.
+
+---
+
+<a name="-english"></a>
+
+# Delanx — Homebrew Port & Decompilation Manager for Nintendo Switch
+
+**Delanx** is a native launcher and manager implemented in **C++20** for Nintendo Switch (Horizon OS). Its purpose is to organize, verify required asset files, and launch source ports, decompilations (*decomps*), and recompilations (*recomps*) within the homebrew ecosystem.
+
+> [!NOTE]
+> **Crafted by an enthusiast at home with AI assistance (*Vibecoding*)**  
+> This project was not created by an expert: I am a passionate homebrew enthusiast developing and testing directly on my Nintendo Switch at home, acting primarily as an orchestrator with artificial intelligence for the C++ programming.
+> 
+> * 🎮 **Tested on real hardware:** Code is compiled and tested directly on my personal console.
+> * 🤝 **100% open to human contributions:** If you write C++, know `libnx`/`SDL2`, or want to help polish the architecture, you are more than welcome! Pull Requests and human reviews are deeply appreciated.
+> * ✌️ **Good vibes and respect:** I completely understand that many people dislike AI *vibecoding*, and I fully respect that stance. I only ask for that same tolerance and respect in Issues and discussions: technical and constructive feedback is welcome; we are here to contribute to the homebrew community and have a good time. 🕹️
+
+---
+
+## 📌 Table of Contents
+
+- [Approach and Design](#-approach-and-design)
+- [System Architecture](#-system-architecture-1)
+- [Key Features](#-key-features-1)
+- [MicroSD Card Structure](#-microsd-card-structure-1)
+- [Toolchain and Building](#-toolchain-and-building)
+- [Test Suite and Auditing](#-test-suite-and-auditing)
+- [From Enthusiast to Enthusiast: Vibecoding and Community](#-from-enthusiast-to-enthusiast-vibecoding-and-community)
+- [Contributor Guide](#-contributor-guide-1)
+- [License and Acknowledgments](#-license-and-acknowledgments-1)
+
+---
+
+## ⚙️ Approach and Design
+
+Delanx was designed to provide a fast, native, and self-contained environment on Horizon OS:
+
+1. **100% Native Development:** C++20 code compiled directly against `libnx`, `SDL2`, and `devkitPro` portlibs for instant boot times and minimal console RAM consumption.
+2. **Flexible Data Schema (`apps.json`):** Adopts a resilient and extensible JSON schema, allowing optional interoperability with existing libraries while managing Switch-specific parameters under the `"switch"` object.
+3. **Direct Port Management:** Specifically designed to detect `.nro` executables, validate user-provided complementary asset files, and launch games without relying on intermediate layers.
+
+```json
+{
+  "name": "Custom Port Example",
+  "folderName": "custom_port",
+  "installPath": "/switch/custom_port",
+  "switch": {
+    "targetDir": "/switch/custom_port",
+    "nro": "custom_port.nro",
+    "requiredUserFiles": [
+      { "path": "sdmc:/switch/custom_port/assets.otr", "present": true }
+    ]
+  }
+}
+```
+
+---
+
+## 🏛️ System Architecture
+
+The design follows a strict layered separation of concerns with zero cyclical dependencies:
+
+```
+source/
+├── core/       -> Low-level primitives: JSON (jansson), paths (sdmc:/), SHA-256 hashing, logging.
+├── model/      -> Decoupled domain entities: AppEntry, CatalogEntry, Release, Settings.
+├── services/   -> Infrastructure logic: HTTP (libcurl), libarchive (extraction), artwork, scanner.
+├── platform/   -> Horizon OS abstraction: libnx HID, applet/application mode, battery and network state.
+└── ui/         -> SDL2 graphics rendering: views (Grid/List), components, layout, and event loop.
+```
+
+### Dependency Rules
+`UI` $\longrightarrow$ `Services` $\longrightarrow$ `Model` $\longrightarrow$ `Core`  
+*(The `Platform` layer is consumed exclusively by the `main.cpp` entrypoint and concrete service subsystems).*
+
+### Execution Flow and Context Switching
+Delanx implements the `libnx` binary chaining protocol (`envSetNextLoad`):
+1. The user selects a verified title in the interface.
+2. Delanx verifies required complementary assets and data files.
+3. Invokes `envSetNextLoad(target_nro_path, target_argv)`.
+4. Delanx cleanly frees its resources (SDL2 context, file descriptors, network buffers) and exits with code 0.
+5. The environment loader (`hbmenu` or forwarder NSP) atomically executes the target NRO.
+
+---
+
+## 🚀 Key Features
+
+* **45+ Project Master Catalog:** Validated database with ports, decomps, and community adaptations.
+* **Format and Extension Compatibility:** Detection and integrity verification for the most common homebrew formats:
+  - **Native executables:** `.nro`
+  - **Asset packs / recomps:** `.otr`, `.o2r`, `.rcf`, `.wad`, `.pk3`, `.grp`, `.dat`, `.pak`
+  - **Disk images and base ROMs:** `.z64`, `.sfc`, `.gba`, `.bin`, `.cue`, `.iso`
+  - **Metadata and configuration:** `.json`, `.ini`, `.cfg`
+* **Cryptographic Integrity:** Mandatory **SHA-256** hash validation of downloaded packages against catalog manifests (*verified / unverified / blocked*).
+* **Archive Extraction Vulnerability Mitigation:** `libarchive`-based extractor with strict protection against path traversal and zip-slip attacks.
+* **Zero-Cost Artwork ($0):** Hybrid architecture fetching from public CDNs without API keys:
+  - *Libretro Thumbnails* for retro systems using No-Intro naming.
+  - *SteamGridDB* for modern PC adaptations and indies.
+* **Dual Environment Support:** Automatic detection of **Applet Mode** (~400 MB memory limit) vs **Application Mode / Title Override** (~3.2 GB RAM access), dynamically adjusting cache limits and texture resolutions.
+* **Robust Input:** Direct input polling via `libnx HID` (analog sticks, D-pad, buttons, and capacitive multi-touch).
+
+---
+
+## 📂 MicroSD Card Structure
+
+Delanx standardizes storage hierarchy following established Nintendo Switch community conventions:
+
+```text
+sdmc:/
+├── roms/                               # Central repository for base ROMs and assets
+│   ├── cart/                           # Cartridge formats (.z64, .sfc, .gba)
+│   ├── disc/                           # Disc images (.bin / .cue / .iso)
+│   └── data/                           # Data packs and game resources (.wad, .pk3, .grp, .rcf)
+│
+└── switch/                             # Standard Homebrew applications directory
+    ├── Delanx/
+    │   ├── Delanx.nro                  # Main executable
+    │   ├── apps.json                   # Local installed titles database
+    │   ├── settings.json               # Persistent user settings
+    │   ├── Cache/                      # Downloaded thumbnails (.png)
+    │   └── delanx.log                  # Runtime diagnostic log
+    │
+    ├── custom_port/                    # Example: Isolated app directory
+    │   ├── custom_port.nro             # NRO executable
+    │   └── assets.otr                  # Required asset file (.otr, .o2r, .pak, etc.)
+    └── [other_apps]/
+```
+
+---
+
+## 🛠️ Toolchain and Building
+
+### Prerequisites
+Requires the official **devkitPro** cross-compilation toolchain for ARM64 architecture (`devkitA64`):
+
+* `devkitA64`
+* `libnx`
+* Switch portlibs:
+  ```bash
+  pacman -S --needed switch-dev switch-examples \
+      switch-sdl2 switch-sdl2_image switch-sdl2_ttf \
+      switch-libcurl switch-jansson switch-libarchive switch-freetype
+  ```
+
+### Environment Variables
+Ensure the base environment variable is set:
+```bash
+export DEVKITPRO=/opt/devkitpro
+```
+
+### Build Process
+```bash
+# Clean previous builds
+make clean
+
+# Compile binaries (.elf, .nacp, and .nro bundled with romfs)
+make -j$(nproc)
+```
+
+The build process produces in the repository root:
+* `Delanx.nro`: Final Horizon OS executable binary.
+* `Delanx.nacp`: Title metadata file (ID, author, version).
+* `Delanx.elf`: Intermediate ELF binary with debug symbols.
+
+---
+
+## 🧪 Test Suite and Auditing
+
+Code integrity is audited across two independent verification layers:
+
+### 1. Native Host Tests (`tests/host`)
+Allows testing the core engine on Linux, macOS, or Windows without requiring physical hardware or emulators:
+* **Data Layer (`test_data_layer.cpp`):** JSON schema serialization, fault tolerance, and multi-token fuzzy signature detection.
+* **Network Layer (`test_network_layer.cpp`):** HTTP endpoint mocking, chunked downloads, and timeout handling.
+* **Safe Installer (`test_installer.cpp`):** Real package extraction testing and preservation of user-provided files.
+
+```bash
+cd tests/host
+./run.sh
+```
+
+### 2. Real Hardware Autotest (`tests/device`)
+Hardware validation running on Horizon OS:
+* Verification of `romfs:/` and `sdmc:/` filesystem mounting.
+* Verification of heap memory allocation in Title Override mode.
+* Polling battery status, network state, and RTC clock.
+
+---
+
+## 🤖 From Enthusiast to Enthusiast: Vibecoding and Community
+
+This project is driven by pure passion for homebrew and game preservation. To build a complete C++ launcher without spending months writing repetitive boilerplate code from scratch, I leaned on an AI assistant (**Vibecoding**) as a programming co-pilot.
+
+### How Delanx is Built and Tested:
+1. **Assisted Development:** AI assists with project structure, JSON parsing, library binding (`libcurl`, `libarchive`), and test case generation.
+2. **Home Testing:** Everything is compiled with `devkitA64` and tested directly on my personal Nintendo Switch and SD card, ensuring it performs reliably on real hardware.
+3. **100% Open to Human Contributions:** While started with AI assistance, this project is not exclusive to machines. Quite the opposite! If you are a developer interested in auditing code, optimizing memory, or opening Pull Requests, your help is warmly welcomed.
+4. **Good Vibes and Mutual Respect:** It is understandable that some in the community have reservations about AI-assisted development. Any technical suggestions, bug reports, or improvements are welcome; we simply ask to keep discussions in Issues and Discussions respectful and constructive. Ultimately, what unites us all is enjoying great ports natively on our console. 🎮✨
+
+---
+
+## 🤝 Contributor Guide
+
+Community contributions are warmly appreciated. To maintain codebase robustness and quality, please follow these guidelines:
+
+1. **C++20 Standard:**
+   - Avoid RTTI (`-fno-rtti`) and exceptions (`-fno-exceptions`) in line with embedded console performance practices.
+   - Use move semantics (`std::move`) and smart pointers (`std::unique_ptr`) for deterministic memory management.
+2. **Code Formatting:**
+   - Follow the `.clangd` configuration included in the project root.
+3. **Adding Ports to the Catalog:**
+   - When proposing a new port in `romfs/catalog/switch-catalog.json`, include the GitHub release link, the exact internal `.nro` filename, expected asset paths, and the asset SHA-256 hash.
+4. **Pull Request Workflow:**
+   - Write descriptive commit messages (`feat:`, `fix:`, `refactor:`, `docs:`).
+   - Ensure `make` builds cleanly without warnings (`-Wall -Wextra`).
+
+---
+
+## 📄 License and Acknowledgments
+
+Developed and maintained by **[KidFeroz](https://github.com/KidFeroz)**. This software is free and open source, distributed under the terms of the **GNU General Public License v3.0 (GPLv3)**. See the [LICENSE](LICENSE) file for details. This license guarantees that Delanx and any derivative works remain forever free and open for the community.
+
+### 💖 Open Source Credits and Special Thanks
+
+We deeply appreciate the following open-source projects and developers:
+
+* **[devkitPro](https://devkitpro.org) & [Switchbrew (libnx)](https://github.com/switchbrew/libnx):** For the devkitA64 toolchain and foundational `libnx` library enabling native Nintendo Switch development.
+* **[The Homebrew App Store](https://github.com/fortheusers/hb-appstore) (`fortheusers`):** For pioneering homebrew package management and catalogs on Switch.
+* **[Quiver Launcher](https://github.com/tgeorgiadis/quiver-launcher) (`tgeorgiadis`):** For early inspiration in catalog schemas and decompilation structures.
+* **[Harbour Masters](https://github.com/HarbourMasters):** For their extraordinary reverse engineering and decompilation projects: Shipwright (*Ocarina of Time*), Starship (*Star Fox 64*), Ghostship (*Super Mario 64*), and Spaghettify (*Mario Kart 64*).
+* **[YoshiCrystal9](https://github.com/YoshiCrystal9/2ship2harkinian-Switch):** For the native Nintendo Switch port of 2 Ship 2 Harkinian (*Majora's Mask*).
+* **[SDL2](https://www.libsdl.org/) & extensions (`SDL2_image`, `SDL2_ttf`):** For the reliable 2D rendering, texture decoding, font management, and gamepad input layer.
+* **[libcurl](https://curl.se/) & [mbedtls](https://github.com/Mbed-TLS/mbedtls):** For network communication and secure TLS transfers.
+* **[Jansson](https://github.com/akheron/jansson):** For the fast, lightweight C JSON parsing library.
+* **[libarchive](https://www.libarchive.org/):** For secure, high-performance ZIP, 7z, and tarball extraction.
+* **[SteamGridDB](https://www.steamgriddb.com/) & [libretro-thumbnails](https://github.com/libretro/libretro-thumbnails):** For community artwork repositories and game icon databases.
+* **Typefaces:** Barlow Condensed, Cal Sans, and Inter (licensed under the SIL Open Font License).
+* **To the entire decompilation and preservation community:** To all reverse engineering and homebrew teams making it possible to experience these timeless masterpieces natively on Nintendo Switch.
